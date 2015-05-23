@@ -4,7 +4,7 @@ using System.Windows.Forms;
 
 namespace ffxigamma {
     public partial class App : Form {
-        public const string Version = "1.0";
+        public const string Version = "1.0.1";
         private const string AppName = "FFXI Gamma";
         private const string AppFolderName = "ffxigamma";
         private const string ConfigFileName = "config.xml";
@@ -80,6 +80,7 @@ namespace ffxigamma {
         }
 
         private void SaveConfig() {
+            InitAppFolder();
             try {
                 config.Version = Version;
                 config.Save(GetConfigPath());
@@ -138,11 +139,13 @@ namespace ffxigamma {
             UpdateScreenGamma();
         }
 
-        private void uiExit_Click(object sender, EventArgs e) {
-            InitAppFolder();
-            SaveConfig();
+        private void App_FormClosing(object sender, FormClosingEventArgs e) {
             ResetScreenGamma();
-            Application.Exit();
+            SaveConfig();
+        }
+
+        private void uiExit_Click(object sender, EventArgs e) {
+            Close();
         }
 
         private void uiSettings_Click(object sender, EventArgs e) {

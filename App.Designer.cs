@@ -76,6 +76,7 @@
             this.ShowInTaskbar = false;
             this.Text = "FFXI Gamma";
             this.WindowState = System.Windows.Forms.FormWindowState.Minimized;
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.App_FormClosing);
             this.Load += new System.EventHandler(this.App_Load);
             this.uiContextMenu.ResumeLayout(false);
             this.ResumeLayout(false);
