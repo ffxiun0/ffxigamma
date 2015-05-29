@@ -1,12 +1,25 @@
 ﻿using Microsoft.Win32;
+using System.Diagnostics;
 
 namespace ffxigamma {
     class FFXI {
-        private const string KeyName = @"HKEY_LOCAL_MACHINE\SOFTWARE\PlayOnline\Square\FinalFantasyXI";
+        private const string KeyName = @"SOFTWARE\PlayOnline\Square\FinalFantasyXI";
 
-        public static bool IsWindowMode() {
-            var value = (int)Registry.GetValue(KeyName, "0034", 0);
-            return value == 1;
+        private static object GetRegistryValue(string name, object defaultValue) {
+            var subKey = Registry.LocalMachine.OpenSubKey(KeyName);
+            if (subKey == null) return defaultValue;
+
+            return subKey.GetValue(name, defaultValue);
+        }
+
+        public static bool IsFullScreenMode() {
+            var value = (int)GetRegistryValue("0034", -1);
+            return value == 0;
+        }
+
+        public static bool IsRunning() {
+            var procs = Process.GetProcessesByName("pol");
+            return procs.Length > 0;
         }
     }
 }

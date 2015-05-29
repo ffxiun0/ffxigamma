@@ -39,7 +39,7 @@ namespace ffxigamma {
         }
 
         private Screen GetActiveScreen() {
-            if (!FFXI.IsWindowMode()) return null;
+            if (FFXI.IsFullScreenMode() && FFXI.IsRunning()) return null;
 
             var wnd = Window.GetForegroundWindow();
             if (wnd == null) return null;
