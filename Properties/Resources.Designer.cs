@@ -4,47 +4,48 @@
 //     ランタイム バージョン:4.0.30319.34209
 //
 //     このファイルへの変更は、以下の状況下で不正な動作の原因になったり、
-//     コードが再生成されるときに損失したりします
+//     コードが再生成されるときに損失したりします。
 // </auto-generated>
 //------------------------------------------------------------------------------
 
 namespace ffxigamma.Properties {
-
-
+    using System;
+    
+    
     /// <summary>
     ///   ローカライズされた文字列などを検索するための、厳密に型指定されたリソース クラスです。
     /// </summary>
     // このクラスは StronglyTypedResourceBuilder クラスが ResGen
     // または Visual Studio のようなツールを使用して自動生成されました。
     // メンバーを追加または削除するには、.ResX ファイルを編集して、/str オプションと共に
-    // ResGen を実行し直すか、または VS プロジェクトをリビルドします。
+    // ResGen を実行し直すか、または VS プロジェクトをビルドし直します。
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
-
+        
         private static global::System.Resources.ResourceManager resourceMan;
-
+        
         private static global::System.Globalization.CultureInfo resourceCulture;
-
+        
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
         internal Resources() {
         }
-
+        
         /// <summary>
-        ///   このクラスに使用される、キャッシュされた ResourceManager のインスタンスを返します。
+        ///   このクラスで使用されているキャッシュされた ResourceManager インスタンスを返します。
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
-                if ((resourceMan == null)) {
+                if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("ffxigamma.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
             }
         }
-
+        
         /// <summary>
         ///   厳密に型指定されたこのリソース クラスを使用して、すべての検索リソースに対し、
         ///   現在のスレッドの CurrentUICulture プロパティをオーバーライドします。
@@ -56,6 +57,57 @@ namespace ffxigamma.Properties {
             }
             set {
                 resourceCulture = value;
+            }
+        }
+        
+        /// <summary>
+        ///   管理者モード に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string AdminMode {
+            get {
+                return ResourceManager.GetString("AdminMode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   既に起動しています。 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string AlreadyRunning {
+            get {
+                return ResourceManager.GetString("AlreadyRunning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   FFXI の起動に失敗しました。 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string FFXIStartFail {
+            get {
+                return ResourceManager.GetString("FFXIStartFail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   ホットキーを有効にするには管理者モードで起動する必要があります。
+        ///
+        ///1. FINAL FANTASY XI を終了する。
+        ///2. FFXI Gamma のメニューを開く。
+        ///3. 「FINAL FANTASY XI を起動」を実行する。
+        ///
+        ///FFXI Gamma は自動的に管理者モードで再起動されます。 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string HotKeyWarning {
+            get {
+                return ResourceManager.GetString("HotKeyWarning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   再起動に失敗しました。 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string RestartFail {
+            get {
+                return ResourceManager.GetString("RestartFail", resourceCulture);
             }
         }
     }

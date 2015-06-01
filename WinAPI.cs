@@ -20,6 +20,13 @@ namespace ffxigamma {
                 rect.right - rect.left, rect.bottom - rect.top);
         }
 
+        public static Rectangle GetClientRect(IntPtr hWnd) {
+            var rect = new RECT();
+            GetClientRect(hWnd, ref rect);
+            return new Rectangle(rect.left, rect.top,
+                rect.right - rect.left, rect.bottom - rect.top);
+        }
+
         public static bool SetDeviceGammaRamp(Screen screen, double gamma) {
             return SetDeviceGammaRamp("DISPLAY", screen.DeviceName, gamma);
         }
@@ -44,6 +51,19 @@ namespace ffxigamma {
             return SetDeviceGammaRamp(hDC, ramp);
         }
 
+        public static int BitBlt(Graphics dest, Rectangle rect, Graphics src, Point srcPos, int rop) {
+            var hdcDest = dest.GetHdc();
+            var hdcSrc = src.GetHdc();
+            try {
+                return WinAPI.BitBlt(hdcDest, rect.X, rect.Y, rect.Width, rect.Height,
+                    hdcSrc, srcPos.X, srcPos.Y, rop);
+            }
+            finally {
+                dest.ReleaseHdc(hdcDest);
+                src.ReleaseHdc(hdcSrc);
+            }
+        }
+
         [DllImport("user32.dll")]
         private static extern int GetWindowText(IntPtr hWnd, StringBuilder lpString, int nMaxCount);
 
@@ -62,7 +82,16 @@ namespace ffxigamma {
         public static extern int GetWindowRect(IntPtr hwnd, ref RECT lpRect);
 
         [DllImport("user32.dll")]
+        public static extern int GetClientRect(IntPtr hWnd, ref RECT lpRect);
+
+        [DllImport("user32.dll")]
         public static extern IntPtr GetForegroundWindow();
+
+        [DllImport("user32.dll")]
+        public static extern bool IsIconic(IntPtr hWnd);
+
+        [DllImport("user32.dll")]
+        public static extern short GetAsyncKeyState(int vKey);
 
         [DllImport("gdi32.dll")]
         public static extern IntPtr CreateDC(string lpszDriver, string lpszDevice, string lpszOutput, IntPtr lpInitData);
@@ -74,6 +103,37 @@ namespace ffxigamma {
         public static extern bool SetDeviceGammaRamp(IntPtr hDC, ushort[] lpRamp);
 
         [DllImport("gdi32.dll")]
-        public static extern bool GetDeviceGammaRamp(IntPtr hDC, ref ushort[] lpRamp);
+        public static extern bool GetDeviceGammaRamp(IntPtr hDC, ushort[] lpRamp);
+
+        [DllImport("gdi32.dll")]
+        public static extern int BitBlt(
+            IntPtr hDestDC,
+            int x,
+            int y,
+            int nWidth,
+            int nHeight,
+            IntPtr hSrcDC,
+            int xSrc,
+            int ySrc,
+            int dwRop);
+        public const int SRCCOPY = 13369376;
+
+        [DllImport("gdi32.dll")]
+        public static extern IntPtr GetCurrentObject(IntPtr hdc, uint uObjectType);
+        public const uint OBJ_BITMAP = 7;
+
+        [DllImport("gdi32.dll")]
+        public static extern int GetObject(IntPtr hgdiobj, int cbBuffer, ref BITMAP lpvObject);
+
+        [StructLayout(LayoutKind.Sequential)]
+        public struct BITMAP {
+            public int bmType;
+            public int bmWidth;
+            public int bmHeight;
+            public int bmWidthBytes;
+            byte bmPlanes;
+            byte bmBitsPixel;
+            IntPtr bmBits;
+        };
     }
 }
