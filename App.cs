@@ -54,13 +54,13 @@ namespace ffxigamma {
 
             var wnd = Window.GetForegroundWindow();
             if (wnd == null) return null;
-
-            if (!IsTargetWindow(wnd)) return null;
+            if (wnd.IsIconic()) return null;
+            if (!IsTargetWindowName(wnd)) return null;
 
             return Screen.FromRectangle(wnd.GetWindowRect());
         }
 
-        private bool IsTargetWindow(Window wnd) {
+        private bool IsTargetWindowName(Window wnd) {
             var name = wnd.GetWindowText();
             foreach (var s in config.NameList) {
                 if (s == name)
@@ -151,7 +151,7 @@ namespace ffxigamma {
             var result = new List<Window>();
             foreach (var p in Process.GetProcesses()) {
                 var wnd = new Window(p.MainWindowHandle);
-                if (IsTargetWindow(wnd) && !wnd.IsIconic())
+                if (IsTargetWindowName(wnd) && !wnd.IsIconic())
                     result.Add(wnd);
             }
             return result;
