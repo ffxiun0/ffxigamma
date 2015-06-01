@@ -187,9 +187,10 @@ namespace ffxigamma {
 
             uiSaveAs.Tag = "block ShowDialog()";
             try {
-                var bmp = CaptureWithEffects(wnd);
-                if (uiSaveAs.ShowDialog(this) == DialogResult.OK)
-                    SaveImage(bmp, uiSaveAs.FileName);
+                using (var bmp = CaptureWithEffects(wnd)) {
+                    if (uiSaveAs.ShowDialog(this) == DialogResult.OK)
+                        SaveImage(bmp, uiSaveAs.FileName);
+                }
             }
             finally {
                 uiSaveAs.Tag = null;
@@ -207,8 +208,9 @@ namespace ffxigamma {
 
         private void CaptureSaveFolder(Window wnd) {
             var path = CaptureFileName();
-            var bmp = CaptureWithEffects(wnd);
-            SaveImage(bmp, path);
+            using (var bmp = CaptureWithEffects(wnd)) {
+                SaveImage(bmp, path);
+            }
             ShowNotifySaved(path);
         }
 
