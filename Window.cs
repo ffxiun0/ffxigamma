@@ -72,6 +72,9 @@ namespace ffxigamma {
             var win = GetWindowRect();
             var dev = GetDeviceRect();
 
+            if (dev.IsEmpty)
+                return new PointF(1, 1);
+
             var scaleX = (float)win.Width / dev.Width;
             var scaleY = (float)win.Height / dev.Height;
 
@@ -83,9 +86,12 @@ namespace ffxigamma {
                 var hdc = g.GetHdc();
                 try {
                     var hbmp = WinAPI.GetCurrentObject(hdc, WinAPI.OBJ_BITMAP);
+                    if (hbmp == IntPtr.Zero)
+                        return Rectangle.Empty;
 
                     var sbmp = new WinAPI.BITMAP();
-                    WinAPI.GetObject(hbmp, Marshal.SizeOf(sbmp), ref sbmp);
+                    if (WinAPI.GetObject(hbmp, Marshal.SizeOf(sbmp), ref sbmp) == 0)
+                        return Rectangle.Empty;
 
                     return new Rectangle(0, 0, sbmp.bmWidth, sbmp.bmHeight);
                 }
