@@ -261,6 +261,7 @@
             this.uiCancel.TabIndex = 40;
             this.uiCancel.Text = "キャンセル";
             this.uiCancel.UseVisualStyleBackColor = true;
+            this.uiCancel.Click += new System.EventHandler(this.uiCancel_Click);
             // 
             // uiEdge
             // 
@@ -277,7 +278,6 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.CancelButton = this.uiCancel;
             this.ClientSize = new System.Drawing.Size(540, 371);
             this.Controls.Add(this.uiEdge);
             this.Controls.Add(this.uiCancel);

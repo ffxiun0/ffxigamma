@@ -99,5 +99,9 @@ namespace ffxigamma {
                 ShowWarning(ex.Message);
             }
         }
+
+        private void uiCancel_Click(object sender, EventArgs e) {
+            Close();
+        }
     }
 }
