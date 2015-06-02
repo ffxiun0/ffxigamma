@@ -185,7 +185,7 @@
             this.uiReset.Name = "uiReset";
             this.uiReset.Size = new System.Drawing.Size(75, 23);
             this.uiReset.TabIndex = 0;
-            this.uiReset.Text = "初期値(&I)";
+            this.uiReset.Text = "全て初期化";
             this.uiReset.UseVisualStyleBackColor = true;
             this.uiReset.Click += new System.EventHandler(this.uiReset_Click);
             // 
@@ -318,10 +318,12 @@
             // 
             // uiHotKey
             // 
+            this.uiHotKey.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.uiHotKey.Location = new System.Drawing.Point(84, 128);
             this.uiHotKey.Name = "uiHotKey";
             this.uiHotKey.ReadOnly = true;
-            this.uiHotKey.Size = new System.Drawing.Size(107, 19);
+            this.uiHotKey.Size = new System.Drawing.Size(191, 19);
             this.uiHotKey.TabIndex = 8;
             // 
             // label14
@@ -329,9 +331,9 @@
             this.label14.AutoSize = true;
             this.label14.Location = new System.Drawing.Point(8, 131);
             this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(52, 12);
+            this.label14.Size = new System.Drawing.Size(67, 12);
             this.label14.TabIndex = 7;
-            this.label14.Text = "ホットキー:";
+            this.label14.Text = "ホットキー(&K):";
             // 
             // label13
             // 

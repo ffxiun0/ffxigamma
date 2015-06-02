@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace ffxigamma {
@@ -35,7 +36,7 @@ namespace ffxigamma {
         private void SetConfigToUI(ImageText config) {
             uiText.Text = config.Text;
             uiText.Font = config.Font;
-            uiFontName.Text = config.Font.Name;
+            uiFontName.Text = config.FontName;
             uiForeColor.BackColor = config.ForeColor;
             uiBackColor.BackColor = config.BackColor;
             uiEdge.Checked = config.Edge;
@@ -70,7 +71,8 @@ namespace ffxigamma {
             uiFontDialog.Font = uiText.Font;
             if (uiFontDialog.ShowDialog(this) == DialogResult.OK) {
                 uiText.Font = uiFontDialog.Font;
-                uiFontName.Text = uiFontDialog.Font.Name;
+                var fc = new FontConverter();
+                uiFontName.Text = fc.ConvertToString(uiFontDialog.Font);
             }
         }
 
