@@ -37,11 +37,11 @@
             this.uiReset = new System.Windows.Forms.Button();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.uiTextDelete = new System.Windows.Forms.Button();
-            this.uiTextEdit = new System.Windows.Forms.Button();
-            this.uiTextAdd = new System.Windows.Forms.Button();
-            this.uiTextList = new System.Windows.Forms.ListBox();
-            this.uiEnableText = new System.Windows.Forms.CheckBox();
+            this.uiImageTextDelete = new System.Windows.Forms.Button();
+            this.uiImageTextEdit = new System.Windows.Forms.Button();
+            this.uiImageTextAdd = new System.Windows.Forms.Button();
+            this.uiImageTextList = new System.Windows.Forms.ListBox();
+            this.uiEnableImageText = new System.Windows.Forms.CheckBox();
             this.uiImageFormatName = new System.Windows.Forms.ComboBox();
             this.uiEditHotKey = new System.Windows.Forms.Button();
             this.uiEnableHotKey = new System.Windows.Forms.CheckBox();
@@ -203,11 +203,11 @@
             // 
             // tabPage3
             // 
-            this.tabPage3.Controls.Add(this.uiTextDelete);
-            this.tabPage3.Controls.Add(this.uiTextEdit);
-            this.tabPage3.Controls.Add(this.uiTextAdd);
-            this.tabPage3.Controls.Add(this.uiTextList);
-            this.tabPage3.Controls.Add(this.uiEnableText);
+            this.tabPage3.Controls.Add(this.uiImageTextDelete);
+            this.tabPage3.Controls.Add(this.uiImageTextEdit);
+            this.tabPage3.Controls.Add(this.uiImageTextAdd);
+            this.tabPage3.Controls.Add(this.uiImageTextList);
+            this.tabPage3.Controls.Add(this.uiEnableImageText);
             this.tabPage3.Controls.Add(this.uiImageFormatName);
             this.tabPage3.Controls.Add(this.uiEditHotKey);
             this.tabPage3.Controls.Add(this.uiEnableHotKey);
@@ -225,62 +225,62 @@
             this.tabPage3.Text = "画像保存";
             this.tabPage3.UseVisualStyleBackColor = true;
             // 
-            // uiTextDelete
+            // uiImageTextDelete
             // 
-            this.uiTextDelete.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.uiTextDelete.Location = new System.Drawing.Point(281, 236);
-            this.uiTextDelete.Name = "uiTextDelete";
-            this.uiTextDelete.Size = new System.Drawing.Size(75, 23);
-            this.uiTextDelete.TabIndex = 14;
-            this.uiTextDelete.Text = "削除";
-            this.uiTextDelete.UseVisualStyleBackColor = true;
-            this.uiTextDelete.Click += new System.EventHandler(this.uiTextDelete_Click);
+            this.uiImageTextDelete.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.uiImageTextDelete.Location = new System.Drawing.Point(281, 236);
+            this.uiImageTextDelete.Name = "uiImageTextDelete";
+            this.uiImageTextDelete.Size = new System.Drawing.Size(75, 23);
+            this.uiImageTextDelete.TabIndex = 14;
+            this.uiImageTextDelete.Text = "削除";
+            this.uiImageTextDelete.UseVisualStyleBackColor = true;
+            this.uiImageTextDelete.Click += new System.EventHandler(this.uiImageTextDelete_Click);
             // 
-            // uiTextEdit
+            // uiImageTextEdit
             // 
-            this.uiTextEdit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.uiTextEdit.Location = new System.Drawing.Point(281, 207);
-            this.uiTextEdit.Name = "uiTextEdit";
-            this.uiTextEdit.Size = new System.Drawing.Size(75, 23);
-            this.uiTextEdit.TabIndex = 13;
-            this.uiTextEdit.Text = "編集...";
-            this.uiTextEdit.UseVisualStyleBackColor = true;
-            this.uiTextEdit.Click += new System.EventHandler(this.uiTextEdit_Click);
+            this.uiImageTextEdit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.uiImageTextEdit.Location = new System.Drawing.Point(281, 207);
+            this.uiImageTextEdit.Name = "uiImageTextEdit";
+            this.uiImageTextEdit.Size = new System.Drawing.Size(75, 23);
+            this.uiImageTextEdit.TabIndex = 13;
+            this.uiImageTextEdit.Text = "編集...";
+            this.uiImageTextEdit.UseVisualStyleBackColor = true;
+            this.uiImageTextEdit.Click += new System.EventHandler(this.uiImageTextEdit_Click);
             // 
-            // uiTextAdd
+            // uiImageTextAdd
             // 
-            this.uiTextAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.uiTextAdd.Location = new System.Drawing.Point(281, 178);
-            this.uiTextAdd.Name = "uiTextAdd";
-            this.uiTextAdd.Size = new System.Drawing.Size(75, 23);
-            this.uiTextAdd.TabIndex = 12;
-            this.uiTextAdd.Text = "追加...";
-            this.uiTextAdd.UseVisualStyleBackColor = true;
-            this.uiTextAdd.Click += new System.EventHandler(this.uiTextAdd_Click);
+            this.uiImageTextAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.uiImageTextAdd.Location = new System.Drawing.Point(281, 178);
+            this.uiImageTextAdd.Name = "uiImageTextAdd";
+            this.uiImageTextAdd.Size = new System.Drawing.Size(75, 23);
+            this.uiImageTextAdd.TabIndex = 12;
+            this.uiImageTextAdd.Text = "追加...";
+            this.uiImageTextAdd.UseVisualStyleBackColor = true;
+            this.uiImageTextAdd.Click += new System.EventHandler(this.uiImageTextAdd_Click);
             // 
-            // uiTextList
+            // uiImageTextList
             // 
-            this.uiTextList.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.uiImageTextList.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.uiTextList.FormattingEnabled = true;
-            this.uiTextList.ItemHeight = 12;
-            this.uiTextList.Location = new System.Drawing.Point(8, 178);
-            this.uiTextList.Name = "uiTextList";
-            this.uiTextList.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
-            this.uiTextList.Size = new System.Drawing.Size(267, 112);
-            this.uiTextList.TabIndex = 11;
-            this.uiTextList.DoubleClick += new System.EventHandler(this.uiTextEdit_Click);
+            this.uiImageTextList.FormattingEnabled = true;
+            this.uiImageTextList.ItemHeight = 12;
+            this.uiImageTextList.Location = new System.Drawing.Point(8, 178);
+            this.uiImageTextList.Name = "uiImageTextList";
+            this.uiImageTextList.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
+            this.uiImageTextList.Size = new System.Drawing.Size(267, 112);
+            this.uiImageTextList.TabIndex = 11;
+            this.uiImageTextList.DoubleClick += new System.EventHandler(this.uiImageTextEdit_Click);
             // 
-            // uiEnableText
+            // uiEnableImageText
             // 
-            this.uiEnableText.AutoSize = true;
-            this.uiEnableText.Location = new System.Drawing.Point(8, 156);
-            this.uiEnableText.Name = "uiEnableText";
-            this.uiEnableText.Size = new System.Drawing.Size(149, 16);
-            this.uiEnableText.TabIndex = 10;
-            this.uiEnableText.Text = "画像に文字を追記する(&A)";
-            this.uiEnableText.UseVisualStyleBackColor = true;
+            this.uiEnableImageText.AutoSize = true;
+            this.uiEnableImageText.Location = new System.Drawing.Point(8, 156);
+            this.uiEnableImageText.Name = "uiEnableImageText";
+            this.uiEnableImageText.Size = new System.Drawing.Size(149, 16);
+            this.uiEnableImageText.TabIndex = 10;
+            this.uiEnableImageText.Text = "画像に文字を追記する(&A)";
+            this.uiEnableImageText.UseVisualStyleBackColor = true;
             // 
             // uiImageFormatName
             // 
@@ -503,10 +503,10 @@
         private System.Windows.Forms.FolderBrowserDialog uiFolderDialog;
         private System.Windows.Forms.CheckBox uiStartUpFFXI;
         private System.Windows.Forms.CheckBox uiAdminMode;
-        private System.Windows.Forms.Button uiTextDelete;
-        private System.Windows.Forms.Button uiTextEdit;
-        private System.Windows.Forms.Button uiTextAdd;
-        private System.Windows.Forms.ListBox uiTextList;
-        private System.Windows.Forms.CheckBox uiEnableText;
+        private System.Windows.Forms.Button uiImageTextDelete;
+        private System.Windows.Forms.Button uiImageTextEdit;
+        private System.Windows.Forms.Button uiImageTextAdd;
+        private System.Windows.Forms.ListBox uiImageTextList;
+        private System.Windows.Forms.CheckBox uiEnableImageText;
     }
 }

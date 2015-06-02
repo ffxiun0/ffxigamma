@@ -22,7 +22,7 @@ namespace ffxigamma {
         public bool HotKeyControl { get; set; }
         public bool HotKeyShift { get; set; }
         public bool HotKeyAlt { get; set; }
-        public bool EnableText { get; set; }
+        public bool EnableImageText { get; set; }
         public ImageText[] ImageTextList { get; set; }
 
         public Config() {
@@ -39,7 +39,7 @@ namespace ffxigamma {
             this.HotKeyControl = false;
             this.HotKeyShift = false;
             this.HotKeyAlt = false;
-            this.EnableText = true;
+            this.EnableImageText = true;
             this.ImageTextList = new ImageText[] {
                 new ImageText() {
                     Text = "Copyright © 2002-@yyyy@ SQUARE ENIX CO., LTD. All Rights Reserved.",

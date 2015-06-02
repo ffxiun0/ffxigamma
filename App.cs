@@ -234,7 +234,7 @@ namespace ffxigamma {
                 gamma.ApplyTo(bmp);
             }
 
-            if (config.EnableText) {
+            if (config.EnableImageText) {
                 foreach (var imageText in config.ImageTextList) {
                     var writer = new ImageTextWriter(imageText);
                     writer.WriteTo(bmp);
@@ -259,7 +259,7 @@ namespace ffxigamma {
             }
         }
 
-        private static ImageFormat GetImageFormat(string path){
+        private static ImageFormat GetImageFormat(string path) {
             path = path.ToLower();
             if (path.EndsWith(".png"))
                 return ImageFormat.Png;
@@ -359,7 +359,7 @@ namespace ffxigamma {
         }
 
         private void globalKeyReader_GlobalKeyDown(object sender, GlobalKeyEventArgs e) {
-            if(IsHotKeyDown(e))
+            if (IsHotKeyDown(e))
                 CaptureSaveFolder();
         }
     }

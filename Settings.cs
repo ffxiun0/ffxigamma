@@ -47,10 +47,10 @@ namespace ffxigamma {
             inputHotKey.HotKey.Alt = config.HotKeyAlt;
             uiHotKey.Text = inputHotKey.HotKey.ToString();
 
-            uiEnableText.Checked = config.EnableText;
-            uiTextList.Items.Clear();
+            uiEnableImageText.Checked = config.EnableImageText;
+            uiImageTextList.Items.Clear();
             foreach (var text in config.ImageTextList)
-                uiTextList.Items.Add(text);
+                uiImageTextList.Items.Add(text);
         }
 
         private Config GetConfigFromUI() {
@@ -76,9 +76,9 @@ namespace ffxigamma {
             config.HotKeyShift = inputHotKey.HotKey.Shift;
             config.HotKeyAlt = inputHotKey.HotKey.Alt;
 
-            config.EnableText = uiEnableText.Checked;
+            config.EnableImageText = uiEnableImageText.Checked;
             var itlist = new List<ImageText>();
-            foreach (ImageText imageText in uiTextList.Items)
+            foreach (ImageText imageText in uiImageTextList.Items)
                 itlist.Add(imageText);
             config.ImageTextList = itlist.ToArray();
 
@@ -141,24 +141,24 @@ namespace ffxigamma {
                 ShowWarning(Properties.Resources.HotKeyWarning);
         }
 
-        private void uiTextAdd_Click(object sender, EventArgs e) {
+        private void uiImageTextAdd_Click(object sender, EventArgs e) {
             imageTextEditor.Config = new ImageText();
             if (imageTextEditor.ShowDialog(this) == DialogResult.OK)
-                uiTextList.Items.Add(imageTextEditor.Config);
+                uiImageTextList.Items.Add(imageTextEditor.Config);
         }
 
-        private void uiTextEdit_Click(object sender, EventArgs e) {
-            if (uiTextList.SelectedIndices.Count != 1) return;
-            var index = uiTextList.SelectedIndex;
+        private void uiImageTextEdit_Click(object sender, EventArgs e) {
+            if (uiImageTextList.SelectedIndices.Count != 1) return;
+            var index = uiImageTextList.SelectedIndex;
 
-            imageTextEditor.Config = (ImageText)uiTextList.Items[index];
+            imageTextEditor.Config = (ImageText)uiImageTextList.Items[index];
             if (imageTextEditor.ShowDialog(this) == DialogResult.OK)
-                uiTextList.Items[index] = imageTextEditor.Config;
+                uiImageTextList.Items[index] = imageTextEditor.Config;
         }
 
-        private void uiTextDelete_Click(object sender, EventArgs e) {
-            while (uiTextList.SelectedItems.Count > 0)
-                uiTextList.Items.Remove(uiTextList.SelectedItems[0]);
+        private void uiImageTextDelete_Click(object sender, EventArgs e) {
+            while (uiImageTextList.SelectedItems.Count > 0)
+                uiImageTextList.Items.Remove(uiImageTextList.SelectedItems[0]);
         }
     }
 }
