@@ -17,7 +17,6 @@ namespace ffxigamma {
             keyReader = new GlobalKeyReader();
             keyReader.GlobalKeyDown += keyReader_GlobalKeyDown;
             keyReader.GlobalKeyUp += keyReader_GlobalKeyUp;
-            keyReader.Start();
 
             fix = false;
             editingKey = new HotKey();
@@ -76,11 +75,17 @@ namespace ffxigamma {
 
         private void Reset() {
             fix = false;
+            uiKeys.Text = "";
             uiKeys.BackColor = SystemColors.Window;
         }
 
         private void InputKey_Load(object sender, EventArgs e) {
             Reset();
+            keyReader.Start();
+        }
+
+        private void InputHotKey_FormClosed(object sender, FormClosedEventArgs e) {
+            keyReader.Stop();
         }
 
         private void keyReader_GlobalKeyDown(object sender, GlobalKeyEventArgs e) {

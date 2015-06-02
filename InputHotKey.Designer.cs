@@ -82,7 +82,7 @@
             this.uiCancel.UseVisualStyleBackColor = true;
             this.uiCancel.Click += new System.EventHandler(this.uiCancel_Click);
             // 
-            // InputKey
+            // InputHotKey
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -93,9 +93,10 @@
             this.Controls.Add(this.uiKeys);
             this.Controls.Add(this.label1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-            this.Name = "InputKey";
+            this.Name = "InputHotKey";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "キー設定";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.InputHotKey_FormClosed);
             this.Load += new System.EventHandler(this.InputKey_Load);
             this.ResumeLayout(false);
             this.PerformLayout();

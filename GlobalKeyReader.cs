@@ -26,6 +26,7 @@ namespace ffxigamma {
         }
 
         public void Start() {
+            prev = GlobalKeys.Now;
             timer.Start();
         }
 
