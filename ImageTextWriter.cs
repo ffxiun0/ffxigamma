@@ -30,7 +30,7 @@ namespace ffxigamma {
         }
 
         public ImageTextWriter(ImageText config) {
-            this.Text = ReplaceKeywords(config.Text);
+            this.Text = config.Text;
             this.Font = config.Font;
             this.ForeColor = config.ForeColor;
             this.BackColor = config.BackColor;
@@ -96,39 +96,5 @@ namespace ffxigamma {
             }
             return y;
         }
-
-        private static string ReplaceKeywords(string s) {
-            var map = MakeKeywordMap();
-            foreach (var item in map)
-                s = s.Replace(item.Key, item.Value);
-            return s;
-        }
-
-        private static Dictionary<string, string> MakeKeywordMap() {
-            var map = new Dictionary<string, string>();
-
-            var time = DateTime.Now;
-            foreach (var format in dateTimeFormats) {
-                var key = "@" + format + "@";
-                var value = time.ToString(format + " ").Trim();
-                map[key] = value;
-            }
-
-            return map;
-        }
-
-        private static string[] dateTimeFormats = new string[]{
-            "y", "yy", "yyy", "yyyy",
-            "M", "MM", "MMM", "MMMM",
-            "d", "dd", "ddd", "dddd",
-            "h", "hh",
-            "H", "HH",
-            "m", "mm",
-            "s", "ss",
-            "f", "ff", "fff", "ffff", "fffff", "ffffff",
-            "F", "FF", "FFF", "FFFF", "FFFFF", "FFFFFF",
-            "t", "tt",
-            "z", "zz", "zzz",
-        };
     }
 }

@@ -238,8 +238,10 @@ namespace ffxigamma {
             }
 
             if (config.EnableImageText) {
+                var keywords = new KeywordExchanger();
                 foreach (var imageText in config.ImageTextList) {
                     var writer = new ImageTextWriter(imageText);
+                    writer.Text = keywords.Replace(writer.Text);
                     writer.WriteTo(bmp);
                 }
             }
