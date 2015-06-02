@@ -47,6 +47,7 @@
             this.uiNotifyIcon.Icon = ((System.Drawing.Icon)(resources.GetObject("uiNotifyIcon.Icon")));
             this.uiNotifyIcon.Text = "FFXI Gamma";
             this.uiNotifyIcon.Visible = true;
+            this.uiNotifyIcon.BalloonTipClicked += new System.EventHandler(this.uiNotifyIcon_BalloonTipClicked);
             this.uiNotifyIcon.Click += new System.EventHandler(this.uiNotifyIcon_Click);
             // 
             // uiContextMenu

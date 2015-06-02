@@ -135,6 +135,9 @@
 
 FFXI Gamma は自動的に管理者モードで再起動されます。</value>
   </data>
+  <data name="NotifySaved" xml:space="preserve">
+    <value>画像を保存しました。</value>
+  </data>
   <data name="RestartFail" xml:space="preserve">
     <value>再起動に失敗しました。</value>
   </data>

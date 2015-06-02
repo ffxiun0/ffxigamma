@@ -103,6 +103,15 @@ namespace ffxigamma.Properties {
         }
         
         /// <summary>
+        ///   画像を保存しました。 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string NotifySaved {
+            get {
+                return ResourceManager.GetString("NotifySaved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   再起動に失敗しました。 に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string RestartFail {

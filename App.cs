@@ -223,7 +223,10 @@ namespace ffxigamma {
         }
 
         private void ShowNotifySaved(string path) {
-            uiNotifyIcon.ShowBalloonTip(1000, Text, path, ToolTipIcon.None);
+            var title = Properties.Resources.NotifySaved;
+            var text = Path.GetDirectoryName(path) + "\n" + Path.GetFileName(path);
+            uiNotifyIcon.ShowBalloonTip(1000, title, text, ToolTipIcon.Info);
+            uiNotifyIcon.Tag = path;
         }
 
         private Bitmap CaptureWithEffects(Window wnd) {
@@ -316,6 +319,11 @@ namespace ffxigamma {
 
         private void uiNotifyIcon_Click(object sender, EventArgs e) {
             ShowCotextMenu(uiNotifyIcon);
+        }
+
+        private void uiNotifyIcon_BalloonTipClicked(object sender, EventArgs e) {
+            var dir = Path.GetDirectoryName((string)uiNotifyIcon.Tag);
+            Process.Start(dir);
         }
 
         private void uiContextMenu_Opening(object sender, System.ComponentModel.CancelEventArgs e) {
