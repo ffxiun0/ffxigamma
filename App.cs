@@ -172,10 +172,17 @@ namespace ffxigamma {
             var result = new List<Window>();
             foreach (var p in Process.GetProcesses()) {
                 var wnd = new Window(p.MainWindowHandle);
-                if (IsTargetWindowName(wnd) && !wnd.IsIconic())
+                if (IsCapturableWindow(wnd))
                     result.Add(wnd);
             }
             return result;
+        }
+
+        private bool IsCapturableWindow(Window wnd) {
+            if (wnd == null) return false;
+            if (wnd.IsIconic()) return false;
+
+            return IsTargetWindowName(wnd);
         }
 
         private static void SetCapturableItems(ToolStripMenuItem menuItem, List<Window> wnds) {
@@ -199,12 +206,15 @@ namespace ffxigamma {
         }
 
         private void CaptureToClipboard(Window wnd) {
+            if (!IsCapturableWindow(wnd)) return;
+
             var bmp = CaptureWithEffects(wnd);
             Clipboard.SetDataObject(bmp);
         }
 
         private void CaptureSaveAs(Window wnd) {
             if (uiSaveAs.Tag != null) return;
+            if (!IsCapturableWindow(wnd)) return;
 
             uiSaveAs.Tag = "block ShowDialog()";
             try {
@@ -220,14 +230,12 @@ namespace ffxigamma {
 
         private void CaptureSaveFolder() {
             var wnd = Window.GetForegroundWindow();
-            if (wnd == null) return;
-            if (wnd.IsIconic()) return;
-            if (!IsTargetWindowName(wnd)) return;
-
             CaptureSaveFolder(wnd);
         }
 
         private void CaptureSaveFolder(Window wnd) {
+            if (!IsCapturableWindow(wnd)) return;
+
             var time = DateTime.Now;
             var path = GetCaptureFileName(time);
             using (var bmp = CaptureWithEffects(wnd, time)) {
