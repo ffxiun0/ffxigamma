@@ -9,6 +9,7 @@ namespace ffxigamma {
         public ImageTextEditor() {
             InitializeComponent();
             InitializeDorpDownList();
+            config = new ImageText();
         }
 
         public ImageText Config {

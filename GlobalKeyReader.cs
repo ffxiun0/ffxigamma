@@ -12,6 +12,7 @@ namespace ffxigamma {
         public event GlobalKeyEventHandler GlobalKeyUp;
 
         public GlobalKeyReader() {
+            this.disposed = false;
             this.timer = new Timer();
             this.timer.Interval = 30;
             this.timer.Tick += timer_Tick;

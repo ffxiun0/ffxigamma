@@ -24,6 +24,7 @@ namespace ffxigamma {
 
             config = LoadConfig();
 
+            prevScreen = null;
             editSettings = new Settings();
 
             globalKeyReader = new GlobalKeyReader();
