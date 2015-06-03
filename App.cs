@@ -207,16 +207,17 @@ namespace ffxigamma {
         }
 
         private void CaptureSaveFolder(Window wnd) {
-            var path = CaptureFileName();
-            using (var bmp = CaptureWithEffects(wnd)) {
+            var time = DateTime.Now;
+            var path = GetCaptureFileName(time);
+            using (var bmp = CaptureWithEffects(wnd, time)) {
                 SaveImage(bmp, path);
             }
             ShowNotifySaved(path);
         }
 
-        private string CaptureFileName() {
+        private string GetCaptureFileName(DateTime time) {
             var folder = config.ImageFolder;
-            var name = DateTime.Now.ToString("yyyyMMdd-HHmmss.ff");
+            var name = time.ToString("yyyyMMdd-HHmmss.ff");
             var suffix = config.ImageFormatName;
 
             return folder + @"\" + name + "." + suffix;
@@ -230,6 +231,10 @@ namespace ffxigamma {
         }
 
         private Bitmap CaptureWithEffects(Window wnd) {
+            return CaptureWithEffects(wnd, DateTime.Now);
+        }
+
+        private Bitmap CaptureWithEffects(Window wnd, DateTime time) {
             var bmp = wnd.Capture();
 
             if (config.EnableImageGamma) {
@@ -238,7 +243,7 @@ namespace ffxigamma {
             }
 
             if (config.EnableImageText) {
-                var keywords = new KeywordExchanger();
+                var keywords = new KeywordExchanger(time);
                 foreach (var imageText in config.ImageTextList) {
                     var writer = new ImageTextWriter(imageText);
                     writer.Text = keywords.Replace(writer.Text);

@@ -9,8 +9,8 @@ namespace ffxigamma {
     class KeywordExchanger {
         private Dictionary<string, string> keywordMap;
 
-        public KeywordExchanger() {
-            keywordMap = MakeKeywordMap();
+        public KeywordExchanger(DateTime time) {
+            keywordMap = MakeKeywordMap(time);
         }
 
         public string Replace(string s) {
@@ -23,10 +23,9 @@ namespace ffxigamma {
             });
         }
 
-        private static Dictionary<string, string> MakeKeywordMap() {
+        private static Dictionary<string, string> MakeKeywordMap(DateTime time) {
             var map = new Dictionary<string, string>();
 
-            var time = DateTime.Now;
             foreach (var format in dateTimeFormats) {
                 var key = "@" + format + "@";
                 var value = time.ToString(format + " ").Trim();
