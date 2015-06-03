@@ -79,7 +79,7 @@ namespace ffxigamma.Properties {
         }
         
         /// <summary>
-        ///   FFXI の起動に失敗しました。 に類似しているローカライズされた文字列を検索します。
+        ///   FINAL FANTASY XI の起動に失敗しました。 に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string FFXIStartFail {
             get {
@@ -90,11 +90,9 @@ namespace ffxigamma.Properties {
         /// <summary>
         ///   ホットキーを有効にするには管理者モードで起動する必要があります。
         ///
-        ///1. FINAL FANTASY XI を終了する。
-        ///2. FFXI Gamma のメニューを開く。
-        ///3. 「FINAL FANTASY XI を起動」を実行する。
-        ///
-        ///FFXI Gamma は自動的に管理者モードで再起動されます。 に類似しているローカライズされた文字列を検索します。
+        /// FINAL FANTASY XI を終了し、コンテキストメニューより
+        ///「FINAL FANTASY XI を起動」または「管理者モードで再起動」を
+        ///実行することで使用できるようになります。 に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string HotKeyWarning {
             get {
@@ -108,6 +106,17 @@ namespace ffxigamma.Properties {
         internal static string NotifySaved {
             get {
                 return ResourceManager.GetString("NotifySaved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   管理者モードで再起動を実行すると
+        ///FINAL FANTASY XI の画面を喪失する可能性があります。
+        ///再起動してもよろしいですか？ に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string RestartAdminModeWarning {
+            get {
+                return ResourceManager.GetString("RestartAdminModeWarning", resourceCulture);
             }
         }
         

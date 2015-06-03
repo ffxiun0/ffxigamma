@@ -124,19 +124,22 @@
     <value>既に起動しています。</value>
   </data>
   <data name="FFXIStartFail" xml:space="preserve">
-    <value>FFXI の起動に失敗しました。</value>
+    <value>FINAL FANTASY XI の起動に失敗しました。</value>
   </data>
   <data name="HotKeyWarning" xml:space="preserve">
     <value>ホットキーを有効にするには管理者モードで起動する必要があります。
 
-1. FINAL FANTASY XI を終了する。
-2. FFXI Gamma のメニューを開く。
-3. 「FINAL FANTASY XI を起動」を実行する。
-
-FFXI Gamma は自動的に管理者モードで再起動されます。</value>
+ FINAL FANTASY XI を終了し、コンテキストメニューより
+「FINAL FANTASY XI を起動」または「管理者モードで再起動」を
+実行することで使用できるようになります。</value>
   </data>
   <data name="NotifySaved" xml:space="preserve">
     <value>画像を保存しました。</value>
+  </data>
+  <data name="RestartAdminModeWarning" xml:space="preserve">
+    <value>管理者モードで再起動を実行すると
+FINAL FANTASY XI の画面を喪失する可能性があります。
+再起動してもよろしいですか？</value>
   </data>
   <data name="RestartFail" xml:space="preserve">
     <value>再起動に失敗しました。</value>

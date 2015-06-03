@@ -30,7 +30,7 @@ namespace ffxigamma {
 
             if (HaveOption("/ffxi") || config.StartFFXI) {
                 if (!FFXI.Start())
-                    ShowWarning(Properties.Resources.FFXIStartFail);
+                    ShowError(Properties.Resources.FFXIStartFail);
             }
 
             Application.EnableVisualStyles();

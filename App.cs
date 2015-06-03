@@ -28,6 +28,14 @@ namespace ffxigamma {
 
             globalKeyReader = new GlobalKeyReader();
             globalKeyReader.GlobalKeyDown += globalKeyReader_GlobalKeyDown;
+
+            SetShieldIcon(uiContextStartFFXI);
+            SetShieldIcon(uiContextRestartAdminMode);
+        }
+
+        private void SetShieldIcon(ToolStripMenuItem menuItem) {
+            menuItem.ImageScaling = ToolStripItemImageScaling.None;
+            menuItem.Image = WinAPI.GetShieldIcon();
         }
 
         private void UpdateScreenGamma() {
@@ -142,9 +150,21 @@ namespace ffxigamma {
                 mi.Invoke(notifyIcon, null);
         }
 
+        private void ShowWarning(string s) {
+            MessageBox.Show(this, s, Text,
+                MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        }
+
         private void ShowError(string s) {
             MessageBox.Show(this, s, Text,
                 MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+
+        private bool ShowYesNoWarning(string s) {
+            var ret = MessageBox.Show(this, s, Text,
+                 MessageBoxButtons.YesNo, MessageBoxIcon.Warning,
+                MessageBoxDefaultButton.Button2);
+            return ret == DialogResult.Yes;
         }
 
         private List<Window> GetCapturableWindows() {
@@ -286,8 +306,21 @@ namespace ffxigamma {
                 if (Program.RestartAdminMode("/ffxi"))
                     Close();
             } else {
-                FFXI.Start();
+                if (!FFXI.Start())
+                    ShowError(Properties.Resources.FFXIStartFail);
             }
+        }
+
+        private void RestartAdminMode() {
+            if (Program.IsAdminMode()) return;
+
+            if (FFXI.IsRunning()) {
+                if (!ShowYesNoWarning(Properties.Resources.RestartAdminModeWarning))
+                    return;
+            }
+
+            if (Program.RestartAdminMode())
+                Close();
         }
 
         private bool IsHotKeyDown(GlobalKeyEventArgs e) {
@@ -316,11 +349,11 @@ namespace ffxigamma {
             SaveConfig(config);
         }
 
-        private void uiExit_Click(object sender, EventArgs e) {
+        private void uiContextExit_Click(object sender, EventArgs e) {
             Close();
         }
 
-        private void uiSettings_Click(object sender, EventArgs e) {
+        private void uiContextOption_Click(object sender, EventArgs e) {
             EditSettings();
         }
 
@@ -340,6 +373,7 @@ namespace ffxigamma {
             SetCapturableItems(uiContextCaptureSaveFolder, wnds);
 
             uiContextStartFFXI.Enabled = !FFXI.IsRunning();
+            uiContextRestartAdminMode.Enabled = !Program.IsAdminMode();
         }
 
         private void uiContextCaptureCopy_Click(object sender, EventArgs e) {
@@ -371,6 +405,10 @@ namespace ffxigamma {
 
         private void uiContextStartFFXI_Click(object sender, EventArgs e) {
             StartFFXI();
+        }
+
+        private void uiContextRestartAdminMode_Click(object sender, EventArgs e) {
+            RestartAdminMode();
         }
 
         private void globalKeyReader_GlobalKeyDown(object sender, GlobalKeyEventArgs e) {

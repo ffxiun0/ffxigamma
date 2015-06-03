@@ -64,6 +64,17 @@ namespace ffxigamma {
             }
         }
 
+        public static Image GetShieldIcon() {
+            var sii = new SHSTOCKICONINFO();
+            sii.cbSize = (uint)Marshal.SizeOf(sii);
+
+            SHGetStockIconInfo(SIID_SHIELD, SHGSI_ICON | SHGSI_SMALLICON, ref sii);
+            if (sii.hIcon == IntPtr.Zero) return null;
+
+            var icon = Icon.FromHandle(sii.hIcon);
+            return icon.ToBitmap();
+        }
+
         [DllImport("user32.dll")]
         private static extern int GetWindowText(IntPtr hWnd, StringBuilder lpString, int nMaxCount);
 
@@ -135,5 +146,26 @@ namespace ffxigamma {
             byte bmBitsPixel;
             IntPtr bmBits;
         };
+
+        [DllImport("shell32.dll")]
+        public static extern IntPtr SHGetStockIconInfo(int siid, uint uFlags, ref SHSTOCKICONINFO psii);
+
+        public const int SIID_SHIELD = 77;
+
+        public const uint SHGSI_LARGEICON = 0x000000000;
+        public const uint SHGSI_SMALLICON = 0x000000001;
+        public const uint SHGSI_ICON = 0x000000100;
+
+        public const int MAX_PATH = 260;
+
+        [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+        public struct SHSTOCKICONINFO {
+            public uint cbSize;
+            public IntPtr hIcon;
+            public int iSysImageIndex;
+            public int iIcon;
+            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = MAX_PATH)]
+            public string szPath;
+        }
     }
 }

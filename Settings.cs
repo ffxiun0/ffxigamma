@@ -137,7 +137,7 @@ namespace ffxigamma {
         }
 
         private void uiEnableHotKey_Click(object sender, EventArgs e) {
-            if (uiEnableHotKey.Checked && !Program.IsAdminMode())
+            if (uiEnableHotKey.Checked)
                 ShowWarning(Properties.Resources.HotKeyWarning);
         }
 
