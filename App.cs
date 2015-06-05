@@ -140,6 +140,7 @@ namespace ffxigamma {
                     config = editSettings.Config;
                     ResetScreenGamma();
                     SaveConfig(config);
+                    globalKeyReader.Enabled = config.EnableHotkey;
                 }
             }
         }
@@ -345,8 +346,8 @@ namespace ffxigamma {
         private void App_Load(object sender, EventArgs e) {
             Visible = false;
             ResetScreenGamma();
-            uiTimer.Start();
-            globalKeyReader.Start();
+            uiTimer.Enabled = true;
+            globalKeyReader.Enabled = config.EnableHotkey;
         }
 
         private void uiTimer_Tick(object sender, EventArgs e) {
