@@ -372,8 +372,7 @@ namespace ffxigamma {
         }
 
         private void uiNotifyIcon_BalloonTipClicked(object sender, EventArgs e) {
-            var dir = Path.GetDirectoryName((string)uiNotifyIcon.Tag);
-            Process.Start(dir);
+            WinAPI.OpenFolderAndSelectItem((string)uiNotifyIcon.Tag);
         }
 
         private void uiContextMenu_Opening(object sender, System.ComponentModel.CancelEventArgs e) {

@@ -75,6 +75,21 @@ namespace ffxigamma {
             return icon.ToBitmap();
         }
 
+        public static bool OpenFolderAndSelectItem(string path) {
+            var pidl = ILCreateFromPath(path);
+            if (pidl == IntPtr.Zero) return false;
+            try {
+                Marshal.ThrowExceptionForHR(SHOpenFolderAndSelectItems(pidl, 0, IntPtr.Zero, 0));
+                return true;
+            }
+            catch (Exception) {
+                return false;
+            }
+            finally {
+                ILFree(pidl);
+            }
+        }
+
         [DllImport("user32.dll", CharSet = CharSet.Unicode)]
         private static extern int GetWindowText(IntPtr hWnd, StringBuilder lpString, int nMaxCount);
 
@@ -167,5 +182,14 @@ namespace ffxigamma {
             [MarshalAs(UnmanagedType.ByValTStr, SizeConst = MAX_PATH)]
             public string szPath;
         }
+
+        [DllImport("shell32.dll")]
+        public static extern int SHOpenFolderAndSelectItems(IntPtr pidlFolder, uint cidl, IntPtr apidl, uint dwFlags);
+
+        [DllImport("shell32.dll", CharSet = CharSet.Unicode)]
+        public static extern IntPtr ILCreateFromPath(string pszPath);
+
+        [DllImport("shell32.dll")]
+        public static extern void ILFree(IntPtr pidl);
     }
 }
