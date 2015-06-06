@@ -75,7 +75,7 @@ namespace ffxigamma {
             return icon.ToBitmap();
         }
 
-        [DllImport("user32.dll")]
+        [DllImport("user32.dll", CharSet = CharSet.Unicode)]
         private static extern int GetWindowText(IntPtr hWnd, StringBuilder lpString, int nMaxCount);
 
         [DllImport("user32.dll")]
@@ -104,7 +104,7 @@ namespace ffxigamma {
         [DllImport("user32.dll")]
         public static extern short GetAsyncKeyState(int vKey);
 
-        [DllImport("gdi32.dll")]
+        [DllImport("gdi32.dll", CharSet = CharSet.Unicode)]
         public static extern IntPtr CreateDC(string lpszDriver, string lpszDevice, string lpszOutput, IntPtr lpInitData);
 
         [DllImport("gdi32.dll")]
