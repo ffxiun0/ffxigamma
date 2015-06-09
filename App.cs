@@ -312,12 +312,12 @@ namespace ffxigamma {
         private void StartFFXI() {
             if (FFXI.IsRunning()) return;
 
-            if (!Program.IsAdminMode()) {
-                if (Program.RestartAdminMode("/ffxi"))
-                    Close();
-            } else {
+            if (Program.IsAdminMode()) {
                 if (!FFXI.Start())
                     ShowError(Properties.Resources.FFXIStartFail);
+            } else {
+                if (Program.RestartAdminMode("/ffxi"))
+                    Close();
             }
         }
 
@@ -330,6 +330,13 @@ namespace ffxigamma {
             }
 
             if (Program.RestartAdminMode())
+                Close();
+        }
+
+        private void RestartUserMode() {
+            if (!Program.IsAdminMode()) return;
+
+            if (Program.RestartUserMode())
                 Close();
         }
 
@@ -383,6 +390,7 @@ namespace ffxigamma {
 
             uiContextStartFFXI.Enabled = !FFXI.IsRunning();
             uiContextRestartAdminMode.Enabled = !Program.IsAdminMode();
+            uiContextRestartUserMode.Enabled = Program.IsAdminMode();
         }
 
         private void uiContextCaptureCopy_Click(object sender, EventArgs e) {
@@ -418,6 +426,10 @@ namespace ffxigamma {
 
         private void uiContextRestartAdminMode_Click(object sender, EventArgs e) {
             RestartAdminMode();
+        }
+
+        private void uiContextRestartUserMode_Click(object sender, EventArgs e) {
+            RestartUserMode();
         }
 
         private void globalKeyReader_GlobalKeyDown(object sender, GlobalKeyEventArgs e) {

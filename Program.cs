@@ -1,5 +1,5 @@
 ﻿using System;
-using System.ComponentModel;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Security.Principal;
 using System.Threading;
@@ -67,23 +67,23 @@ namespace ffxigamma {
         }
 
         public static bool IsAdminMode() {
-            var wi = WindowsIdentity.GetCurrent();
-            var wp = new WindowsPrincipal(wi);
-            return wp.IsInRole(WindowsBuiltInRole.Administrator);
+            return ProcessEx.IsUserAnAdmin();
         }
 
         public static bool RestartAdminMode(params string[] args) {
-            try {
-                var path = Environment.GetCommandLineArgs()[0];
-                var psi = new ProcessStartInfo(path);
-                psi.Arguments = "/restart " + string.Join(" ", args);
-                psi.Verb = "runas";
-                Process.Start(psi);
-                return true;
-            }
-            catch (Win32Exception) {
-                return false;
-            }
+            var path = Environment.GetCommandLineArgs()[0];
+            var newArgs = new List<string>();
+            newArgs.Add("/restart");
+            newArgs.AddRange(args);
+            return ProcessEx.StartAdmin(path, newArgs.ToArray());
+        }
+
+        public static bool RestartUserMode(params string[] args) {
+            var path = Environment.GetCommandLineArgs()[0];
+            var newArgs = new List<string>();
+            newArgs.Add("/restart");
+            newArgs.AddRange(args);
+            return ProcessEx.StartUser(path, newArgs.ToArray());
         }
 
         private static bool WaitForClose(int seconds) {

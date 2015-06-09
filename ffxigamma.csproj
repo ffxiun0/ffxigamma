@@ -57,9 +57,7 @@
     <Compile Include="FFXI.cs" />
     <Compile Include="Gamma.cs" />
     <Compile Include="GlobalKeyEventArgs.cs" />
-    <Compile Include="GlobalKeyReader.cs">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="GlobalKeyReader.cs" />
     <Compile Include="GlobalKeys.cs" />
     <Compile Include="HotKey.cs" />
     <Compile Include="ImageTextEditor.cs">
@@ -76,6 +74,7 @@
       <DependentUpon>InputHotKey.cs</DependentUpon>
     </Compile>
     <Compile Include="KeywordExchanger.cs" />
+    <Compile Include="ProcessEx.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Settings.cs">

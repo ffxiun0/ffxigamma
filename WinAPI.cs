@@ -119,6 +119,15 @@ namespace ffxigamma {
         [DllImport("user32.dll")]
         public static extern short GetAsyncKeyState(int vKey);
 
+        [DllImport("user32.dll", CharSet = CharSet.Unicode)]
+        public static extern IntPtr GetShellWindow();
+
+        [DllImport("user32.dll", CharSet = CharSet.Unicode)]
+        public static extern uint GetWindowThreadProcessId(
+            IntPtr hWnd,
+            out uint lpdwProcessId
+            );
+
         [DllImport("gdi32.dll", CharSet = CharSet.Unicode)]
         public static extern IntPtr CreateDC(string lpszDriver, string lpszDevice, string lpszOutput, IntPtr lpInitData);
 
@@ -191,5 +200,91 @@ namespace ffxigamma {
 
         [DllImport("shell32.dll")]
         public static extern void ILFree(IntPtr pidl);
+
+        [DllImport("shell32.dll", CharSet = CharSet.Unicode)]
+        public static extern bool IsUserAnAdmin();
+
+        [DllImport("kernel32.dll", CharSet = CharSet.Unicode)]
+        public static extern IntPtr OpenProcess(
+            uint dwDesiredAccess,
+            bool bInheritHandle,
+            uint dwProcessId
+            );
+
+        [DllImport("kernel32.dll", CharSet = CharSet.Unicode)]
+        public static extern bool CloseHandle(IntPtr hObject);
+
+        [DllImport("advapi32.dll", CharSet = CharSet.Unicode)]
+        public static extern bool OpenProcessToken(
+            IntPtr ProcessHandle,
+            uint DesiredAccess,
+            out IntPtr TokenHandle
+            );
+        public const uint MAXIMUM_ALLOWED = 0x02000000;
+
+        [DllImport("advapi32.dll", CharSet = CharSet.Unicode)]
+        public static extern bool DuplicateTokenEx(
+            IntPtr hExistingToken,
+            uint dwDesiredAccess,
+            IntPtr lpTokenAttributes,
+            SECURITY_IMPERSONATION_LEVEL ImpersonationLevel,
+            TOKEN_TYPE TokenType,
+            out IntPtr phNewToken
+            );
+
+        public enum TOKEN_TYPE {
+            TokenPrimary = 1,
+            TokenImpersonation,
+        }
+
+        public enum SECURITY_IMPERSONATION_LEVEL {
+            SecurityAnonymous,
+            SecurityIdentification,
+            SecurityImpersonation,
+            SecurityDelegation,
+        }
+
+        [DllImport("advapi32.dll", CharSet = CharSet.Unicode)]
+        public static extern bool CreateProcessWithToken(
+            IntPtr hToken,
+            uint dwLogonFlags,
+            string lpApplicationName,
+            StringBuilder lpCommandLine,
+            uint dwCreationFlags,
+            IntPtr lpEnvironment,
+            string lpCurrentDirectory,
+            ref STARTUPINFOW lpStartupInfo,
+            out PROCESS_INFORMATION lpProcessInfo
+            );
+
+        [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+        public struct STARTUPINFOW {
+            public uint cb;
+            public string lpReserved;
+            public string lpDesktop;
+            public string lpTitle;
+            public uint dwX;
+            public uint dwY;
+            public uint dwXSize;
+            public uint dwYSize;
+            public uint dwXCountChars;
+            public uint dwYCountChars;
+            public uint dwFillAttribute;
+            public uint dwFlags;
+            public int wShowWindow;
+            public int cbReserved2;
+            public IntPtr lpReserved2;
+            public IntPtr hStdInput;
+            public IntPtr hStdOutput;
+            public IntPtr hStdError;
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        public struct PROCESS_INFORMATION {
+            public IntPtr hProcess;
+            public IntPtr hThread;
+            public uint dwProcessId;
+            public uint dwThreadId;
+        }
     }
 }
