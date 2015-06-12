@@ -6,12 +6,14 @@ namespace ffxigamma {
     public partial class Settings : Form {
         private InputHotKey inputHotKey;
         private ImageTextEditor imageTextEditor;
+        private WindowSettingsEditor windowSettingsEditor;
         private Config config;
 
         public Settings() {
             InitializeComponent();
             inputHotKey = new InputHotKey();
             imageTextEditor = new ImageTextEditor();
+            windowSettingsEditor = new WindowSettingsEditor();
             Config = Config.Default;
         }
 
@@ -31,10 +33,10 @@ namespace ffxigamma {
             uiAdminMode.Checked = config.AdminMode;
             uiStartUpFFXI.Checked = config.StartFFXI;
 
-            uiName.Text = "";
-            uiNameList.Items.Clear();
-            foreach (var s in config.NameList)
-                uiNameList.Items.Add(s);
+            uiSaveWindowPosition.Checked = config.EnableSaveWindowPosition;
+            uiWindowSettingsList.Items.Clear();
+            foreach (var s in config.WindowSettingsList)
+                uiWindowSettingsList.Items.Add(s);
 
             uiEnableImageGamma.Checked = config.EnableImageGamma;
             uiImageFolder.Text = config.ImageFolder;
@@ -61,10 +63,11 @@ namespace ffxigamma {
             config.AdminMode = uiAdminMode.Checked;
             config.StartFFXI = uiStartUpFFXI.Checked;
 
-            var nlist = new List<string>();
-            foreach (string name in uiNameList.Items)
-                nlist.Add(name);
-            config.NameList = nlist.ToArray();
+            config.EnableSaveWindowPosition = uiSaveWindowPosition.Checked;
+            var wslist = new List<WindowSettings>();
+            foreach (WindowSettings ws in uiWindowSettingsList.Items)
+                wslist.Add(ws);
+            config.WindowSettingsList = wslist.ToArray();
 
             config.EnableImageGamma = uiEnableImageGamma.Checked;
             config.ImageFolder = uiImageFolder.Text;
@@ -96,15 +99,31 @@ namespace ffxigamma {
                 Text += " (" + Properties.Resources.AdminMode + ")";
         }
 
-        private void uiNameAdd_Click(object sender, EventArgs e) {
-            if (uiName.Text.Length > 0)
-                uiNameList.Items.Add(uiName.Text);
-            uiName.Text = "";
+        private void uiSaveWindowPosition_Click(object sender, EventArgs e) {
+            if (uiSaveWindowPosition.Checked)
+                ShowWarning(Properties.Resources.RequireAdminWarning);
         }
 
-        private void uiNameDelete_Click(object sender, EventArgs e) {
-            while (uiNameList.SelectedItems.Count > 0)
-                uiNameList.Items.Remove(uiNameList.SelectedItems[0]);
+        private void uiWindowSettingsAdd_Click(object sender, EventArgs e) {
+            windowSettingsEditor.WindowSettings = new WindowSettings();
+            if (windowSettingsEditor.ShowDialog(this) == DialogResult.OK) {
+                var ws = windowSettingsEditor.WindowSettings;
+                uiWindowSettingsList.Items.Add(ws);
+            }
+        }
+
+        private void uiWindowSettingsEdit_Click(object sender, EventArgs e) {
+            if (uiWindowSettingsList.SelectedIndices.Count != 1) return;
+            var index = uiWindowSettingsList.SelectedIndex;
+
+            windowSettingsEditor.WindowSettings = (WindowSettings)uiWindowSettingsList.Items[index];
+            if (windowSettingsEditor.ShowDialog(this) == DialogResult.OK)
+                uiWindowSettingsList.Items[index] = windowSettingsEditor.WindowSettings;
+        }
+
+        private void uiWindowSettingsDelete_Click(object sender, EventArgs e) {
+            while (uiWindowSettingsList.SelectedItems.Count > 0)
+                uiWindowSettingsList.Items.Remove(uiWindowSettingsList.SelectedItems[0]);
         }
 
         private void uiReset_Click(object sender, EventArgs e) {
@@ -138,7 +157,7 @@ namespace ffxigamma {
 
         private void uiEnableHotKey_Click(object sender, EventArgs e) {
             if (uiEnableHotKey.Checked)
-                ShowWarning(Properties.Resources.HotKeyWarning);
+                ShowWarning(Properties.Resources.RequireAdminWarning);
         }
 
         private void uiImageTextAdd_Click(object sender, EventArgs e) {

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
@@ -9,6 +10,12 @@ namespace ffxigamma {
 
         public Window(IntPtr hWnd) {
             this.hWnd = hWnd;
+        }
+
+        public IntPtr Handle {
+            get {
+                return hWnd;
+            }
         }
 
         public string GetWindowText() {
@@ -23,14 +30,22 @@ namespace ffxigamma {
             return WinAPI.GetClientRect(hWnd);
         }
 
-        public static Window GetForegroundWindow() {
-            IntPtr hWnd = WinAPI.GetForegroundWindow();
-            if (hWnd == IntPtr.Zero) return null;
-            return new Window(hWnd);
+        public bool SetPosition(int x, int y) {
+            return WinAPI.SetWindowPos(hWnd, IntPtr.Zero, x, y, 0, 0, WinAPI.SWP_NOSIZE);
         }
 
         public bool IsIconic() {
             return WinAPI.IsIconic(hWnd);
+        }
+
+        public bool IsVisible() {
+            return WinAPI.IsWindowVisible(hWnd);
+        }
+
+        public int GetProcessId() {
+            uint pid;
+            WinAPI.GetWindowThreadProcessId(hWnd, out pid);
+            return (int)pid;
         }
 
         public Bitmap Capture() {
@@ -99,6 +114,29 @@ namespace ffxigamma {
                     g.ReleaseHdc(hdc);
                 }
             }
+        }
+
+        public static Window FindWindow(string className, string windowName) {
+            var hWnd = WinAPI.FindWindow(className, windowName);
+            if (hWnd == IntPtr.Zero) return null;
+            return new Window(hWnd);
+        }
+
+        public static IEnumerable<Window> EnumWindows() {
+            var result = new List<Window>();
+
+            WinAPI.EnumWindows((hWnd, lParam) => {
+                result.Add(new Window(hWnd));
+                return true;
+            }, IntPtr.Zero);
+
+            return result;
+        }
+
+        public static Window GetForegroundWindow() {
+            IntPtr hWnd = WinAPI.GetForegroundWindow();
+            if (hWnd == IntPtr.Zero) return null;
+            return new Window(hWnd);
         }
     }
 }

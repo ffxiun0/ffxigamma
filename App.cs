@@ -4,7 +4,10 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Linq;
 using System.Reflection;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace ffxigamma {
@@ -13,16 +16,18 @@ namespace ffxigamma {
         public const string AppName = "FFXI Gamma";
         private const string AppFolderName = "ffxigamma";
         private const string ConfigFileName = "config.xml";
+        private const int WindowMonitorExpire = 1000;
+        private const int SetWindowPositionTimeout = 5000;
+        private const int SetWindowPositionDelay = 100;
 
         private Config config;
         private Screen prevScreen;
         private Settings editSettings;
         private GlobalKeyReader globalKeyReader;
+        private WindowMonitor windowMonitor;
 
         public App() {
             InitializeComponent();
-
-            config = LoadConfig();
 
             prevScreen = null;
             editSettings = new Settings();
@@ -30,8 +35,15 @@ namespace ffxigamma {
             globalKeyReader = new GlobalKeyReader();
             globalKeyReader.GlobalKeyDown += globalKeyReader_GlobalKeyDown;
 
+            windowMonitor = new WindowMonitor();
+            windowMonitor.Expire = WindowMonitorExpire;
+            windowMonitor.WindowOpened += windowMonitor_WindowOpend;
+            windowMonitor.WindowClosed += windowMonitor_WindowClosed;
+
             SetShieldIcon(uiContextStartFFXI);
             SetShieldIcon(uiContextRestartAdminMode);
+
+            config = LoadConfig();
         }
 
         private void SetShieldIcon(ToolStripMenuItem menuItem) {
@@ -71,8 +83,8 @@ namespace ffxigamma {
 
         private bool IsTargetWindowName(Window wnd) {
             var name = wnd.GetWindowText();
-            foreach (var s in config.NameList) {
-                if (s == name)
+            foreach (var wndSettings in config.WindowSettingsList) {
+                if (wndSettings.Name == name)
                     return true;
             }
             return false;
@@ -116,6 +128,11 @@ namespace ffxigamma {
             }
         }
 
+        private void ApplyConfig(Config config) {
+            globalKeyReader.Enabled = config.EnableHotkey;
+            windowMonitor.Names = from ws in config.WindowSettingsList select ws.Name;
+        }
+
         private static string GetConfigPath() {
             return GetAppFolder() + @"\" + ConfigFileName;
         }
@@ -138,9 +155,9 @@ namespace ffxigamma {
                 editSettings.Config = config;
                 if (editSettings.ShowDialog(this) == DialogResult.OK) {
                     config = editSettings.Config;
+                    ApplyConfig(config);
                     ResetScreenGamma();
                     SaveConfig(config);
-                    globalKeyReader.Enabled = config.EnableHotkey;
                 }
             }
         }
@@ -350,15 +367,57 @@ namespace ffxigamma {
             return true;
         }
 
+        private static void SetWindowPositionRetry(WindowInfo wndInfo, int x, int y) {
+            var wnd = new Window(wndInfo.Handle);
+
+            var begin = DateTime.Now;
+            while (!wnd.IsVisible()) {
+                var span = DateTime.Now - begin;
+                if (span.TotalMilliseconds > SetWindowPositionTimeout)
+                    break;
+                Thread.Sleep(SetWindowPositionDelay);
+            }
+
+            wnd.SetPosition(x, y);
+        }
+
+        private void SetWindowPosition(WindowInfo wndInfo) {
+            foreach (var wndSettings in config.WindowSettingsList) {
+                if (wndSettings.Name == wndInfo.Name) {
+                    Task.Run(() => {
+                        SetWindowPositionRetry(wndInfo, wndSettings.X, wndSettings.Y);
+                    });
+                }
+            }
+        }
+
+        private void SaveWindowPosition(WindowInfo wndInfo) {
+            foreach (var wndSettings in config.WindowSettingsList) {
+                if (wndSettings.Name == wndInfo.Name) {
+                    wndSettings.X = wndInfo.Rect.X;
+                    wndSettings.Y = wndInfo.Rect.Y;
+                }
+            }
+            SaveConfig(config);
+        }
+
+        private bool SaveWindowPositionIsEnabled() {
+            if (!config.EnableSaveWindowPosition) return false;
+            if (FFXI.IsFullScreenMode() && FFXI.IsRunning()) return false;
+            return true;
+        }
+
         private void App_Load(object sender, EventArgs e) {
             Visible = false;
+            ApplyConfig(config);
             ResetScreenGamma();
             uiTimer.Enabled = true;
-            globalKeyReader.Enabled = config.EnableHotkey;
         }
 
         private void uiTimer_Tick(object sender, EventArgs e) {
             UpdateScreenGamma();
+            if (SaveWindowPositionIsEnabled())
+                windowMonitor.Update();
         }
 
         private void App_FormClosing(object sender, FormClosingEventArgs e) {
@@ -435,6 +494,14 @@ namespace ffxigamma {
         private void globalKeyReader_GlobalKeyDown(object sender, GlobalKeyEventArgs e) {
             if (IsHotKeyDown(e))
                 CaptureSaveFolder();
+        }
+
+        private void windowMonitor_WindowOpend(object sender, WindowMonitorEventArgs e) {
+            SetWindowPosition(e.WindowInfo);
+        }
+
+        private void windowMonitor_WindowClosed(object sender, WindowMonitorEventArgs e) {
+            SaveWindowPosition(e.WindowInfo);
         }
     }
 }

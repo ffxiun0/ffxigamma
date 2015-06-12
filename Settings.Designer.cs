@@ -28,10 +28,9 @@
             this.label2 = new System.Windows.Forms.Label();
             this.uiSystemGamma = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
-            this.uiName = new System.Windows.Forms.TextBox();
-            this.uiNameAdd = new System.Windows.Forms.Button();
-            this.uiNameList = new System.Windows.Forms.ListBox();
-            this.uiNameDelete = new System.Windows.Forms.Button();
+            this.uiWindowSettingsAdd = new System.Windows.Forms.Button();
+            this.uiWindowSettingsList = new System.Windows.Forms.ListBox();
+            this.uiWindowSettingsDelete = new System.Windows.Forms.Button();
             this.uiOk = new System.Windows.Forms.Button();
             this.uiCancel = new System.Windows.Forms.Button();
             this.uiReset = new System.Windows.Forms.Button();
@@ -53,6 +52,8 @@
             this.label12 = new System.Windows.Forms.Label();
             this.uiEnableImageGamma = new System.Windows.Forms.CheckBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.uiSaveWindowPosition = new System.Windows.Forms.CheckBox();
+            this.uiWindowSettingsEdit = new System.Windows.Forms.Button();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.uiAdminMode = new System.Windows.Forms.CheckBox();
             this.uiStartUpFFXI = new System.Windows.Forms.CheckBox();
@@ -106,55 +107,47 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(6, 8);
+            this.label3.Location = new System.Drawing.Point(6, 33);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(180, 12);
-            this.label3.TabIndex = 0;
+            this.label3.TabIndex = 1;
             this.label3.Text = "ガンマを変更するウィンドウの名前(&N):";
             // 
-            // uiName
+            // uiWindowSettingsAdd
             // 
-            this.uiName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.uiName.Location = new System.Drawing.Point(6, 23);
-            this.uiName.Name = "uiName";
-            this.uiName.Size = new System.Drawing.Size(271, 19);
-            this.uiName.TabIndex = 1;
+            this.uiWindowSettingsAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.uiWindowSettingsAdd.Location = new System.Drawing.Point(281, 48);
+            this.uiWindowSettingsAdd.Name = "uiWindowSettingsAdd";
+            this.uiWindowSettingsAdd.Size = new System.Drawing.Size(75, 23);
+            this.uiWindowSettingsAdd.TabIndex = 3;
+            this.uiWindowSettingsAdd.Text = "追加...";
+            this.uiWindowSettingsAdd.UseVisualStyleBackColor = true;
+            this.uiWindowSettingsAdd.Click += new System.EventHandler(this.uiWindowSettingsAdd_Click);
             // 
-            // uiNameAdd
+            // uiWindowSettingsList
             // 
-            this.uiNameAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.uiNameAdd.Location = new System.Drawing.Point(283, 21);
-            this.uiNameAdd.Name = "uiNameAdd";
-            this.uiNameAdd.Size = new System.Drawing.Size(75, 23);
-            this.uiNameAdd.TabIndex = 2;
-            this.uiNameAdd.Text = "追加(&A)";
-            this.uiNameAdd.UseVisualStyleBackColor = true;
-            this.uiNameAdd.Click += new System.EventHandler(this.uiNameAdd_Click);
-            // 
-            // uiNameList
-            // 
-            this.uiNameList.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.uiWindowSettingsList.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.uiNameList.FormattingEnabled = true;
-            this.uiNameList.ItemHeight = 12;
-            this.uiNameList.Location = new System.Drawing.Point(6, 48);
-            this.uiNameList.Name = "uiNameList";
-            this.uiNameList.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
-            this.uiNameList.Size = new System.Drawing.Size(271, 208);
-            this.uiNameList.TabIndex = 3;
+            this.uiWindowSettingsList.FormattingEnabled = true;
+            this.uiWindowSettingsList.ItemHeight = 12;
+            this.uiWindowSettingsList.Location = new System.Drawing.Point(8, 48);
+            this.uiWindowSettingsList.Name = "uiWindowSettingsList";
+            this.uiWindowSettingsList.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
+            this.uiWindowSettingsList.Size = new System.Drawing.Size(267, 244);
+            this.uiWindowSettingsList.TabIndex = 2;
+            this.uiWindowSettingsList.DoubleClick += new System.EventHandler(this.uiWindowSettingsEdit_Click);
             // 
-            // uiNameDelete
+            // uiWindowSettingsDelete
             // 
-            this.uiNameDelete.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.uiNameDelete.Location = new System.Drawing.Point(283, 50);
-            this.uiNameDelete.Name = "uiNameDelete";
-            this.uiNameDelete.Size = new System.Drawing.Size(75, 23);
-            this.uiNameDelete.TabIndex = 4;
-            this.uiNameDelete.Text = "削除(&D)";
-            this.uiNameDelete.UseVisualStyleBackColor = true;
-            this.uiNameDelete.Click += new System.EventHandler(this.uiNameDelete_Click);
+            this.uiWindowSettingsDelete.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.uiWindowSettingsDelete.Location = new System.Drawing.Point(281, 106);
+            this.uiWindowSettingsDelete.Name = "uiWindowSettingsDelete";
+            this.uiWindowSettingsDelete.Size = new System.Drawing.Size(75, 23);
+            this.uiWindowSettingsDelete.TabIndex = 5;
+            this.uiWindowSettingsDelete.Text = "削除";
+            this.uiWindowSettingsDelete.UseVisualStyleBackColor = true;
+            this.uiWindowSettingsDelete.Click += new System.EventHandler(this.uiWindowSettingsDelete_Click);
             // 
             // uiOk
             // 
@@ -385,11 +378,12 @@
             // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.uiSaveWindowPosition);
+            this.tabPage2.Controls.Add(this.uiWindowSettingsEdit);
             this.tabPage2.Controls.Add(this.label3);
-            this.tabPage2.Controls.Add(this.uiName);
-            this.tabPage2.Controls.Add(this.uiNameList);
-            this.tabPage2.Controls.Add(this.uiNameAdd);
-            this.tabPage2.Controls.Add(this.uiNameDelete);
+            this.tabPage2.Controls.Add(this.uiWindowSettingsList);
+            this.tabPage2.Controls.Add(this.uiWindowSettingsAdd);
+            this.tabPage2.Controls.Add(this.uiWindowSettingsDelete);
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
@@ -397,6 +391,28 @@
             this.tabPage2.TabIndex = 0;
             this.tabPage2.Text = "ウィンドウ";
             this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // uiSaveWindowPosition
+            // 
+            this.uiSaveWindowPosition.AutoSize = true;
+            this.uiSaveWindowPosition.Location = new System.Drawing.Point(8, 7);
+            this.uiSaveWindowPosition.Name = "uiSaveWindowPosition";
+            this.uiSaveWindowPosition.Size = new System.Drawing.Size(170, 16);
+            this.uiSaveWindowPosition.TabIndex = 0;
+            this.uiSaveWindowPosition.Text = "ウィンドウの位置を記憶する(&W)";
+            this.uiSaveWindowPosition.UseVisualStyleBackColor = true;
+            this.uiSaveWindowPosition.Click += new System.EventHandler(this.uiSaveWindowPosition_Click);
+            // 
+            // uiWindowSettingsEdit
+            // 
+            this.uiWindowSettingsEdit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.uiWindowSettingsEdit.Location = new System.Drawing.Point(281, 77);
+            this.uiWindowSettingsEdit.Name = "uiWindowSettingsEdit";
+            this.uiWindowSettingsEdit.Size = new System.Drawing.Size(75, 23);
+            this.uiWindowSettingsEdit.TabIndex = 4;
+            this.uiWindowSettingsEdit.Text = "編集...";
+            this.uiWindowSettingsEdit.UseVisualStyleBackColor = true;
+            this.uiWindowSettingsEdit.Click += new System.EventHandler(this.uiWindowSettingsEdit_Click);
             // 
             // tabPage1
             // 
@@ -478,10 +494,9 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox uiSystemGamma;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.TextBox uiName;
-        private System.Windows.Forms.Button uiNameAdd;
-        private System.Windows.Forms.ListBox uiNameList;
-        private System.Windows.Forms.Button uiNameDelete;
+        private System.Windows.Forms.Button uiWindowSettingsAdd;
+        private System.Windows.Forms.ListBox uiWindowSettingsList;
+        private System.Windows.Forms.Button uiWindowSettingsDelete;
         private System.Windows.Forms.Button uiOk;
         private System.Windows.Forms.Button uiCancel;
         private System.Windows.Forms.Button uiReset;
@@ -510,5 +525,7 @@
         private System.Windows.Forms.Button uiImageTextAdd;
         private System.Windows.Forms.ListBox uiImageTextList;
         private System.Windows.Forms.CheckBox uiEnableImageText;
+        private System.Windows.Forms.Button uiWindowSettingsEdit;
+        private System.Windows.Forms.CheckBox uiSaveWindowPosition;
     }
 }

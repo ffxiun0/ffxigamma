@@ -88,24 +88,24 @@ namespace ffxigamma.Properties {
         }
         
         /// <summary>
-        ///   ホットキーを有効にするには管理者モードで起動する必要があります。
-        ///
-        /// FINAL FANTASY XI を終了し、コンテキストメニューより
-        ///「FINAL FANTASY XI を起動」または「管理者モードで再起動」を
-        ///実行することで使用できるようになります。 に類似しているローカライズされた文字列を検索します。
-        /// </summary>
-        internal static string HotKeyWarning {
-            get {
-                return ResourceManager.GetString("HotKeyWarning", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   画像を保存しました。 に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string NotifySaved {
             get {
                 return ResourceManager.GetString("NotifySaved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   この機能を有効にするには管理者モードで起動する必要があります。
+        ///
+        /// FINAL FANTASY XI を終了し、コンテキストメニューより
+        ///「FINAL FANTASY XI を起動」または「管理者モードで再起動」を
+        ///実行することで使用できるようになります。 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string RequireAdminWarning {
+            get {
+                return ResourceManager.GetString("RequireAdminWarning", resourceCulture);
             }
         }
         

@@ -13,7 +13,8 @@ namespace ffxigamma {
         public double SystemGamma { get; set; }
         public bool AdminMode { get; set; }
         public bool StartFFXI { get; set; }
-        public string[] NameList { get; set; }
+        public bool EnableSaveWindowPosition { get; set; }
+        public WindowSettings[] WindowSettingsList { get; set; }
         public bool EnableImageGamma { get; set; }
         public string ImageFolder { get; set; }
         public string ImageFormatName { get; set; }
@@ -30,7 +31,10 @@ namespace ffxigamma {
             this.SystemGamma = 1.0;
             this.AdminMode = false;
             this.StartFFXI = false;
-            this.NameList = new string[] { "FINAL FANTASY XI" };
+            this.EnableSaveWindowPosition = false;
+            this.WindowSettingsList = new WindowSettings[] {
+                new WindowSettings() { Name = "FINAL FANTASY XI" },
+            };
             this.EnableImageGamma = true;
             this.ImageFolder = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
             this.ImageFormatName = "jpg";
@@ -159,6 +163,22 @@ namespace ffxigamma {
 
         public override string ToString() {
             return Text;
+        }
+    }
+
+    public class WindowSettings {
+        public WindowSettings() {
+            Name = "";
+            X = 0;
+            Y = 0;
+        }
+
+        public string Name { get; set; }
+        public int X { get; set; }
+        public int Y { get; set; }
+
+        public override string ToString() {
+            return string.Format("{0} - ({1},{2})", Name, X, Y);
         }
     }
 }
