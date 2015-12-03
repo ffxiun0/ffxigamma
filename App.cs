@@ -398,6 +398,8 @@ namespace ffxigamma {
         }
 
         private void SaveWindowPosition(WindowInfo wndInfo) {
+            if (!IntersectsWithScreen(wndInfo.Rect)) return;
+
             foreach (var wndSettings in config.WindowSettingsList) {
                 if (wndSettings.Name == wndInfo.Name) {
                     wndSettings.X = wndInfo.Rect.X;
@@ -407,6 +409,14 @@ namespace ffxigamma {
                 }
             }
             SaveConfig(config);
+        }
+
+        private static bool IntersectsWithScreen(Rectangle rect) {
+            foreach(var screen in Screen.AllScreens) {
+                if (screen.Bounds.IntersectsWith(rect))
+                    return true;
+            }
+            return false;
         }
 
         private bool SaveWindowPositionIsEnabled() {
