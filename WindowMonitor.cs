@@ -29,6 +29,10 @@ namespace ffxigamma {
         public event WindowMonitorDelegate WindowOpened;
         public event WindowMonitorDelegate WindowClosed;
 
+        public void Reset() {
+            map.Clear();
+        }
+
         public void Update() {
             var opened = UpdateWindows();
             NotifyWindowOpened(opened);

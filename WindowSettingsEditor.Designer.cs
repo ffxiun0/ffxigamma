@@ -31,8 +31,16 @@
             this.uiPositionY = new System.Windows.Forms.NumericUpDown();
             this.uiOk = new System.Windows.Forms.Button();
             this.uiCancel = new System.Windows.Forms.Button();
+            this.uiHeight = new System.Windows.Forms.NumericUpDown();
+            this.uiWidth = new System.Windows.Forms.NumericUpDown();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.uiDisplay = new System.Windows.Forms.ComboBox();
+            this.label6 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.uiPositionX)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.uiPositionY)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.uiHeight)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.uiWidth)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -50,7 +58,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.uiName.Location = new System.Drawing.Point(12, 24);
             this.uiName.Name = "uiName";
-            this.uiName.Size = new System.Drawing.Size(252, 19);
+            this.uiName.Size = new System.Drawing.Size(339, 19);
             this.uiName.TabIndex = 1;
             // 
             // label2
@@ -108,10 +116,10 @@
             // uiOk
             // 
             this.uiOk.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.uiOk.Location = new System.Drawing.Point(108, 104);
+            this.uiOk.Location = new System.Drawing.Point(195, 134);
             this.uiOk.Name = "uiOk";
             this.uiOk.Size = new System.Drawing.Size(75, 23);
-            this.uiOk.TabIndex = 6;
+            this.uiOk.TabIndex = 12;
             this.uiOk.Text = "OK";
             this.uiOk.UseVisualStyleBackColor = true;
             this.uiOk.Click += new System.EventHandler(this.uiOk_Click);
@@ -120,19 +128,96 @@
             // 
             this.uiCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.uiCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.uiCancel.Location = new System.Drawing.Point(189, 104);
+            this.uiCancel.Location = new System.Drawing.Point(276, 134);
             this.uiCancel.Name = "uiCancel";
             this.uiCancel.Size = new System.Drawing.Size(75, 23);
-            this.uiCancel.TabIndex = 7;
+            this.uiCancel.TabIndex = 13;
             this.uiCancel.Text = "キャンセル";
             this.uiCancel.UseVisualStyleBackColor = true;
+            // 
+            // uiHeight
+            // 
+            this.uiHeight.Location = new System.Drawing.Point(65, 124);
+            this.uiHeight.Maximum = new decimal(new int[] {
+            2147483647,
+            0,
+            0,
+            0});
+            this.uiHeight.Minimum = new decimal(new int[] {
+            -2147483648,
+            0,
+            0,
+            -2147483648});
+            this.uiHeight.Name = "uiHeight";
+            this.uiHeight.Size = new System.Drawing.Size(79, 19);
+            this.uiHeight.TabIndex = 9;
+            // 
+            // uiWidth
+            // 
+            this.uiWidth.Location = new System.Drawing.Point(65, 99);
+            this.uiWidth.Maximum = new decimal(new int[] {
+            2147483647,
+            0,
+            0,
+            0});
+            this.uiWidth.Minimum = new decimal(new int[] {
+            -2147483648,
+            0,
+            0,
+            -2147483648});
+            this.uiWidth.Name = "uiWidth";
+            this.uiWidth.Size = new System.Drawing.Size(79, 19);
+            this.uiWidth.TabIndex = 7;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(10, 126);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(43, 12);
+            this.label4.TabIndex = 8;
+            this.label4.Text = "高さ(&H):";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(10, 101);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(36, 12);
+            this.label5.TabIndex = 6;
+            this.label5.Text = "幅(&W):";
+            // 
+            // uiDisplay
+            // 
+            this.uiDisplay.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.uiDisplay.FormattingEnabled = true;
+            this.uiDisplay.Location = new System.Drawing.Point(169, 66);
+            this.uiDisplay.Name = "uiDisplay";
+            this.uiDisplay.Size = new System.Drawing.Size(121, 20);
+            this.uiDisplay.TabIndex = 11;
+            this.uiDisplay.SelectionChangeCommitted += new System.EventHandler(this.uiDisplay_SelectionChangeCommitted);
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(167, 51);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(143, 12);
+            this.label6.TabIndex = 10;
+            this.label6.Text = "ディスプレイの位置を設定(&D):";
             // 
             // WindowSettingsEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.uiCancel;
-            this.ClientSize = new System.Drawing.Size(276, 139);
+            this.ClientSize = new System.Drawing.Size(363, 169);
+            this.Controls.Add(this.label6);
+            this.Controls.Add(this.uiDisplay);
+            this.Controls.Add(this.uiHeight);
+            this.Controls.Add(this.uiWidth);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.label5);
             this.Controls.Add(this.uiCancel);
             this.Controls.Add(this.uiOk);
             this.Controls.Add(this.uiPositionY);
@@ -145,8 +230,11 @@
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "ウィンドウ設定";
+            this.Load += new System.EventHandler(this.WindowSettingsEditor_Load);
             ((System.ComponentModel.ISupportInitialize)(this.uiPositionX)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.uiPositionY)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.uiHeight)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.uiWidth)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -162,5 +250,11 @@
         private System.Windows.Forms.NumericUpDown uiPositionY;
         private System.Windows.Forms.Button uiOk;
         private System.Windows.Forms.Button uiCancel;
+        private System.Windows.Forms.NumericUpDown uiHeight;
+        private System.Windows.Forms.NumericUpDown uiWidth;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.ComboBox uiDisplay;
+        private System.Windows.Forms.Label label6;
     }
 }

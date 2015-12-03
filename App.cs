@@ -158,6 +158,7 @@ namespace ffxigamma {
                     ApplyConfig(config);
                     ResetScreenGamma();
                     SaveConfig(config);
+                    windowMonitor.Reset();
                 }
             }
         }
@@ -367,7 +368,7 @@ namespace ffxigamma {
             return true;
         }
 
-        private static void SetWindowPositionRetry(WindowInfo wndInfo, int x, int y) {
+        private static void SetWindowPositionRetry(WindowInfo wndInfo, int x, int y, int w, int h) {
             var wnd = new Window(wndInfo.Handle);
 
             var begin = DateTime.Now;
@@ -378,14 +379,19 @@ namespace ffxigamma {
                 Thread.Sleep(SetWindowPositionDelay);
             }
 
-            wnd.SetPosition(x, y);
+            if (w == 0 && h == 0)
+                wnd.SetPosition(x, y);
+            else
+                wnd.SetPosition(x, y, w, h);
         }
 
         private void SetWindowPosition(WindowInfo wndInfo) {
             foreach (var wndSettings in config.WindowSettingsList) {
                 if (wndSettings.Name == wndInfo.Name) {
                     Task.Run(() => {
-                        SetWindowPositionRetry(wndInfo, wndSettings.X, wndSettings.Y);
+                        SetWindowPositionRetry(wndInfo,
+                            wndSettings.X, wndSettings.Y,
+                            wndSettings.Width, wndSettings.Height);
                     });
                 }
             }
@@ -396,6 +402,8 @@ namespace ffxigamma {
                 if (wndSettings.Name == wndInfo.Name) {
                     wndSettings.X = wndInfo.Rect.X;
                     wndSettings.Y = wndInfo.Rect.Y;
+                    wndSettings.Width = wndInfo.Rect.Width;
+                    wndSettings.Height = wndInfo.Rect.Height;
                 }
             }
             SaveConfig(config);

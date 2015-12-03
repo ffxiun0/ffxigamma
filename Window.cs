@@ -34,6 +34,10 @@ namespace ffxigamma {
             return WinAPI.SetWindowPos(hWnd, IntPtr.Zero, x, y, 0, 0, WinAPI.SWP_NOSIZE);
         }
 
+        public bool SetPosition(int x, int y, int w, int h) {
+            return WinAPI.SetWindowPos(hWnd, IntPtr.Zero, x, y, w, h, 0);
+        }
+
         public bool IsIconic() {
             return WinAPI.IsIconic(hWnd);
         }
