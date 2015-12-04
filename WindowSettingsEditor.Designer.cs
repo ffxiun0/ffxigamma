@@ -37,6 +37,7 @@
             this.label5 = new System.Windows.Forms.Label();
             this.uiDisplay = new System.Windows.Forms.ComboBox();
             this.label6 = new System.Windows.Forms.Label();
+            this.uiChangeSize = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.uiPositionX)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.uiPositionY)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.uiHeight)).BeginInit();
@@ -119,7 +120,7 @@
             this.uiOk.Location = new System.Drawing.Point(195, 134);
             this.uiOk.Name = "uiOk";
             this.uiOk.Size = new System.Drawing.Size(75, 23);
-            this.uiOk.TabIndex = 12;
+            this.uiOk.TabIndex = 13;
             this.uiOk.Text = "OK";
             this.uiOk.UseVisualStyleBackColor = true;
             this.uiOk.Click += new System.EventHandler(this.uiOk_Click);
@@ -131,7 +132,7 @@
             this.uiCancel.Location = new System.Drawing.Point(276, 134);
             this.uiCancel.Name = "uiCancel";
             this.uiCancel.Size = new System.Drawing.Size(75, 23);
-            this.uiCancel.TabIndex = 13;
+            this.uiCancel.TabIndex = 14;
             this.uiCancel.Text = "キャンセル";
             this.uiCancel.UseVisualStyleBackColor = true;
             // 
@@ -206,12 +207,23 @@
             this.label6.TabIndex = 10;
             this.label6.Text = "ディスプレイの位置を設定(&D):";
             // 
+            // uiChangeSize
+            // 
+            this.uiChangeSize.AutoSize = true;
+            this.uiChangeSize.Location = new System.Drawing.Point(169, 100);
+            this.uiChangeSize.Name = "uiChangeSize";
+            this.uiChangeSize.Size = new System.Drawing.Size(131, 16);
+            this.uiChangeSize.TabIndex = 12;
+            this.uiChangeSize.Text = "幅と高さを変更する(&S)";
+            this.uiChangeSize.UseVisualStyleBackColor = true;
+            // 
             // WindowSettingsEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.uiCancel;
             this.ClientSize = new System.Drawing.Size(363, 169);
+            this.Controls.Add(this.uiChangeSize);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.uiDisplay);
             this.Controls.Add(this.uiHeight);
@@ -256,5 +268,6 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.ComboBox uiDisplay;
         private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.CheckBox uiChangeSize;
     }
 }

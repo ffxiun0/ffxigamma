@@ -25,6 +25,7 @@ namespace ffxigamma {
             uiPositionY.Value = ws.Y;
             uiWidth.Value = ws.Width;
             uiHeight.Value = ws.Height;
+            uiChangeSize.Checked = ws.ChangeSize;
         }
 
         private WindowSettings GetFromUI() {
@@ -34,6 +35,7 @@ namespace ffxigamma {
             ws.Y = (int)uiPositionY.Value;
             ws.Width = (int)uiWidth.Value;
             ws.Height = (int)uiHeight.Value;
+            ws.ChangeSize = uiChangeSize.Checked;
             return ws;
         }
 
@@ -58,6 +60,7 @@ namespace ffxigamma {
             uiPositionY.Value = item.Screen.Bounds.Y;
             uiWidth.Value = item.Screen.Bounds.Width;
             uiHeight.Value = item.Screen.Bounds.Height;
+            uiChangeSize.Checked = true;
         }
     }
 

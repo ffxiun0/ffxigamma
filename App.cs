@@ -368,7 +368,7 @@ namespace ffxigamma {
             return true;
         }
 
-        private static void SetWindowPositionRetry(WindowInfo wndInfo, int x, int y, int w, int h) {
+        private static void SetWindowPositionRetry(WindowInfo wndInfo, WindowSettings wndSettings) {
             var wnd = new Window(wndInfo.Handle);
 
             var begin = DateTime.Now;
@@ -379,19 +379,17 @@ namespace ffxigamma {
                 Thread.Sleep(SetWindowPositionDelay);
             }
 
-            if (w == 0 && h == 0)
-                wnd.SetPosition(x, y);
+            if (wndSettings.ChangeSize)
+                wnd.SetPosition(wndSettings.X, wndSettings.Y, wndSettings.Width, wndSettings.Height);
             else
-                wnd.SetPosition(x, y, w, h);
+                wnd.SetPosition(wndSettings.X, wndSettings.Y);
         }
 
         private void SetWindowPosition(WindowInfo wndInfo) {
             foreach (var wndSettings in config.WindowSettingsList) {
                 if (wndSettings.Name == wndInfo.Name) {
                     Task.Run(() => {
-                        SetWindowPositionRetry(wndInfo,
-                            wndSettings.X, wndSettings.Y,
-                            wndSettings.Width, wndSettings.Height);
+                        SetWindowPositionRetry(wndInfo, wndSettings);
                     });
                 }
             }
