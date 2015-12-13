@@ -17,8 +17,10 @@ namespace ffxigamma {
 
         private static int CountKeys(bool[] keys) {
             int count = 0;
-            for (int i = 0; i < keys.Length; i++)
-                count++;
+            for (int i = 0; i < keys.Length; i++) {
+                if (keys[i])
+                    count++;
+            }
             return count;
         }
 
