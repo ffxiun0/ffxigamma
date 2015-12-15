@@ -26,6 +26,7 @@ namespace ffxigamma {
             uiWidth.Value = ws.Width;
             uiHeight.Value = ws.Height;
             uiChangeSize.Checked = ws.ChangeSize;
+            uiAlwaysGamma.Checked = ws.AlwaysGamma;
         }
 
         private WindowSettings GetFromUI() {
@@ -36,6 +37,7 @@ namespace ffxigamma {
             ws.Width = (int)uiWidth.Value;
             ws.Height = (int)uiHeight.Value;
             ws.ChangeSize = uiChangeSize.Checked;
+            ws.AlwaysGamma = uiAlwaysGamma.Checked;
             return ws;
         }
 

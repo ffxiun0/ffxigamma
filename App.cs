@@ -21,7 +21,7 @@ namespace ffxigamma {
         private const int SetWindowPositionDelay = 100;
 
         private Config config;
-        private Screen prevScreen;
+        private Screen[] prevScreens = new Screen[0];
         private Settings editSettings;
         private GlobalKeyReader globalKeyReader;
         private WindowMonitor windowMonitor;
@@ -29,7 +29,7 @@ namespace ffxigamma {
         public App() {
             InitializeComponent();
 
-            prevScreen = null;
+            prevScreens = new Screen[0];
             editSettings = new Settings();
 
             globalKeyReader = new GlobalKeyReader();
@@ -39,6 +39,7 @@ namespace ffxigamma {
             windowMonitor.Expire = WindowMonitorExpire;
             windowMonitor.WindowOpened += windowMonitor_WindowOpend;
             windowMonitor.WindowClosed += windowMonitor_WindowClosed;
+            windowMonitor.WindowUpdate += WindowMonitor_WindowUpdate;
 
             SetShieldIcon(uiContextStartFFXI);
             SetShieldIcon(uiContextRestartAdminMode);
@@ -51,49 +52,79 @@ namespace ffxigamma {
             menuItem.Image = WinAPI.GetShieldIcon();
         }
 
-        private void UpdateScreenGamma() {
-            var activeScreen = GetActiveScreen();
+        private void UpdateScreenGamma(IEnumerable<WindowInfo> wndInfos) {
+            var validWindows = ExtractValidWindows(wndInfos);
+            var usingScreens = FindUsingScreens(validWindows);
 
-            if (ScreenHasChanged(activeScreen, prevScreen)) {
-                foreach (var screen in Screen.AllScreens) {
-                    double gamma = screen.Equals(activeScreen)
-                        ? config.AppGamma : config.SystemGamma;
-                    WinAPI.SetDeviceGammaRamp(screen, gamma);
-                }
+            if (ScreenHasChanged(prevScreens, usingScreens))
+                SetScreenGamma(usingScreens);
+
+            prevScreens = usingScreens;
+        }
+
+        private IEnumerable<WindowInfo> ExtractValidWindows(IEnumerable<WindowInfo> wndInfos) {
+            if (FFXI.IsFullScreenMode() && FFXI.IsRunning())
+                return new WindowInfo[0];
+
+            return from wndInfo in wndInfos
+                   where IsValidWindow(wndInfo)
+                   select wndInfo;
+        }
+
+        private bool IsValidWindow(WindowInfo wndInfo) {
+            if (wndInfo.Window.IsIconic()) return false;
+
+            var ws = GetWindowSettings(wndInfo.Name);
+            if (ws == null) return false;
+            if (ws.AlwaysGamma) return true;
+
+            return IsForegroundWindow(wndInfo);
+        }
+
+        private WindowSettings GetWindowSettings(string name) {
+            foreach (var ws in config.WindowSettingsList) {
+                if (ws.Name == name)
+                    return ws;
             }
-
-            prevScreen = activeScreen;
+            return null;
         }
 
-        private void ResetScreenGamma() {
-            foreach (var screen in Screen.AllScreens)
-                WinAPI.SetDeviceGammaRamp(screen, config.SystemGamma);
+        private bool IsForegroundWindow(WindowInfo wndInfo) {
+            var fg = Window.GetForegroundWindow();
+            if (fg == null) return false;
+
+            return fg.GetWindowText() == wndInfo.Name;
         }
 
-        private Screen GetActiveScreen() {
-            if (FFXI.IsFullScreenMode() && FFXI.IsRunning()) return null;
-
-            var wnd = Window.GetForegroundWindow();
-            if (wnd == null) return null;
-            if (wnd.IsIconic()) return null;
-            if (!IsTargetWindowName(wnd)) return null;
-
-            return Screen.FromRectangle(wnd.GetWindowRect());
+        private static Screen[] FindUsingScreens(IEnumerable<WindowInfo> wndInfos) {
+            var screens = from wi in wndInfos select Screen.FromRectangle(wi.Rect);
+            screens = screens.Distinct();
+            screens = screens.OrderBy(screen => screen.DeviceName);
+            return screens.ToArray();
         }
 
-        private bool IsTargetWindowName(Window wnd) {
-            var name = wnd.GetWindowText();
-            foreach (var wndSettings in config.WindowSettingsList) {
-                if (wndSettings.Name == name)
+        private static bool ScreenHasChanged(Screen[] a, Screen[] b) {
+            if (a.Length != b.Length) return true;
+
+            for (int i = 0; i < a.Length; i++) {
+                if (!a[i].Equals(b[i]))
                     return true;
             }
             return false;
         }
 
-        static bool ScreenHasChanged(Screen a, Screen b) {
-            if (a == null && b == null) return false;
-            if (a == null || b == null) return true;
-            return !a.Equals(b);
+        private void SetScreenGamma(IEnumerable<Screen> gammaScreens) {
+            foreach (var screen in Screen.AllScreens) {
+                double gamma = gammaScreens.Contains(screen)
+                    ? config.AppGamma : config.SystemGamma;
+                WinAPI.SetDeviceGammaRamp(screen, gamma);
+            }
+        }
+
+        private void ResetScreenGamma() {
+            foreach (var screen in Screen.AllScreens)
+                WinAPI.SetDeviceGammaRamp(screen, config.SystemGamma);
+            prevScreens = new Screen[0];
         }
 
         public static Config LoadConfig() {
@@ -201,7 +232,8 @@ namespace ffxigamma {
             if (wnd == null) return false;
             if (wnd.IsIconic()) return false;
 
-            return IsTargetWindowName(wnd);
+            var ws = GetWindowSettings(wnd.GetWindowText());
+            return ws != null;
         }
 
         private static void SetCapturableItems(ToolStripMenuItem menuItem, List<Window> wnds) {
@@ -385,6 +417,14 @@ namespace ffxigamma {
                 wnd.SetPosition(wndSettings.X, wndSettings.Y);
         }
 
+        private void SetWindowPosition(IEnumerable<WindowInfo> wndInfos) {
+            if (!config.EnableSaveWindowPosition) return;
+            if (FFXI.IsFullScreenMode() && FFXI.IsRunning()) return;
+
+            foreach (var wndInfo in wndInfos)
+                SetWindowPosition(wndInfo);
+        }
+
         private void SetWindowPosition(WindowInfo wndInfo) {
             foreach (var wndSettings in config.WindowSettingsList) {
                 if (wndSettings.Name == wndInfo.Name) {
@@ -393,6 +433,14 @@ namespace ffxigamma {
                     });
                 }
             }
+        }
+
+        private void SaveWindowPosition(IEnumerable<WindowInfo> wndInfos) {
+            if (!config.EnableSaveWindowPosition) return;
+            if (FFXI.IsFullScreenMode() && FFXI.IsRunning()) return;
+
+            foreach (var wndInfo in wndInfos)
+                SaveWindowPosition(wndInfo);
         }
 
         private void SaveWindowPosition(WindowInfo wndInfo) {
@@ -431,9 +479,7 @@ namespace ffxigamma {
         }
 
         private void uiTimer_Tick(object sender, EventArgs e) {
-            UpdateScreenGamma();
-            if (SaveWindowPositionIsEnabled())
-                windowMonitor.Update();
+            windowMonitor.Update();
         }
 
         private void App_FormClosing(object sender, FormClosingEventArgs e) {
@@ -518,6 +564,10 @@ namespace ffxigamma {
 
         private void windowMonitor_WindowClosed(object sender, WindowMonitorEventArgs e) {
             SaveWindowPosition(e.WindowInfo);
+        }
+
+        private void WindowMonitor_WindowUpdate(object sender, WindowMonitorEventArgs e) {
+            UpdateScreenGamma(e.WindowInfo);
         }
     }
 }

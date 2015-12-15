@@ -174,6 +174,7 @@ namespace ffxigamma {
             Width = 0;
             Height = 0;
             ChangeSize = false;
+            AlwaysGamma = false;
         }
 
         public string Name { get; set; }
@@ -182,6 +183,7 @@ namespace ffxigamma {
         public int Width { get; set; }
         public int Height { get; set; }
         public bool ChangeSize { get; set; }
+        public bool AlwaysGamma { get; set; }
 
         public override string ToString() {
             return string.Format("{0} - ({1},{2})", Name, X, Y);

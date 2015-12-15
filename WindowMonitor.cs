@@ -28,22 +28,25 @@ namespace ffxigamma {
 
         public event WindowMonitorDelegate WindowOpened;
         public event WindowMonitorDelegate WindowClosed;
+        public event WindowMonitorDelegate WindowUpdate;
 
         public void Reset() {
             map.Clear();
         }
 
         public void Update() {
-            var opened = UpdateWindows();
-            NotifyWindowOpened(opened);
-
+            var targets = FindTargetWindows();
+            var opened = UpdateWindows(targets);
             var closed = CleanupClosedWindows();
+
+            NotifyWindowOpened(opened);
             NotifyWindowClosed(closed);
+            NotifyWindowUpdate(targets);
         }
 
-        public IEnumerable<WindowInfo> UpdateWindows() {
+        public IEnumerable<WindowInfo> UpdateWindows(IEnumerable<WindowInfo> wndInfos) {
             var opened = new List<WindowInfo>();
-            foreach (var wndInfo in GetTargetWindows()) {
+            foreach (var wndInfo in wndInfos) {
                 if (!map.ContainsKey(wndInfo))
                     opened.Add(wndInfo);
                 map[wndInfo] = wndInfo;
@@ -51,7 +54,7 @@ namespace ffxigamma {
             return opened;
         }
 
-        private IEnumerable<WindowInfo> GetTargetWindows() {
+        private IEnumerable<WindowInfo> FindTargetWindows() {
             return from wnd in Window.EnumWindows()
                    where names.Contains(wnd.GetWindowText())
                    select new WindowInfo(wnd);
@@ -69,22 +72,25 @@ namespace ffxigamma {
             return closed;
         }
 
-        private void NotifyWindowClosed(IEnumerable<WindowInfo> closed) {
-            if (WindowClosed == null) return;
-
-            foreach (var wndInfo in closed) {
-                var closeArgs = new WindowMonitorEventArgs(wndInfo);
-                WindowClosed(this, closeArgs);
-            }
-        }
-
         private void NotifyWindowOpened(IEnumerable<WindowInfo> opened) {
             if (WindowOpened == null) return;
 
-            foreach (var wndInfo in opened) {
-                var openArgs = new WindowMonitorEventArgs(wndInfo);
-                WindowOpened(this, openArgs);
-            }
+            var args = new WindowMonitorEventArgs(opened);
+            WindowOpened(this, args);
+        }
+
+        private void NotifyWindowClosed(IEnumerable<WindowInfo> closed) {
+            if (WindowClosed == null) return;
+
+            var args = new WindowMonitorEventArgs(closed);
+            WindowClosed(this, args);
+        }
+
+        private void NotifyWindowUpdate(IEnumerable<WindowInfo> updates) {
+            if (WindowUpdate == null) return;
+
+            var args = new WindowMonitorEventArgs(updates);
+            WindowUpdate(this, args);
         }
     }
 }

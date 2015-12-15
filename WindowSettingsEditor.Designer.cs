@@ -38,6 +38,7 @@
             this.uiDisplay = new System.Windows.Forms.ComboBox();
             this.label6 = new System.Windows.Forms.Label();
             this.uiChangeSize = new System.Windows.Forms.CheckBox();
+            this.uiAlwaysGamma = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.uiPositionX)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.uiPositionY)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.uiHeight)).BeginInit();
@@ -59,7 +60,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.uiName.Location = new System.Drawing.Point(12, 24);
             this.uiName.Name = "uiName";
-            this.uiName.Size = new System.Drawing.Size(339, 19);
+            this.uiName.Size = new System.Drawing.Size(359, 19);
             this.uiName.TabIndex = 1;
             // 
             // label2
@@ -117,10 +118,10 @@
             // uiOk
             // 
             this.uiOk.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.uiOk.Location = new System.Drawing.Point(195, 134);
+            this.uiOk.Location = new System.Drawing.Point(215, 159);
             this.uiOk.Name = "uiOk";
             this.uiOk.Size = new System.Drawing.Size(75, 23);
-            this.uiOk.TabIndex = 13;
+            this.uiOk.TabIndex = 14;
             this.uiOk.Text = "OK";
             this.uiOk.UseVisualStyleBackColor = true;
             this.uiOk.Click += new System.EventHandler(this.uiOk_Click);
@@ -129,10 +130,10 @@
             // 
             this.uiCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.uiCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.uiCancel.Location = new System.Drawing.Point(276, 134);
+            this.uiCancel.Location = new System.Drawing.Point(296, 159);
             this.uiCancel.Name = "uiCancel";
             this.uiCancel.Size = new System.Drawing.Size(75, 23);
-            this.uiCancel.TabIndex = 14;
+            this.uiCancel.TabIndex = 15;
             this.uiCancel.Text = "キャンセル";
             this.uiCancel.UseVisualStyleBackColor = true;
             // 
@@ -192,7 +193,7 @@
             // 
             this.uiDisplay.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.uiDisplay.FormattingEnabled = true;
-            this.uiDisplay.Location = new System.Drawing.Point(169, 66);
+            this.uiDisplay.Location = new System.Drawing.Point(160, 66);
             this.uiDisplay.Name = "uiDisplay";
             this.uiDisplay.Size = new System.Drawing.Size(121, 20);
             this.uiDisplay.TabIndex = 11;
@@ -201,7 +202,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(167, 51);
+            this.label6.Location = new System.Drawing.Point(158, 51);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(143, 12);
             this.label6.TabIndex = 10;
@@ -210,19 +211,30 @@
             // uiChangeSize
             // 
             this.uiChangeSize.AutoSize = true;
-            this.uiChangeSize.Location = new System.Drawing.Point(169, 100);
+            this.uiChangeSize.Location = new System.Drawing.Point(160, 100);
             this.uiChangeSize.Name = "uiChangeSize";
             this.uiChangeSize.Size = new System.Drawing.Size(131, 16);
             this.uiChangeSize.TabIndex = 12;
             this.uiChangeSize.Text = "幅と高さを変更する(&S)";
             this.uiChangeSize.UseVisualStyleBackColor = true;
             // 
+            // uiAlwaysGamma
+            // 
+            this.uiAlwaysGamma.AutoSize = true;
+            this.uiAlwaysGamma.Location = new System.Drawing.Point(160, 125);
+            this.uiAlwaysGamma.Name = "uiAlwaysGamma";
+            this.uiAlwaysGamma.Size = new System.Drawing.Size(204, 16);
+            this.uiAlwaysGamma.TabIndex = 13;
+            this.uiAlwaysGamma.Text = "非アクティブ時にもガンマ補正をする(&G)";
+            this.uiAlwaysGamma.UseVisualStyleBackColor = true;
+            // 
             // WindowSettingsEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.uiCancel;
-            this.ClientSize = new System.Drawing.Size(363, 169);
+            this.ClientSize = new System.Drawing.Size(383, 194);
+            this.Controls.Add(this.uiAlwaysGamma);
             this.Controls.Add(this.uiChangeSize);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.uiDisplay);
@@ -269,5 +281,6 @@
         private System.Windows.Forms.ComboBox uiDisplay;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.CheckBox uiChangeSize;
+        private System.Windows.Forms.CheckBox uiAlwaysGamma;
     }
 }

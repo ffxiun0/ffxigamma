@@ -3,6 +3,7 @@ using System.Drawing;
 
 namespace ffxigamma {
     class WindowInfo {
+        public Window Window { get; set; }
         public string Name { get; set; }
         public IntPtr Handle { get; set; }
         public int ProcessId { get; set; }
@@ -10,6 +11,7 @@ namespace ffxigamma {
         public DateTime Time { get; set; }
 
         public WindowInfo(Window wnd) {
+            Window = wnd;
             Name = wnd.GetWindowText();
             Handle = wnd.Handle;
             ProcessId = wnd.GetProcessId();

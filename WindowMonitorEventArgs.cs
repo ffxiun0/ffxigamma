@@ -1,11 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace ffxigamma {
     class WindowMonitorEventArgs : EventArgs {
-        public WindowMonitorEventArgs(WindowInfo wndInfo) {
-            WindowInfo = wndInfo;
+        public WindowMonitorEventArgs(IEnumerable<WindowInfo> wndInfos) {
+            WindowInfo = wndInfos;
         }
 
-        public WindowInfo WindowInfo { get; set; }
+        public IEnumerable<WindowInfo> WindowInfo { get; set; }
     }
 }
