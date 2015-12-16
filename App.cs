@@ -21,7 +21,7 @@ namespace ffxigamma {
         private const int SetWindowPositionDelay = 100;
 
         private Config config;
-        private Screen[] prevScreens = new Screen[0];
+        private Screen[] prevScreens;
         private Settings editSettings;
         private GlobalKeyReader globalKeyReader;
         private WindowMonitor windowMonitor;
@@ -66,9 +66,10 @@ namespace ffxigamma {
             if (FFXI.IsFullScreenMode() && FFXI.IsRunning())
                 return new WindowInfo[0];
 
-            return from wndInfo in wndInfos
-                   where IsValidWindow(wndInfo)
-                   select wndInfo;
+            var result = from wndInfo in wndInfos
+                         where IsValidWindow(wndInfo)
+                         select wndInfo;
+            return result.ToArray();
         }
 
         private bool IsValidWindow(WindowInfo wndInfo) {

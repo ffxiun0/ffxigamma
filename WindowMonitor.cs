@@ -55,16 +55,18 @@ namespace ffxigamma {
         }
 
         private IEnumerable<WindowInfo> FindTargetWindows() {
-            return from wnd in Window.EnumWindows()
-                   where names.Contains(wnd.GetWindowText())
-                   select new WindowInfo(wnd);
+            var result = from wnd in Window.EnumWindows()
+                         where names.Contains(wnd.GetWindowText())
+                         select new WindowInfo(wnd);
+            return result.ToArray();
         }
 
         public IEnumerable<WindowInfo> CleanupClosedWindows() {
             var now = DateTime.Now;
-            var closed = (from wndInfo in map.Values
-                          where (now - wndInfo.Time).TotalMilliseconds > Expire
-                          select wndInfo).ToArray();
+            var closed = from wndInfo in map.Values
+                         where (now - wndInfo.Time).TotalMilliseconds > Expire
+                         select wndInfo;
+            closed = closed.ToArray();
 
             foreach (var wndInfo in closed)
                 map.Remove(wndInfo);
