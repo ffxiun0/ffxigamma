@@ -83,7 +83,7 @@
     <Compile Include="Settings.Designer.cs">
       <DependentUpon>Settings.cs</DependentUpon>
     </Compile>
-    <Compile Include="WinAPI.cs" />
+    <Compile Include="NativeMethods.cs" />
     <Compile Include="Window.cs" />
     <Compile Include="WindowSettingsEditor.cs">
       <SubType>Form</SubType>

@@ -45,7 +45,7 @@ namespace ffxigamma {
                 var keys = new bool[256];
                 var count = 0;
                 for (int i = 0; i < 256; i++) {
-                    if ((WinAPI.GetAsyncKeyState(i) & 0x8000) != 0) {
+                    if ((NativeMethods.GetAsyncKeyState(i) & 0x8000) != 0) {
                         keys[i] = true;
                         count++;
                     }

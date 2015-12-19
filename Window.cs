@@ -19,36 +19,36 @@ namespace ffxigamma {
         }
 
         public string GetWindowText() {
-            return WinAPI.GetWindowText(hWnd);
+            return NativeMethods.GetWindowText(hWnd);
         }
 
         public Rectangle GetWindowRect() {
-            return WinAPI.GetWindowRect(hWnd);
+            return NativeMethods.GetWindowRect(hWnd);
         }
 
         public Rectangle GetClientRect() {
-            return WinAPI.GetClientRect(hWnd);
+            return NativeMethods.GetClientRect(hWnd);
         }
 
         public bool SetPosition(int x, int y) {
-            return WinAPI.SetWindowPos(hWnd, IntPtr.Zero, x, y, 0, 0, WinAPI.SWP_NOSIZE);
+            return NativeMethods.SetWindowPos(hWnd, IntPtr.Zero, x, y, 0, 0, NativeMethods.SWP_NOSIZE);
         }
 
         public bool SetPosition(int x, int y, int w, int h) {
-            return WinAPI.SetWindowPos(hWnd, IntPtr.Zero, x, y, w, h, 0);
+            return NativeMethods.SetWindowPos(hWnd, IntPtr.Zero, x, y, w, h, 0);
         }
 
         public bool IsIconic() {
-            return WinAPI.IsIconic(hWnd);
+            return NativeMethods.IsIconic(hWnd);
         }
 
         public bool IsVisible() {
-            return WinAPI.IsWindowVisible(hWnd);
+            return NativeMethods.IsWindowVisible(hWnd);
         }
 
         public int GetProcessId() {
             uint pid;
-            WinAPI.GetWindowThreadProcessId(hWnd, out pid);
+            NativeMethods.GetWindowThreadProcessId(hWnd, out pid);
             return (int)pid;
         }
 
@@ -60,7 +60,7 @@ namespace ffxigamma {
 
             using (var gBmp = Graphics.FromImage(bmp))
             using (var gWnd = Graphics.FromHwnd(hWnd)) {
-                WinAPI.BitBlt(gBmp, rect, gWnd, Point.Empty, WinAPI.SRCCOPY);
+                NativeMethods.BitBlt(gBmp, rect, gWnd, Point.Empty, NativeMethods.SRCCOPY);
             }
 
             return bmp;
@@ -104,12 +104,12 @@ namespace ffxigamma {
             using (var g = Graphics.FromHwnd(hWnd)) {
                 var hdc = g.GetHdc();
                 try {
-                    var hbmp = WinAPI.GetCurrentObject(hdc, WinAPI.OBJ_BITMAP);
+                    var hbmp = NativeMethods.GetCurrentObject(hdc, NativeMethods.OBJ_BITMAP);
                     if (hbmp == IntPtr.Zero)
                         return Rectangle.Empty;
 
-                    var sbmp = new WinAPI.BITMAP();
-                    if (WinAPI.GetObject(hbmp, Marshal.SizeOf(sbmp), ref sbmp) == 0)
+                    var sbmp = new NativeMethods.BITMAP();
+                    if (NativeMethods.GetObject(hbmp, Marshal.SizeOf(sbmp), ref sbmp) == 0)
                         return Rectangle.Empty;
 
                     return new Rectangle(0, 0, sbmp.bmWidth, sbmp.bmHeight);
@@ -121,7 +121,7 @@ namespace ffxigamma {
         }
 
         public static Window FindWindow(string className, string windowName) {
-            var hWnd = WinAPI.FindWindow(className, windowName);
+            var hWnd = NativeMethods.FindWindow(className, windowName);
             if (hWnd == IntPtr.Zero) return null;
             return new Window(hWnd);
         }
@@ -129,7 +129,7 @@ namespace ffxigamma {
         public static IEnumerable<Window> EnumWindows() {
             var result = new List<Window>();
 
-            WinAPI.EnumWindows((hWnd, lParam) => {
+            NativeMethods.EnumWindows((hWnd, lParam) => {
                 result.Add(new Window(hWnd));
                 return true;
             }, IntPtr.Zero);
@@ -138,7 +138,7 @@ namespace ffxigamma {
         }
 
         public static Window GetForegroundWindow() {
-            IntPtr hWnd = WinAPI.GetForegroundWindow();
+            IntPtr hWnd = NativeMethods.GetForegroundWindow();
             if (hWnd == IntPtr.Zero) return null;
             return new Window(hWnd);
         }

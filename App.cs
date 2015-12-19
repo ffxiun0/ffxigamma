@@ -49,7 +49,7 @@ namespace ffxigamma {
 
         private void SetShieldIcon(ToolStripMenuItem menuItem) {
             menuItem.ImageScaling = ToolStripItemImageScaling.None;
-            menuItem.Image = WinAPI.GetShieldIcon();
+            menuItem.Image = NativeMethods.GetShieldIcon();
         }
 
         private void UpdateScreenGamma(IEnumerable<WindowInfo> wndInfos) {
@@ -118,13 +118,13 @@ namespace ffxigamma {
             foreach (var screen in Screen.AllScreens) {
                 double gamma = gammaScreens.Contains(screen)
                     ? config.AppGamma : config.SystemGamma;
-                WinAPI.SetDeviceGammaRamp(screen, gamma);
+                NativeMethods.SetDeviceGammaRamp(screen, gamma);
             }
         }
 
         private void ResetScreenGamma() {
             foreach (var screen in Screen.AllScreens)
-                WinAPI.SetDeviceGammaRamp(screen, config.SystemGamma);
+                NativeMethods.SetDeviceGammaRamp(screen, config.SystemGamma);
             prevScreens = new Screen[0];
         }
 
@@ -501,7 +501,7 @@ namespace ffxigamma {
         }
 
         private void uiNotifyIcon_BalloonTipClicked(object sender, EventArgs e) {
-            WinAPI.OpenFolderAndSelectItem((string)uiNotifyIcon.Tag);
+            NativeMethods.OpenFolderAndSelectItem((string)uiNotifyIcon.Tag);
         }
 
         private void uiContextMenu_Opening(object sender, System.ComponentModel.CancelEventArgs e) {

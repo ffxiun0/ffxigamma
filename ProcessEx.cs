@@ -9,7 +9,7 @@ using System.Text;
 namespace ffxigamma {
     class ProcessEx {
         public static bool IsUserAnAdmin() {
-            return WinAPI.IsUserAnAdmin();
+            return NativeMethods.IsUserAnAdmin();
         }
 
         public static bool Start(string exe, params string[] args) {
@@ -46,7 +46,7 @@ namespace ffxigamma {
                 return StartWithToken(hToken, exe, args);
             }
             finally {
-                WinAPI.CloseHandle(hToken);
+                NativeMethods.CloseHandle(hToken);
             }
         }
 
@@ -57,36 +57,36 @@ namespace ffxigamma {
                 return DuplicateToken(hToken);
             }
             finally {
-                WinAPI.CloseHandle(hToken);
+                NativeMethods.CloseHandle(hToken);
             }
         }
 
         private static IntPtr GetShellToken() {
             var pid = GetShellProcessId();
-            var hProcess = WinAPI.OpenProcess(WinAPI.MAXIMUM_ALLOWED, false, pid);
+            var hProcess = NativeMethods.OpenProcess(NativeMethods.MAXIMUM_ALLOWED, false, pid);
             if (hProcess == IntPtr.Zero) return IntPtr.Zero;
             try {
                 IntPtr hToken;
-                var ok = WinAPI.OpenProcessToken(hProcess, WinAPI.MAXIMUM_ALLOWED, out hToken);
+                var ok = NativeMethods.OpenProcessToken(hProcess, NativeMethods.MAXIMUM_ALLOWED, out hToken);
                 return ok ? hToken : IntPtr.Zero;
             }
             finally {
-                WinAPI.CloseHandle(hProcess);
+                NativeMethods.CloseHandle(hProcess);
             }
         }
 
         private static uint GetShellProcessId() {
-            var hwnd = WinAPI.GetShellWindow();
+            var hwnd = NativeMethods.GetShellWindow();
             uint pid;
-            WinAPI.GetWindowThreadProcessId(hwnd, out pid);
+            NativeMethods.GetWindowThreadProcessId(hwnd, out pid);
             return pid;
         }
 
         private static IntPtr DuplicateToken(IntPtr hToken) {
             IntPtr hDupToken;
-            var ok = WinAPI.DuplicateTokenEx(hToken, WinAPI.MAXIMUM_ALLOWED, IntPtr.Zero,
-                WinAPI.SECURITY_IMPERSONATION_LEVEL.SecurityDelegation,
-                WinAPI.TOKEN_TYPE.TokenPrimary, out hDupToken);
+            var ok = NativeMethods.DuplicateTokenEx(hToken, NativeMethods.MAXIMUM_ALLOWED, IntPtr.Zero,
+                NativeMethods.SECURITY_IMPERSONATION_LEVEL.SecurityDelegation,
+                NativeMethods.TOKEN_TYPE.TokenPrimary, out hDupToken);
             return ok ? hDupToken : IntPtr.Zero;
         }
 
@@ -94,11 +94,11 @@ namespace ffxigamma {
             var commandLine = new StringBuilder(1024 + 1);
             commandLine.Append(MakeCommandLine(exe, args));
 
-            var si = new WinAPI.STARTUPINFOW();
+            var si = new NativeMethods.STARTUPINFOW();
             si.cb = (uint)Marshal.SizeOf(si);
-            var pi = new WinAPI.PROCESS_INFORMATION();
+            var pi = new NativeMethods.PROCESS_INFORMATION();
 
-            return WinAPI.CreateProcessWithToken(hToken, 0, exe, commandLine,
+            return NativeMethods.CreateProcessWithToken(hToken, 0, exe, commandLine,
                 0, IntPtr.Zero, null, ref si, out pi);
         }
 

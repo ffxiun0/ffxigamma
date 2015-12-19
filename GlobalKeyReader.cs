@@ -1,8 +1,9 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Windows.Forms;
 
 namespace ffxigamma {
-    class GlobalKeyReader {
+    class GlobalKeyReader : Component {
         private Timer timer;
         private GlobalKeys prev;
 

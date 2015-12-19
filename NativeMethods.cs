@@ -5,7 +5,7 @@ using System.Text;
 using System.Windows.Forms;
 
 namespace ffxigamma {
-    class WinAPI {
+    class NativeMethods {
         public static string GetWindowText(IntPtr hWnd) {
             int len = GetWindowTextLength(hWnd);
             var sb = new StringBuilder(len + 1);
@@ -55,7 +55,7 @@ namespace ffxigamma {
             var hdcDest = dest.GetHdc();
             var hdcSrc = src.GetHdc();
             try {
-                return WinAPI.BitBlt(hdcDest, rect.X, rect.Y, rect.Width, rect.Height,
+                return NativeMethods.BitBlt(hdcDest, rect.X, rect.Y, rect.Width, rect.Height,
                     hdcSrc, srcPos.X, srcPos.Y, rop);
             }
             finally {
