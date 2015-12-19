@@ -476,11 +476,7 @@ namespace ffxigamma {
             Visible = false;
             ApplyConfig(config);
             ResetScreenGamma();
-            uiTimer.Enabled = true;
-        }
-
-        private void uiTimer_Tick(object sender, EventArgs e) {
-            windowMonitor.Update();
+            windowMonitor.Start();
         }
 
         private void App_FormClosing(object sender, FormClosingEventArgs e) {

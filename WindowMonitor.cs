@@ -1,15 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Windows.Forms;
 
 namespace ffxigamma {
     delegate void WindowMonitorDelegate(object sender, WindowMonitorEventArgs e);
 
-    class WindowMonitor {
+    class WindowMonitor : Component {
+        private Timer timer;
         private HashSet<string> names;
         private Dictionary<WindowInfo, WindowInfo> map;
 
         public WindowMonitor() {
+            timer = new Timer();
+            timer.Interval = 100;
+            timer.Tick += Timer_Tick;
+
             names = new HashSet<string>();
             map = new Dictionary<WindowInfo, WindowInfo>();
             Expire = 1000;
@@ -30,11 +37,35 @@ namespace ffxigamma {
         public event WindowMonitorDelegate WindowClosed;
         public event WindowMonitorDelegate WindowUpdate;
 
+        public void Start() {
+            if (timer.Enabled) return;
+
+            timer.Start();
+        }
+
+        public void Stop() {
+            if (!timer.Enabled) return;
+
+            timer.Stop();
+        }
+
+        public bool Enabled {
+            get {
+                return timer.Enabled;
+            }
+            set {
+                if (value)
+                    Start();
+                else
+                    Stop();
+            }
+        }
+
         public void Reset() {
             map.Clear();
         }
 
-        public void Update() {
+        private void Update() {
             var targets = FindTargetWindows();
             var opened = UpdateWindows(targets);
             var closed = CleanupClosedWindows();
@@ -44,7 +75,7 @@ namespace ffxigamma {
             NotifyWindowUpdate(targets);
         }
 
-        public IEnumerable<WindowInfo> UpdateWindows(IEnumerable<WindowInfo> wndInfos) {
+        private IEnumerable<WindowInfo> UpdateWindows(IEnumerable<WindowInfo> wndInfos) {
             var opened = new List<WindowInfo>();
             foreach (var wndInfo in wndInfos) {
                 if (!map.ContainsKey(wndInfo))
@@ -93,6 +124,10 @@ namespace ffxigamma {
 
             var args = new WindowMonitorEventArgs(updates);
             WindowUpdate(this, args);
+        }
+
+        private void Timer_Tick(object sender, EventArgs e) {
+            Update();
         }
     }
 }

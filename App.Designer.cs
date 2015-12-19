@@ -33,14 +33,13 @@
             this.uiContextOption = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.uiContextRestartAdminMode = new System.Windows.Forms.ToolStripMenuItem();
+            this.uiContextRestartUserMode = new System.Windows.Forms.ToolStripMenuItem();
             this.uiContextExit = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.uiContextCaptureCopy = new System.Windows.Forms.ToolStripMenuItem();
             this.uiContextCaptureSaveFolder = new System.Windows.Forms.ToolStripMenuItem();
             this.uiContextCaptureSaveAs = new System.Windows.Forms.ToolStripMenuItem();
-            this.uiTimer = new System.Windows.Forms.Timer(this.components);
             this.uiSaveAs = new System.Windows.Forms.SaveFileDialog();
-            this.uiContextRestartUserMode = new System.Windows.Forms.ToolStripMenuItem();
             this.uiContextMenu.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -64,20 +63,20 @@
             this.uiContextCaptureSaveFolder,
             this.uiContextCaptureSaveAs});
             this.uiContextMenu.Name = "uiContextMenu";
-            this.uiContextMenu.Size = new System.Drawing.Size(247, 148);
+            this.uiContextMenu.Size = new System.Drawing.Size(231, 126);
             this.uiContextMenu.Opening += new System.ComponentModel.CancelEventHandler(this.uiContextMenu_Opening);
             // 
             // uiContextStartFFXI
             // 
             this.uiContextStartFFXI.Name = "uiContextStartFFXI";
-            this.uiContextStartFFXI.Size = new System.Drawing.Size(246, 22);
+            this.uiContextStartFFXI.Size = new System.Drawing.Size(230, 22);
             this.uiContextStartFFXI.Text = "FAINAL FANTASY XI を起動(&F)";
             this.uiContextStartFFXI.Click += new System.EventHandler(this.uiContextStartFFXI_Click);
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(243, 6);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(227, 6);
             // 
             // uiContextSettings
             // 
@@ -88,44 +87,51 @@
             this.uiContextRestartUserMode,
             this.uiContextExit});
             this.uiContextSettings.Name = "uiContextSettings";
-            this.uiContextSettings.Size = new System.Drawing.Size(246, 22);
+            this.uiContextSettings.Size = new System.Drawing.Size(230, 22);
             this.uiContextSettings.Text = "設定(&O)";
             // 
             // uiContextOption
             // 
             this.uiContextOption.Name = "uiContextOption";
-            this.uiContextOption.Size = new System.Drawing.Size(206, 22);
+            this.uiContextOption.Size = new System.Drawing.Size(197, 22);
             this.uiContextOption.Text = "オプション(&O)...";
             this.uiContextOption.Click += new System.EventHandler(this.uiContextOption_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(203, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(194, 6);
             // 
             // uiContextRestartAdminMode
             // 
             this.uiContextRestartAdminMode.Name = "uiContextRestartAdminMode";
-            this.uiContextRestartAdminMode.Size = new System.Drawing.Size(206, 22);
+            this.uiContextRestartAdminMode.Size = new System.Drawing.Size(197, 22);
             this.uiContextRestartAdminMode.Text = "管理者モードで再起動(&R)";
             this.uiContextRestartAdminMode.Click += new System.EventHandler(this.uiContextRestartAdminMode_Click);
+            // 
+            // uiContextRestartUserMode
+            // 
+            this.uiContextRestartUserMode.Name = "uiContextRestartUserMode";
+            this.uiContextRestartUserMode.Size = new System.Drawing.Size(197, 22);
+            this.uiContextRestartUserMode.Text = "ユーザーモードで再起動(&U)";
+            this.uiContextRestartUserMode.Click += new System.EventHandler(this.uiContextRestartUserMode_Click);
             // 
             // uiContextExit
             // 
             this.uiContextExit.Name = "uiContextExit";
-            this.uiContextExit.Size = new System.Drawing.Size(206, 22);
+            this.uiContextExit.Size = new System.Drawing.Size(197, 22);
             this.uiContextExit.Text = "終了(&X)";
             this.uiContextExit.Click += new System.EventHandler(this.uiContextExit_Click);
             // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(243, 6);
+            this.toolStripSeparator3.Size = new System.Drawing.Size(227, 6);
             // 
             // uiContextCaptureCopy
             // 
             this.uiContextCaptureCopy.Name = "uiContextCaptureCopy";
-            this.uiContextCaptureCopy.Size = new System.Drawing.Size(246, 22);
+            this.uiContextCaptureCopy.Size = new System.Drawing.Size(230, 22);
             this.uiContextCaptureCopy.Text = "画像をコピー(&C)";
             this.uiContextCaptureCopy.DropDownItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.uiContextCaptureCopy_DropDownItemClicked);
             this.uiContextCaptureCopy.Click += new System.EventHandler(this.uiContextCaptureCopy_Click);
@@ -133,7 +139,7 @@
             // uiContextCaptureSaveFolder
             // 
             this.uiContextCaptureSaveFolder.Name = "uiContextCaptureSaveFolder";
-            this.uiContextCaptureSaveFolder.Size = new System.Drawing.Size(246, 22);
+            this.uiContextCaptureSaveFolder.Size = new System.Drawing.Size(230, 22);
             this.uiContextCaptureSaveFolder.Text = "画像をフォルダーに保存(&S)";
             this.uiContextCaptureSaveFolder.DropDownItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.uiContextCaptureSaveFolder_DropDownItemClicked);
             this.uiContextCaptureSaveFolder.Click += new System.EventHandler(this.uiContextCaptureSaveFolder_Click);
@@ -141,26 +147,15 @@
             // uiContextCaptureSaveAs
             // 
             this.uiContextCaptureSaveAs.Name = "uiContextCaptureSaveAs";
-            this.uiContextCaptureSaveAs.Size = new System.Drawing.Size(246, 22);
+            this.uiContextCaptureSaveAs.Size = new System.Drawing.Size(230, 22);
             this.uiContextCaptureSaveAs.Text = "名前を付けて画像を保存(&A)...";
             this.uiContextCaptureSaveAs.DropDownItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.uiContextCaptureSaveAs_DropDownItemClicked);
             this.uiContextCaptureSaveAs.Click += new System.EventHandler(this.uiContextCaptureSaveAs_Click);
-            // 
-            // uiTimer
-            // 
-            this.uiTimer.Tick += new System.EventHandler(this.uiTimer_Tick);
             // 
             // uiSaveAs
             // 
             this.uiSaveAs.Filter = "PNG イメージ|*.png|JPEG イメージ|*.jpg|すべてのファイル|*";
             this.uiSaveAs.Title = "画像を保存 - FFXI Gamma";
-            // 
-            // uiContextRestartUserMode
-            // 
-            this.uiContextRestartUserMode.Name = "uiContextRestartUserMode";
-            this.uiContextRestartUserMode.Size = new System.Drawing.Size(206, 22);
-            this.uiContextRestartUserMode.Text = "ユーザーモードで再起動(&U)";
-            this.uiContextRestartUserMode.Click += new System.EventHandler(this.uiContextRestartUserMode_Click);
             // 
             // App
             // 
@@ -182,7 +177,6 @@
 
         private System.Windows.Forms.NotifyIcon uiNotifyIcon;
         private System.Windows.Forms.ContextMenuStrip uiContextMenu;
-        private System.Windows.Forms.Timer uiTimer;
         private System.Windows.Forms.ToolStripMenuItem uiContextCaptureCopy;
         private System.Windows.Forms.ToolStripMenuItem uiContextCaptureSaveAs;
         private System.Windows.Forms.SaveFileDialog uiSaveAs;
