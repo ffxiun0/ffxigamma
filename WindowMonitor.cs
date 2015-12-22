@@ -5,14 +5,21 @@ using System.Linq;
 using System.Windows.Forms;
 
 namespace ffxigamma {
-    delegate void WindowMonitorDelegate(object sender, WindowMonitorEventArgs e);
+    delegate void WindowMonitorEventHandler(object sender, WindowMonitorEventArgs e);
 
     class WindowMonitor : Component {
+        private bool disposed;
         private Timer timer;
         private HashSet<string> names;
         private Dictionary<WindowInfo, WindowInfo> map;
 
+        public event WindowMonitorEventHandler WindowOpened;
+        public event WindowMonitorEventHandler WindowClosed;
+        public event WindowMonitorEventHandler WindowUpdate;
+
         public WindowMonitor() {
+            disposed = false;
+
             timer = new Timer();
             timer.Interval = 100;
             timer.Tick += Timer_Tick;
@@ -22,6 +29,19 @@ namespace ffxigamma {
             Expire = 1000;
         }
 
+        public WindowMonitor(IContainer container) : this() {
+            container.Add(this);
+        }
+
+        protected override void Dispose(bool disposing) {
+            if (disposed) return;
+            if (disposing)
+                timer.Dispose();
+            disposed = true;
+            base.Dispose(disposing);
+        }
+
+        [DefaultValue(1000)]
         public int Expire { get; set; }
 
         public IEnumerable<string> Names {
@@ -33,9 +53,15 @@ namespace ffxigamma {
             }
         }
 
-        public event WindowMonitorDelegate WindowOpened;
-        public event WindowMonitorDelegate WindowClosed;
-        public event WindowMonitorDelegate WindowUpdate;
+        [DefaultValue(100)]
+        public int Interval {
+            get {
+                return timer.Interval;
+            }
+            set {
+                timer.Interval = value;
+            }
+        }
 
         public void Start() {
             if (timer.Enabled) return;
@@ -49,6 +75,7 @@ namespace ffxigamma {
             timer.Stop();
         }
 
+        [DefaultValue(false)]
         public bool Enabled {
             get {
                 return timer.Enabled;

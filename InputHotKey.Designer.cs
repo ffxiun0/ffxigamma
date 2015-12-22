@@ -23,11 +23,13 @@
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent() {
+            this.components = new System.ComponentModel.Container();
             this.label1 = new System.Windows.Forms.Label();
             this.uiKeys = new System.Windows.Forms.TextBox();
             this.uiReset = new System.Windows.Forms.Button();
             this.uiOk = new System.Windows.Forms.Button();
             this.uiCancel = new System.Windows.Forms.Button();
+            this.globalKeyReader = new ffxigamma.GlobalKeyReader(this.components);
             this.SuspendLayout();
             // 
             // label1
@@ -82,6 +84,11 @@
             this.uiCancel.UseVisualStyleBackColor = true;
             this.uiCancel.Click += new System.EventHandler(this.uiCancel_Click);
             // 
+            // globalKeyReader
+            // 
+            this.globalKeyReader.GlobalKeyDown += new ffxigamma.GlobalKeyEventHandler(this.globalKeyReader_GlobalKeyDown);
+            this.globalKeyReader.GlobalKeyUp += new ffxigamma.GlobalKeyEventHandler(this.globalKeyReader_GlobalKeyUp);
+            // 
             // InputHotKey
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -110,5 +117,6 @@
         private System.Windows.Forms.Button uiReset;
         private System.Windows.Forms.Button uiOk;
         private System.Windows.Forms.Button uiCancel;
+        private GlobalKeyReader globalKeyReader;
     }
 }

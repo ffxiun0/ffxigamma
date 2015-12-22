@@ -5,7 +5,6 @@ using System.Windows.Forms;
 
 namespace ffxigamma {
     public partial class InputHotKey : Form {
-        private GlobalKeyReader keyReader;
         private bool fix;
         private HotKey editingKey;
 
@@ -13,10 +12,6 @@ namespace ffxigamma {
 
         public InputHotKey() {
             InitializeComponent();
-
-            keyReader = new GlobalKeyReader();
-            keyReader.GlobalKeyDown += keyReader_GlobalKeyDown;
-            keyReader.GlobalKeyUp += keyReader_GlobalKeyUp;
 
             fix = false;
             editingKey = new HotKey();
@@ -81,18 +76,18 @@ namespace ffxigamma {
 
         private void InputKey_Load(object sender, EventArgs e) {
             Reset();
-            keyReader.Start();
+            globalKeyReader.Start();
         }
 
         private void InputHotKey_FormClosed(object sender, FormClosedEventArgs e) {
-            keyReader.Stop();
+            globalKeyReader.Stop();
         }
 
-        private void keyReader_GlobalKeyDown(object sender, GlobalKeyEventArgs e) {
+        private void globalKeyReader_GlobalKeyDown(object sender, GlobalKeyEventArgs e) {
             UpdateKey(e);
         }
 
-        private void keyReader_GlobalKeyUp(object sender, GlobalKeyEventArgs e) {
+        private void globalKeyReader_GlobalKeyUp(object sender, GlobalKeyEventArgs e) {
             UpdateKey(e);
         }
 

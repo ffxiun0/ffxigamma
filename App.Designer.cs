@@ -40,6 +40,8 @@
             this.uiContextCaptureSaveFolder = new System.Windows.Forms.ToolStripMenuItem();
             this.uiContextCaptureSaveAs = new System.Windows.Forms.ToolStripMenuItem();
             this.uiSaveAs = new System.Windows.Forms.SaveFileDialog();
+            this.globalKeyReader = new ffxigamma.GlobalKeyReader(this.components);
+            this.windowMonitor = new ffxigamma.WindowMonitor(this.components);
             this.uiContextMenu.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -157,6 +159,17 @@
             this.uiSaveAs.Filter = "PNG イメージ|*.png|JPEG イメージ|*.jpg|すべてのファイル|*";
             this.uiSaveAs.Title = "画像を保存 - FFXI Gamma";
             // 
+            // globalKeyReader
+            // 
+            this.globalKeyReader.GlobalKeyDown += new ffxigamma.GlobalKeyEventHandler(this.globalKeyReader_GlobalKeyDown);
+            // 
+            // windowMonitor
+            // 
+            this.windowMonitor.Names = new string[0];
+            this.windowMonitor.WindowOpened += new ffxigamma.WindowMonitorEventHandler(this.windowMonitor_WindowOpend);
+            this.windowMonitor.WindowClosed += new ffxigamma.WindowMonitorEventHandler(this.windowMonitor_WindowClosed);
+            this.windowMonitor.WindowUpdate += new ffxigamma.WindowMonitorEventHandler(this.windowMonitor_WindowUpdate);
+            // 
             // App
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -190,6 +203,8 @@
         private System.Windows.Forms.ToolStripMenuItem uiContextExit;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem uiContextRestartUserMode;
+        private GlobalKeyReader globalKeyReader;
+        private WindowMonitor windowMonitor;
     }
 }
 

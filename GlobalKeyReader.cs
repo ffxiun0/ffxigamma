@@ -3,19 +3,44 @@ using System.ComponentModel;
 using System.Windows.Forms;
 
 namespace ffxigamma {
+    delegate void GlobalKeyEventHandler(object sender, GlobalKeyEventArgs e);
+
     class GlobalKeyReader : Component {
+        private bool disposed;
         private Timer timer;
         private GlobalKeys prev;
 
-        public delegate void GlobalKeyEventHandler(object sender, GlobalKeyEventArgs e);
         public event GlobalKeyEventHandler GlobalKeyDown;
         public event GlobalKeyEventHandler GlobalKeyUp;
 
         public GlobalKeyReader() {
-            this.timer = new Timer();
-            this.timer.Interval = 30;
-            this.timer.Tick += timer_Tick;
-            this.prev = GlobalKeys.Empty;
+            disposed = false;
+            timer = new Timer();
+            timer.Interval = 30;
+            timer.Tick += Timer_Tick;
+            prev = GlobalKeys.Empty;
+        }
+
+        public GlobalKeyReader(IContainer container) : this() {
+            container.Add(this);
+        }
+
+        protected override void Dispose(bool disposing) {
+            if (disposed) return;
+            if (disposing)
+                timer.Dispose();
+            disposed = true;
+            base.Dispose(disposing);
+        }
+
+        [DefaultValue(30)]
+        public int Interval {
+            get {
+                return timer.Interval;
+            }
+            set {
+                timer.Interval = value;
+            }
         }
 
         public void Start() {
@@ -31,6 +56,7 @@ namespace ffxigamma {
             timer.Stop();
         }
 
+        [DefaultValue(false)]
         public bool Enabled {
             get {
                 return timer.Enabled;
@@ -43,7 +69,7 @@ namespace ffxigamma {
             }
         }
 
-        void timer_Tick(object sender, EventArgs e) {
+        void Timer_Tick(object sender, EventArgs e) {
             var now = GlobalKeys.Now;
             var down = GlobalKeys.Diff(prev, now);
             var up = GlobalKeys.Diff(now, prev);

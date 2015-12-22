@@ -16,35 +16,22 @@ namespace ffxigamma {
         public const string AppName = "FFXI Gamma";
         private const string AppFolderName = "ffxigamma";
         private const string ConfigFileName = "config.xml";
-        private const int WindowMonitorExpire = 1000;
         private const int SetWindowPositionTimeout = 5000;
         private const int SetWindowPositionDelay = 100;
 
         private Config config;
         private Screen[] prevScreens;
         private Settings editSettings;
-        private GlobalKeyReader globalKeyReader;
-        private WindowMonitor windowMonitor;
 
         public App() {
             InitializeComponent();
 
+            config = LoadConfig();
             prevScreens = new Screen[0];
             editSettings = new Settings();
 
-            globalKeyReader = new GlobalKeyReader();
-            globalKeyReader.GlobalKeyDown += globalKeyReader_GlobalKeyDown;
-
-            windowMonitor = new WindowMonitor();
-            windowMonitor.Expire = WindowMonitorExpire;
-            windowMonitor.WindowOpened += windowMonitor_WindowOpend;
-            windowMonitor.WindowClosed += windowMonitor_WindowClosed;
-            windowMonitor.WindowUpdate += WindowMonitor_WindowUpdate;
-
             SetShieldIcon(uiContextStartFFXI);
             SetShieldIcon(uiContextRestartAdminMode);
-
-            config = LoadConfig();
         }
 
         private void SetShieldIcon(ToolStripMenuItem menuItem) {
@@ -563,7 +550,7 @@ namespace ffxigamma {
             SaveWindowPosition(e.WindowInfo);
         }
 
-        private void WindowMonitor_WindowUpdate(object sender, WindowMonitorEventArgs e) {
+        private void windowMonitor_WindowUpdate(object sender, WindowMonitorEventArgs e) {
             UpdateScreenGamma(e.WindowInfo);
         }
     }
