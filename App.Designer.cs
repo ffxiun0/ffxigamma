@@ -165,7 +165,6 @@
             // 
             // windowMonitor
             // 
-            this.windowMonitor.Names = new string[0];
             this.windowMonitor.WindowOpened += new ffxigamma.WindowMonitorEventHandler(this.windowMonitor_WindowOpend);
             this.windowMonitor.WindowClosed += new ffxigamma.WindowMonitorEventHandler(this.windowMonitor_WindowClosed);
             this.windowMonitor.WindowUpdate += new ffxigamma.WindowMonitorEventHandler(this.windowMonitor_WindowUpdate);

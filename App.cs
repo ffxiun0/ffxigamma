@@ -149,7 +149,10 @@ namespace ffxigamma {
 
         private void ApplyConfig(Config config) {
             globalKeyReader.Enabled = config.EnableHotkey;
-            windowMonitor.Names = from ws in config.WindowSettingsList select ws.Name;
+
+            var names = from ws in config.WindowSettingsList select ws.Name;
+            names = new HashSet<string>(names);
+            windowMonitor.Filter = wnd => names.Contains(wnd.GetWindowText());
         }
 
         private static string GetConfigPath() {

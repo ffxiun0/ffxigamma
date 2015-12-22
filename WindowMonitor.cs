@@ -10,7 +10,6 @@ namespace ffxigamma {
     class WindowMonitor : Component {
         private bool disposed;
         private Timer timer;
-        private HashSet<string> names;
         private Dictionary<WindowInfo, WindowInfo> map;
 
         public event WindowMonitorEventHandler WindowOpened;
@@ -24,9 +23,9 @@ namespace ffxigamma {
             timer.Interval = 100;
             timer.Tick += Timer_Tick;
 
-            names = new HashSet<string>();
             map = new Dictionary<WindowInfo, WindowInfo>();
             Expire = 1000;
+            Filter = null;
         }
 
         public WindowMonitor(IContainer container) : this() {
@@ -44,14 +43,8 @@ namespace ffxigamma {
         [DefaultValue(1000)]
         public int Expire { get; set; }
 
-        public IEnumerable<string> Names {
-            get {
-                return names.ToArray();
-            }
-            set {
-                names = new HashSet<string>(value);
-            }
-        }
+        [DefaultValue(null), Browsable(false)]
+        public Func<Window, bool> Filter { get; set; }
 
         [DefaultValue(100)]
         public int Interval {
@@ -113,8 +106,10 @@ namespace ffxigamma {
         }
 
         private IEnumerable<WindowInfo> FindTargetWindows() {
+            var filter = Filter != null ? Filter : wnd => true;
+
             var result = from wnd in Window.EnumWindows()
-                         where names.Contains(wnd.GetWindowText())
+                         where filter(wnd)
                          select new WindowInfo(wnd);
             return result.ToArray();
         }
