@@ -6,6 +6,9 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.Remoting;
+using System.Runtime.Remoting.Channels;
+using System.Runtime.Remoting.Channels.Ipc;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -350,12 +353,18 @@ namespace ffxigamma {
                 return ImageFormat.Png;
         }
 
-        private void StartFFXI() {
+        public void StartFFXI() {
+            if (FFXI.IsRunning()) return;
+
+            if (!FFXI.Start())
+                ShowError(Properties.Resources.FFXIStartFail);
+        }
+
+        public void StartFFXIinAdmin() {
             if (FFXI.IsRunning()) return;
 
             if (Program.IsAdminMode()) {
-                if (!FFXI.Start())
-                    ShowError(Properties.Resources.FFXIStartFail);
+                StartFFXI();
             } else {
                 if (Program.RestartAdminMode("/ffxi"))
                     Close();
@@ -462,11 +471,27 @@ namespace ffxigamma {
             return true;
         }
 
+        private void StartRemoteControl() {
+            var channel = new IpcServerChannel("ffxigamma");
+            ChannelServices.RegisterChannel(channel, true);
+            var remote = new RemoteControl(this);
+            RemotingServices.Marshal(remote, "remote-control", typeof(RemoteControl));
+        }
+
+        public static RemoteControl GetRemoteControl() {
+            var channel = new IpcClientChannel();
+            ChannelServices.RegisterChannel(channel, true);
+            var remote = (RemoteControl)Activator.GetObject(typeof(RemoteControl),
+                "ipc://ffxigamma/remote-control");
+            return remote;
+        }
+
         private void App_Load(object sender, EventArgs e) {
             Visible = false;
             ApplyConfig(config);
             ResetScreenGamma();
             windowMonitor.Start();
+            StartRemoteControl();
         }
 
         private void App_FormClosing(object sender, FormClosingEventArgs e) {
@@ -529,7 +554,7 @@ namespace ffxigamma {
         }
 
         private void uiContextStartFFXI_Click(object sender, EventArgs e) {
-            StartFFXI();
+            StartFFXIinAdmin();
         }
 
         private void uiContextRestartAdminMode_Click(object sender, EventArgs e) {

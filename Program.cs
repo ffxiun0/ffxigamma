@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Security.Principal;
+using System.Runtime.Remoting;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -19,7 +19,12 @@ namespace ffxigamma {
             }
 
             if (IsRunning()) {
-                ShowWarning(Properties.Resources.AlreadyRunning);
+                if (HaveOption("/ffxi") || config.StartFFXI && !FFXI.IsRunning()) {
+                    if (!StartFFXIinRemote(config))
+                        ShowWarning(Properties.Resources.RemoteControlFail);
+                } else {
+                    ShowWarning(Properties.Resources.AlreadyRunning);
+                }
                 return;
             }
 
@@ -95,6 +100,21 @@ namespace ffxigamma {
                 Thread.Sleep(100);
             }
             return true;
+        }
+
+        private static bool StartFFXIinRemote(Config config) {
+            try {
+                var remote = App.GetRemoteControl();
+                if (config.AdminMode)
+                    remote.StartFFXIinAdmin();
+                else
+                    remote.StartFFXI();
+
+                return true;
+            }
+            catch (RemotingException) {
+                return false;
+            }
         }
     }
 }

@@ -129,6 +129,9 @@
   <data name="NotifySaved" xml:space="preserve">
     <value>画像を保存しました。</value>
   </data>
+  <data name="RemoteControlFail" xml:space="preserve">
+    <value>リモートコントロールに失敗しました。</value>
+  </data>
   <data name="RequireAdminWarning" xml:space="preserve">
     <value>この機能を有効にするには管理者モードで起動する必要があります。
 
