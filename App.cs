@@ -523,7 +523,7 @@ namespace ffxigamma {
 
             uiContextStartFFXI.Enabled = !FFXI.IsRunning();
             uiContextRestartAdminMode.Enabled = !Program.IsAdminMode();
-            uiContextRestartUserMode.Enabled = Program.IsAdminMode();
+            uiContextRestartUserMode.Enabled = Program.IsAdminMode() && !config.AdminMode;
         }
 
         private void uiContextCaptureCopy_Click(object sender, EventArgs e) {
