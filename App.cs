@@ -9,6 +9,7 @@ using System.Reflection;
 using System.Runtime.Remoting;
 using System.Runtime.Remoting.Channels;
 using System.Runtime.Remoting.Channels.Ipc;
+using System.Runtime.Remoting.Lifetime;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -472,6 +473,8 @@ namespace ffxigamma {
         }
 
         private void StartRemoteControl() {
+            LifetimeServices.LeaseTime = TimeSpan.Zero;
+
             var channel = new IpcServerChannel("ffxigamma");
             ChannelServices.RegisterChannel(channel, true);
             var remote = new RemoteControl(this);
