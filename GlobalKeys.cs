@@ -25,7 +25,7 @@ namespace ffxigamma {
         }
 
         public bool Contains(Keys key) {
-            return keys[(int)key];
+            return keys[(int)key & 0xff];
         }
 
         public int Count {

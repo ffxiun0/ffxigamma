@@ -8,19 +8,18 @@ namespace ffxigamma {
         public bool Shift { get; set; }
         public bool Alt { get; set; }
 
-        public HotKey() {
-            this.Key = Keys.None;
-            this.Control = false;
-            this.Shift = false;
-            this.Alt = false;
-        }
-
         public HotKey(Keys key, bool control, bool shift, bool alt) {
             this.Key = key;
             this.Control = control;
             this.Shift = shift;
             this.Alt = alt;
         }
+
+        public HotKey()
+            : this(Keys.None, false, false, false) { }
+
+        public HotKey(HotKeySettings key)
+            : this((Keys)key.Key, key.Control, key.Shift, key.Alt) { }
 
         public override string ToString() {
             var list = new List<string>();

@@ -5,7 +5,7 @@ using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 
 namespace ffxigamma {
-    class Window {
+    public class Window {
         private IntPtr hWnd;
 
         public Window(IntPtr hWnd) {

@@ -42,9 +42,9 @@
             this.uiImageTextList = new System.Windows.Forms.ListBox();
             this.uiEnableImageText = new System.Windows.Forms.CheckBox();
             this.uiImageFormatName = new System.Windows.Forms.ComboBox();
-            this.uiEditHotKey = new System.Windows.Forms.Button();
-            this.uiEnableHotKey = new System.Windows.Forms.CheckBox();
-            this.uiHotKey = new System.Windows.Forms.TextBox();
+            this.uiEditHotKeyCapture = new System.Windows.Forms.Button();
+            this.uiEnableHotKeyCapture = new System.Windows.Forms.CheckBox();
+            this.uiHotKeyCapture = new System.Windows.Forms.TextBox();
             this.label14 = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
             this.uiEditImageFolder = new System.Windows.Forms.Button();
@@ -54,6 +54,17 @@
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.uiSaveWindowPosition = new System.Windows.Forms.CheckBox();
             this.uiWindowSettingsEdit = new System.Windows.Forms.Button();
+            this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.uiEditHotKeyVolumeDown = new System.Windows.Forms.Button();
+            this.uiHotKeyVolumeDown = new System.Windows.Forms.TextBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.uiEditHotKeyVolumeUp = new System.Windows.Forms.Button();
+            this.uiHotKeyVolumeUp = new System.Windows.Forms.TextBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.uiEditHotKeyMute = new System.Windows.Forms.Button();
+            this.uiEnableHotKeyVolumeControl = new System.Windows.Forms.CheckBox();
+            this.uiHotKeyMute = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.uiAdminMode = new System.Windows.Forms.CheckBox();
             this.uiStartUpFFXI = new System.Windows.Forms.CheckBox();
@@ -64,6 +75,7 @@
             this.tabControl1.SuspendLayout();
             this.tabPage3.SuspendLayout();
             this.tabPage2.SuspendLayout();
+            this.tabPage4.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
@@ -186,6 +198,7 @@
             // 
             this.tabControl1.Controls.Add(this.tabPage3);
             this.tabControl1.Controls.Add(this.tabPage2);
+            this.tabControl1.Controls.Add(this.tabPage4);
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
@@ -202,9 +215,9 @@
             this.tabPage3.Controls.Add(this.uiImageTextList);
             this.tabPage3.Controls.Add(this.uiEnableImageText);
             this.tabPage3.Controls.Add(this.uiImageFormatName);
-            this.tabPage3.Controls.Add(this.uiEditHotKey);
-            this.tabPage3.Controls.Add(this.uiEnableHotKey);
-            this.tabPage3.Controls.Add(this.uiHotKey);
+            this.tabPage3.Controls.Add(this.uiEditHotKeyCapture);
+            this.tabPage3.Controls.Add(this.uiEnableHotKeyCapture);
+            this.tabPage3.Controls.Add(this.uiHotKeyCapture);
             this.tabPage3.Controls.Add(this.label14);
             this.tabPage3.Controls.Add(this.label13);
             this.tabPage3.Controls.Add(this.uiEditImageFolder);
@@ -287,37 +300,37 @@
             this.uiImageFormatName.Size = new System.Drawing.Size(86, 20);
             this.uiImageFormatName.TabIndex = 5;
             // 
-            // uiEditHotKey
+            // uiEditHotKeyCapture
             // 
-            this.uiEditHotKey.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.uiEditHotKey.Location = new System.Drawing.Point(281, 126);
-            this.uiEditHotKey.Name = "uiEditHotKey";
-            this.uiEditHotKey.Size = new System.Drawing.Size(75, 23);
-            this.uiEditHotKey.TabIndex = 9;
-            this.uiEditHotKey.Text = "設定...";
-            this.uiEditHotKey.UseVisualStyleBackColor = true;
-            this.uiEditHotKey.Click += new System.EventHandler(this.uiEditHotKey_Click);
+            this.uiEditHotKeyCapture.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.uiEditHotKeyCapture.Location = new System.Drawing.Point(281, 126);
+            this.uiEditHotKeyCapture.Name = "uiEditHotKeyCapture";
+            this.uiEditHotKeyCapture.Size = new System.Drawing.Size(75, 23);
+            this.uiEditHotKeyCapture.TabIndex = 9;
+            this.uiEditHotKeyCapture.Text = "設定...";
+            this.uiEditHotKeyCapture.UseVisualStyleBackColor = true;
+            this.uiEditHotKeyCapture.Click += new System.EventHandler(this.uiEditHotKey_Click);
             // 
-            // uiEnableHotKey
+            // uiEnableHotKeyCapture
             // 
-            this.uiEnableHotKey.AutoSize = true;
-            this.uiEnableHotKey.Location = new System.Drawing.Point(8, 106);
-            this.uiEnableHotKey.Name = "uiEnableHotKey";
-            this.uiEnableHotKey.Size = new System.Drawing.Size(146, 16);
-            this.uiEnableHotKey.TabIndex = 6;
-            this.uiEnableHotKey.Text = "ホットキーを有効にする(&H)";
-            this.uiEnableHotKey.UseVisualStyleBackColor = true;
-            this.uiEnableHotKey.Click += new System.EventHandler(this.uiEnableHotKey_Click);
+            this.uiEnableHotKeyCapture.AutoSize = true;
+            this.uiEnableHotKeyCapture.Location = new System.Drawing.Point(8, 106);
+            this.uiEnableHotKeyCapture.Name = "uiEnableHotKeyCapture";
+            this.uiEnableHotKeyCapture.Size = new System.Drawing.Size(146, 16);
+            this.uiEnableHotKeyCapture.TabIndex = 6;
+            this.uiEnableHotKeyCapture.Text = "ホットキーを有効にする(&H)";
+            this.uiEnableHotKeyCapture.UseVisualStyleBackColor = true;
+            this.uiEnableHotKeyCapture.Click += new System.EventHandler(this.uiEnableHotKey_Click);
             // 
-            // uiHotKey
+            // uiHotKeyCapture
             // 
-            this.uiHotKey.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.uiHotKeyCapture.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.uiHotKey.Location = new System.Drawing.Point(84, 128);
-            this.uiHotKey.Name = "uiHotKey";
-            this.uiHotKey.ReadOnly = true;
-            this.uiHotKey.Size = new System.Drawing.Size(191, 19);
-            this.uiHotKey.TabIndex = 8;
+            this.uiHotKeyCapture.Location = new System.Drawing.Point(84, 128);
+            this.uiHotKeyCapture.Name = "uiHotKeyCapture";
+            this.uiHotKeyCapture.ReadOnly = true;
+            this.uiHotKeyCapture.Size = new System.Drawing.Size(191, 19);
+            this.uiHotKeyCapture.TabIndex = 8;
             // 
             // label14
             // 
@@ -414,6 +427,126 @@
             this.uiWindowSettingsEdit.UseVisualStyleBackColor = true;
             this.uiWindowSettingsEdit.Click += new System.EventHandler(this.uiWindowSettingsEdit_Click);
             // 
+            // tabPage4
+            // 
+            this.tabPage4.Controls.Add(this.uiEditHotKeyVolumeDown);
+            this.tabPage4.Controls.Add(this.uiHotKeyVolumeDown);
+            this.tabPage4.Controls.Add(this.label6);
+            this.tabPage4.Controls.Add(this.uiEditHotKeyVolumeUp);
+            this.tabPage4.Controls.Add(this.uiHotKeyVolumeUp);
+            this.tabPage4.Controls.Add(this.label5);
+            this.tabPage4.Controls.Add(this.uiEditHotKeyMute);
+            this.tabPage4.Controls.Add(this.uiEnableHotKeyVolumeControl);
+            this.tabPage4.Controls.Add(this.uiHotKeyMute);
+            this.tabPage4.Controls.Add(this.label4);
+            this.tabPage4.Location = new System.Drawing.Point(4, 22);
+            this.tabPage4.Name = "tabPage4";
+            this.tabPage4.Size = new System.Drawing.Size(364, 301);
+            this.tabPage4.TabIndex = 4;
+            this.tabPage4.Text = "サウンド";
+            this.tabPage4.UseVisualStyleBackColor = true;
+            // 
+            // uiEditHotKeyVolumeDown
+            // 
+            this.uiEditHotKeyVolumeDown.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.uiEditHotKeyVolumeDown.Location = new System.Drawing.Point(281, 89);
+            this.uiEditHotKeyVolumeDown.Name = "uiEditHotKeyVolumeDown";
+            this.uiEditHotKeyVolumeDown.Size = new System.Drawing.Size(75, 23);
+            this.uiEditHotKeyVolumeDown.TabIndex = 9;
+            this.uiEditHotKeyVolumeDown.Text = "設定...";
+            this.uiEditHotKeyVolumeDown.UseVisualStyleBackColor = true;
+            this.uiEditHotKeyVolumeDown.Click += new System.EventHandler(this.uiEditHotKeyVolumeDown_Click);
+            // 
+            // uiHotKeyVolumeDown
+            // 
+            this.uiHotKeyVolumeDown.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.uiHotKeyVolumeDown.Location = new System.Drawing.Point(84, 91);
+            this.uiHotKeyVolumeDown.Name = "uiHotKeyVolumeDown";
+            this.uiHotKeyVolumeDown.ReadOnly = true;
+            this.uiHotKeyVolumeDown.Size = new System.Drawing.Size(191, 19);
+            this.uiHotKeyVolumeDown.TabIndex = 8;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(8, 94);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(72, 12);
+            this.label6.TabIndex = 7;
+            this.label6.Text = "音量ダウン(&D)";
+            // 
+            // uiEditHotKeyVolumeUp
+            // 
+            this.uiEditHotKeyVolumeUp.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.uiEditHotKeyVolumeUp.Location = new System.Drawing.Point(281, 60);
+            this.uiEditHotKeyVolumeUp.Name = "uiEditHotKeyVolumeUp";
+            this.uiEditHotKeyVolumeUp.Size = new System.Drawing.Size(75, 23);
+            this.uiEditHotKeyVolumeUp.TabIndex = 6;
+            this.uiEditHotKeyVolumeUp.Text = "設定...";
+            this.uiEditHotKeyVolumeUp.UseVisualStyleBackColor = true;
+            this.uiEditHotKeyVolumeUp.Click += new System.EventHandler(this.uiEditHotKeyVolumeUp_Click);
+            // 
+            // uiHotKeyVolumeUp
+            // 
+            this.uiHotKeyVolumeUp.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.uiHotKeyVolumeUp.Location = new System.Drawing.Point(84, 62);
+            this.uiHotKeyVolumeUp.Name = "uiHotKeyVolumeUp";
+            this.uiHotKeyVolumeUp.ReadOnly = true;
+            this.uiHotKeyVolumeUp.Size = new System.Drawing.Size(191, 19);
+            this.uiHotKeyVolumeUp.TabIndex = 5;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(8, 65);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(70, 12);
+            this.label5.TabIndex = 4;
+            this.label5.Text = "音量アップ(&U)";
+            // 
+            // uiEditHotKeyMute
+            // 
+            this.uiEditHotKeyMute.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.uiEditHotKeyMute.Location = new System.Drawing.Point(281, 31);
+            this.uiEditHotKeyMute.Name = "uiEditHotKeyMute";
+            this.uiEditHotKeyMute.Size = new System.Drawing.Size(75, 23);
+            this.uiEditHotKeyMute.TabIndex = 3;
+            this.uiEditHotKeyMute.Text = "設定...";
+            this.uiEditHotKeyMute.UseVisualStyleBackColor = true;
+            this.uiEditHotKeyMute.Click += new System.EventHandler(this.uiEditHotKeyMute_Click);
+            // 
+            // uiEnableHotKeyVolumeControl
+            // 
+            this.uiEnableHotKeyVolumeControl.AutoSize = true;
+            this.uiEnableHotKeyVolumeControl.Location = new System.Drawing.Point(8, 7);
+            this.uiEnableHotKeyVolumeControl.Name = "uiEnableHotKeyVolumeControl";
+            this.uiEnableHotKeyVolumeControl.Size = new System.Drawing.Size(146, 16);
+            this.uiEnableHotKeyVolumeControl.TabIndex = 0;
+            this.uiEnableHotKeyVolumeControl.Text = "ホットキーを有効にする(&H)";
+            this.uiEnableHotKeyVolumeControl.UseVisualStyleBackColor = true;
+            this.uiEnableHotKeyVolumeControl.Click += new System.EventHandler(this.uiEnableVolumeControl_Click);
+            // 
+            // uiHotKeyMute
+            // 
+            this.uiHotKeyMute.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.uiHotKeyMute.Location = new System.Drawing.Point(84, 33);
+            this.uiHotKeyMute.Name = "uiHotKeyMute";
+            this.uiHotKeyMute.ReadOnly = true;
+            this.uiHotKeyMute.Size = new System.Drawing.Size(191, 19);
+            this.uiHotKeyMute.TabIndex = 2;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(8, 36);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(55, 12);
+            this.label4.TabIndex = 1;
+            this.label4.Text = "ミュート(&M)";
+            // 
             // tabPage1
             // 
             this.tabPage1.Controls.Add(this.uiAdminMode);
@@ -480,6 +613,8 @@
             this.tabPage3.PerformLayout();
             this.tabPage2.ResumeLayout(false);
             this.tabPage2.PerformLayout();
+            this.tabPage4.ResumeLayout(false);
+            this.tabPage4.PerformLayout();
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
             this.panel1.ResumeLayout(false);
@@ -512,9 +647,9 @@
         private System.Windows.Forms.Button uiEditImageFolder;
         private System.Windows.Forms.TextBox uiImageFolder;
         private System.Windows.Forms.Label label12;
-        private System.Windows.Forms.Button uiEditHotKey;
-        private System.Windows.Forms.CheckBox uiEnableHotKey;
-        private System.Windows.Forms.TextBox uiHotKey;
+        private System.Windows.Forms.Button uiEditHotKeyCapture;
+        private System.Windows.Forms.CheckBox uiEnableHotKeyCapture;
+        private System.Windows.Forms.TextBox uiHotKeyCapture;
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.ComboBox uiImageFormatName;
         private System.Windows.Forms.FolderBrowserDialog uiFolderDialog;
@@ -527,5 +662,16 @@
         private System.Windows.Forms.CheckBox uiEnableImageText;
         private System.Windows.Forms.Button uiWindowSettingsEdit;
         private System.Windows.Forms.CheckBox uiSaveWindowPosition;
+        private System.Windows.Forms.TabPage tabPage4;
+        private System.Windows.Forms.Button uiEditHotKeyVolumeDown;
+        private System.Windows.Forms.TextBox uiHotKeyVolumeDown;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Button uiEditHotKeyVolumeUp;
+        private System.Windows.Forms.TextBox uiHotKeyVolumeUp;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Button uiEditHotKeyMute;
+        private System.Windows.Forms.CheckBox uiEnableHotKeyVolumeControl;
+        private System.Windows.Forms.TextBox uiHotKeyMute;
+        private System.Windows.Forms.Label label4;
     }
 }

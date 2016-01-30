@@ -22,10 +22,12 @@ namespace ffxigamma {
         private const string ConfigFileName = "config.xml";
         private const int SetWindowPositionTimeout = 5000;
         private const int SetWindowPositionDelay = 100;
+        private const float VolumeStep = 0.02f;
 
         private Config config;
         private Screen[] prevScreens;
         private Settings editSettings;
+        private VolumeIndicator volumeIndicator;
 
         public App() {
             InitializeComponent();
@@ -33,6 +35,7 @@ namespace ffxigamma {
             config = LoadConfig();
             prevScreens = new Screen[0];
             editSettings = new Settings();
+            volumeIndicator = new VolumeIndicator();
 
             SetShieldIcon(uiContextStartFFXI);
             SetShieldIcon(uiContextRestartAdminMode);
@@ -66,19 +69,11 @@ namespace ffxigamma {
         private bool IsValidWindow(WindowInfo wndInfo) {
             if (wndInfo.Window.IsIconic()) return false;
 
-            var ws = GetWindowSettings(wndInfo.Name);
+            var ws = config.GetWindowSettings(wndInfo.Name);
             if (ws == null) return false;
             if (ws.AlwaysGamma) return true;
 
             return IsForegroundWindow(wndInfo);
-        }
-
-        private WindowSettings GetWindowSettings(string name) {
-            foreach (var ws in config.WindowSettingsList) {
-                if (ws.Name == name)
-                    return ws;
-            }
-            return null;
         }
 
         private bool IsForegroundWindow(WindowInfo wndInfo) {
@@ -152,7 +147,8 @@ namespace ffxigamma {
         }
 
         private void ApplyConfig(Config config) {
-            globalKeyReader.Enabled = config.EnableHotkey;
+            globalKeyReader.Enabled =
+                config.EnableHotKeyCapture || config.EnableHotKeyVolumeControl;
 
             var names = from ws in config.WindowSettingsList select ws.Name;
             names = new HashSet<string>(names);
@@ -227,7 +223,7 @@ namespace ffxigamma {
             if (wnd == null) return false;
             if (wnd.IsIconic()) return false;
 
-            var ws = GetWindowSettings(wnd.GetWindowText());
+            var ws = config.GetWindowSettings(wnd.GetWindowText());
             return ws != null;
         }
 
@@ -391,16 +387,6 @@ namespace ffxigamma {
                 Close();
         }
 
-        private bool IsHotKeyDown(GlobalKeyEventArgs e) {
-            if (!config.EnableHotkey) return false;
-            if (!e.Trigger.Contains((Keys)config.HotKey)) return false;
-            if (e.State.Contains(Keys.ControlKey) != config.HotKeyControl) return false;
-            if (e.State.Contains(Keys.ShiftKey) != config.HotKeyShift) return false;
-            if (e.State.Contains(Keys.Menu) != config.HotKeyAlt) return false;
-
-            return true;
-        }
-
         private static void SetWindowPositionRetry(WindowInfo wndInfo, WindowSettings wndSettings) {
             var wnd = new Window(wndInfo.Handle);
 
@@ -489,6 +475,64 @@ namespace ffxigamma {
             return remote;
         }
 
+        private void HotKeyCapture(GlobalKeyEventArgs e) {
+            if (!config.EnableHotKeyCapture) return;
+
+            if (IsKeyDown("Capture", e))
+                CaptureSaveFolder();
+        }
+
+        private void HotKeyVolumeControl(GlobalKeyEventArgs e) {
+            if (!config.EnableHotKeyVolumeControl) return;
+
+            var mute = IsKeyDownHold("Mute", e);
+            var volumeUp = IsKeyDownHold("VolumeUp", e);
+            var volumeDown = IsKeyDownHold("VolumeDown", e);
+
+            if (mute || volumeUp || volumeDown) {
+                if (!volumeIndicator.Visible)
+                    volumeIndicator.Window = GetForegroundWindow();
+
+                if (mute)
+                    volumeIndicator.Mute = !volumeIndicator.Mute;
+                if (volumeUp)
+                    volumeIndicator.Volume += VolumeStep;
+                if (volumeDown)
+                    volumeIndicator.Volume -= VolumeStep;
+                if (volumeUp || volumeDown)
+                    e.Repeat = true;
+            }
+        }
+
+        private Window GetForegroundWindow() {
+            var wnd = Window.GetForegroundWindow();
+            if (wnd == null) return null;
+
+            var ws = config.GetWindowSettings(wnd.GetWindowText());
+            if (ws == null) return null;
+
+            return wnd;
+        }
+
+        private bool IsKeyDown(string name, GlobalKeyEventArgs e) {
+            return KeyDownTest(name, e.Trigger, e.State);
+        }
+
+        private bool IsKeyDownHold(string name, GlobalKeyEventArgs e) {
+            return KeyDownTest(name, e.State, e.State);
+        }
+
+        private bool KeyDownTest(string name, GlobalKeys trigger, GlobalKeys state) {
+            var hotkey = config.GetHotKey(name);
+
+            var down = trigger.Contains(hotkey.Key);
+            var ctrl = state.Contains(Keys.ControlKey) == hotkey.Control;
+            var shift = state.Contains(Keys.ShiftKey) == hotkey.Shift;
+            var alt = state.Contains(Keys.Menu) == hotkey.Alt;
+
+            return down && ctrl && shift && alt;
+        }
+
         private void App_Load(object sender, EventArgs e) {
             Visible = false;
             ApplyConfig(config);
@@ -569,8 +613,8 @@ namespace ffxigamma {
         }
 
         private void globalKeyReader_GlobalKeyDown(object sender, GlobalKeyEventArgs e) {
-            if (IsHotKeyDown(e))
-                CaptureSaveFolder();
+            HotKeyCapture(e);
+            HotKeyVolumeControl(e);
         }
 
         private void windowMonitor_WindowOpend(object sender, WindowMonitorEventArgs e) {

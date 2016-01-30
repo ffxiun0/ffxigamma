@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 using System.Xml;
 using System.Xml.Serialization;
@@ -14,15 +16,11 @@ namespace ffxigamma {
         public bool AdminMode { get; set; }
         public bool StartFFXI { get; set; }
         public bool EnableSaveWindowPosition { get; set; }
-        public WindowSettings[] WindowSettingsList { get; set; }
         public bool EnableImageGamma { get; set; }
         public string ImageFolder { get; set; }
         public string ImageFormatName { get; set; }
-        public bool EnableHotkey { get; set; }
-        public int HotKey { get; set; }
-        public bool HotKeyControl { get; set; }
-        public bool HotKeyShift { get; set; }
-        public bool HotKeyAlt { get; set; }
+        public bool EnableHotKeyCapture { get; set; }
+        public bool EnableHotKeyVolumeControl { get; set; }
         public bool EnableImageText { get; set; }
         public ImageText[] ImageTextList { get; set; }
 
@@ -38,11 +36,8 @@ namespace ffxigamma {
             this.EnableImageGamma = true;
             this.ImageFolder = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
             this.ImageFormatName = "jpg";
-            this.EnableHotkey = false;
-            this.HotKey = (int)Keys.F11;
-            this.HotKeyControl = false;
-            this.HotKeyShift = false;
-            this.HotKeyAlt = false;
+            this.EnableHotKeyCapture = false;
+            this.EnableHotKeyVolumeControl = false;
             this.EnableImageText = true;
             this.ImageTextList = new ImageText[] {
                 new ImageText() {
@@ -56,6 +51,12 @@ namespace ffxigamma {
                     MarginX = 0,
                     MarginY = 0,
                 }
+            };
+            this.HotKeySettingsList = new HotKeySettings[] {
+                new HotKeySettings("Capture", Keys.F11),
+                new HotKeySettings("Mute", Keys.F12),
+                new HotKeySettings("VolumeUp", Keys.F12, false, true, false),
+                new HotKeySettings("VolumeDown", Keys.F11,false, true, false),
             };
         }
 
@@ -85,6 +86,53 @@ namespace ffxigamma {
             }
         }
 
+        private Dictionary<string, WindowSettings> windowSettingsMap =
+            new Dictionary<string, WindowSettings>();
+
+        public WindowSettings[] WindowSettingsList {
+            get {
+                return windowSettingsMap.Values.ToArray();
+            }
+            set {
+                windowSettingsMap = value.ToDictionary(ws => ws.Name);
+            }
+        }
+
+        public WindowSettings GetWindowSettings(string name) {
+            if (windowSettingsMap.ContainsKey(name))
+                return windowSettingsMap[name];
+            else
+                return null;
+        }
+
+        private Dictionary<string, HotKeySettings> hotKeySettingsMap =
+            new Dictionary<string, HotKeySettings>();
+
+        public HotKeySettings[] HotKeySettingsList {
+            get {
+                return hotKeySettingsMap.Values.ToArray();
+            }
+            set {
+                hotKeySettingsMap = value.ToDictionary(key => key.Name);
+            }
+        }
+
+        public HotKey GetHotKey(string name) {
+            if (hotKeySettingsMap.ContainsKey(name))
+                return new HotKey(hotKeySettingsMap[name]);
+            else
+                return new HotKey(Keys.None, false, false, false);
+
+        }
+
+        public void SetHotKey(string name, HotKey hotkey) {
+            hotKeySettingsMap[name] = new HotKeySettings(name, hotkey);
+        }
+
+        public void RemoveHotKey(string name) {
+            hotKeySettingsMap.Remove(name);
+        }
+
         public static Config Load(string path) {
             var doc = new XmlDocument();
             doc.PreserveWhitespace = true;
@@ -104,6 +152,31 @@ namespace ffxigamma {
                 xs.Serialize(fs, this);
             }
         }
+    }
+
+    public class HotKeySettings {
+        public string Name { get; set; }
+        public int Key { get; set; }
+        public bool Control { get; set; }
+        public bool Shift { get; set; }
+        public bool Alt { get; set; }
+
+        public HotKeySettings(string name, Keys key, bool control, bool shift, bool alt) {
+            Name = name;
+            Key = (int)key;
+            Control = control;
+            Shift = shift;
+            Alt = alt;
+        }
+
+        public HotKeySettings()
+            : this("", Keys.None, false, false, false) { }
+
+        public HotKeySettings(string name, Keys key)
+            : this(name, key, false, false, false) { }
+
+        public HotKeySettings(string name, HotKey key)
+            : this(name, key.Key, key.Control, key.Shift, key.Alt) { }
     }
 
     public class ImageText {

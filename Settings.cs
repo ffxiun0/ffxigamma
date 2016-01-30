@@ -4,14 +4,20 @@ using System.Windows.Forms;
 
 namespace ffxigamma {
     public partial class Settings : Form {
-        private InputHotKey inputHotKey;
+        private InputHotKey inputHotKeyCapture;
+        private InputHotKey inputHotKeyMute;
+        private InputHotKey inputHotKeyVolumeUp;
+        private InputHotKey inputHotKeyVolumeDown;
         private ImageTextEditor imageTextEditor;
         private WindowSettingsEditor windowSettingsEditor;
         private Config config;
 
         public Settings() {
             InitializeComponent();
-            inputHotKey = new InputHotKey();
+            inputHotKeyCapture = new InputHotKey();
+            inputHotKeyMute = new InputHotKey();
+            inputHotKeyVolumeUp = new InputHotKey();
+            inputHotKeyVolumeDown = new InputHotKey();
             imageTextEditor = new ImageTextEditor();
             windowSettingsEditor = new WindowSettingsEditor();
             Config = Config.Default;
@@ -42,12 +48,17 @@ namespace ffxigamma {
             uiImageFolder.Text = config.ImageFolder;
             uiImageFormatName.Text = config.ImageFormatName;
 
-            uiEnableHotKey.Checked = config.EnableHotkey;
-            inputHotKey.HotKey.Key = (Keys)config.HotKey;
-            inputHotKey.HotKey.Control = config.HotKeyControl;
-            inputHotKey.HotKey.Shift = config.HotKeyShift;
-            inputHotKey.HotKey.Alt = config.HotKeyAlt;
-            uiHotKey.Text = inputHotKey.HotKey.ToString();
+            uiEnableHotKeyCapture.Checked = config.EnableHotKeyCapture;
+            inputHotKeyCapture.HotKey = config.GetHotKey("Capture");
+            uiHotKeyCapture.Text = inputHotKeyCapture.HotKey.ToString();
+
+            uiEnableHotKeyVolumeControl.Checked = config.EnableHotKeyVolumeControl;
+            inputHotKeyMute.HotKey = config.GetHotKey("Mute");
+            uiHotKeyMute.Text = inputHotKeyMute.HotKey.ToString();
+            inputHotKeyVolumeUp.HotKey = config.GetHotKey("VolumeUp");
+            uiHotKeyVolumeUp.Text = inputHotKeyVolumeUp.HotKey.ToString();
+            inputHotKeyVolumeDown.HotKey = config.GetHotKey("VolumeDown");
+            uiHotKeyVolumeDown.Text = inputHotKeyVolumeDown.HotKey.ToString();
 
             uiEnableImageText.Checked = config.EnableImageText;
             uiImageTextList.Items.Clear();
@@ -73,11 +84,14 @@ namespace ffxigamma {
             config.ImageFolder = uiImageFolder.Text;
             config.ImageFormatName = uiImageFormatName.Text;
 
-            config.EnableHotkey = uiEnableHotKey.Checked;
-            config.HotKey = (int)inputHotKey.HotKey.Key;
-            config.HotKeyControl = inputHotKey.HotKey.Control;
-            config.HotKeyShift = inputHotKey.HotKey.Shift;
-            config.HotKeyAlt = inputHotKey.HotKey.Alt;
+            config.EnableHotKeyCapture = uiEnableHotKeyCapture.Checked;
+            config.HotKeySettingsList = new HotKeySettings[0];
+            config.SetHotKey("Capture", inputHotKeyCapture.HotKey);
+
+            config.EnableHotKeyVolumeControl = uiEnableHotKeyVolumeControl.Checked;
+            config.SetHotKey("Mute", inputHotKeyMute.HotKey);
+            config.SetHotKey("VolumeUp", inputHotKeyVolumeUp.HotKey);
+            config.SetHotKey("VolumeDown", inputHotKeyVolumeDown.HotKey);
 
             config.EnableImageText = uiEnableImageText.Checked;
             var itlist = new List<ImageText>();
@@ -151,12 +165,12 @@ namespace ffxigamma {
         }
 
         private void uiEditHotKey_Click(object sender, EventArgs e) {
-            if (inputHotKey.ShowDialog(this) == DialogResult.OK)
-                uiHotKey.Text = inputHotKey.HotKey.ToString();
+            if (inputHotKeyCapture.ShowDialog(this) == DialogResult.OK)
+                uiHotKeyCapture.Text = inputHotKeyCapture.HotKey.ToString();
         }
 
         private void uiEnableHotKey_Click(object sender, EventArgs e) {
-            if (uiEnableHotKey.Checked)
+            if (uiEnableHotKeyCapture.Checked)
                 ShowWarning(Properties.Resources.RequireAdminWarning);
         }
 
@@ -178,6 +192,26 @@ namespace ffxigamma {
         private void uiImageTextDelete_Click(object sender, EventArgs e) {
             while (uiImageTextList.SelectedItems.Count > 0)
                 uiImageTextList.Items.Remove(uiImageTextList.SelectedItems[0]);
+        }
+
+        private void uiEnableVolumeControl_Click(object sender, EventArgs e) {
+            if (uiEnableHotKeyVolumeControl.Checked)
+                ShowWarning(Properties.Resources.RequireAdminWarning);
+        }
+
+        private void uiEditHotKeyMute_Click(object sender, EventArgs e) {
+            if (inputHotKeyMute.ShowDialog(this) == DialogResult.OK)
+                uiHotKeyMute.Text = inputHotKeyMute.HotKey.ToString();
+        }
+
+        private void uiEditHotKeyVolumeUp_Click(object sender, EventArgs e) {
+            if (inputHotKeyVolumeUp.ShowDialog(this) == DialogResult.OK)
+                uiHotKeyVolumeUp.Text = inputHotKeyVolumeUp.HotKey.ToString();
+        }
+
+        private void uiEditHotKeyVolumeDown_Click(object sender, EventArgs e) {
+            if (inputHotKeyVolumeDown.ShowDialog(this) == DialogResult.OK)
+                uiHotKeyVolumeDown.Text = inputHotKeyVolumeDown.HotKey.ToString();
         }
     }
 }

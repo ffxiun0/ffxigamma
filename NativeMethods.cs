@@ -163,6 +163,10 @@ namespace ffxigamma {
         public const uint SWP_NOREPOSITION = SWP_NOOWNERZORDER;
         public const uint SWP_DEFERERASE = 0x2000;
         public const uint SWP_ASYNCWINDOWPOS = 0x4000;
+        public static readonly IntPtr HWND_TOP = new IntPtr(0);
+        public static readonly IntPtr HWND_BOTTOM = new IntPtr(1);
+        public static readonly IntPtr HWND_TOPMOST = new IntPtr(-1);
+        public static readonly IntPtr HWND_NOTOPMOST = new IntPtr();
 
         [DllImport("gdi32.dll", CharSet = CharSet.Unicode)]
         public static extern IntPtr CreateDC(string lpszDriver, string lpszDevice, string lpszOutput, IntPtr lpInitData);
