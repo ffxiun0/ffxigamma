@@ -166,7 +166,7 @@ namespace ffxigamma {
         public static readonly IntPtr HWND_TOP = new IntPtr(0);
         public static readonly IntPtr HWND_BOTTOM = new IntPtr(1);
         public static readonly IntPtr HWND_TOPMOST = new IntPtr(-1);
-        public static readonly IntPtr HWND_NOTOPMOST = new IntPtr();
+        public static readonly IntPtr HWND_NOTOPMOST = new IntPtr(-2);
 
         [DllImport("gdi32.dll", CharSet = CharSet.Unicode)]
         public static extern IntPtr CreateDC(string lpszDriver, string lpszDevice, string lpszOutput, IntPtr lpInitData);
