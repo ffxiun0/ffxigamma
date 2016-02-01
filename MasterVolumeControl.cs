@@ -2,34 +2,40 @@
 
 namespace ffxigamma {
     class MasterVolumeControl : VolumeControl {
-        private IAudioEndpointVolume control;
+        private IAudioEndpointVolume volume;
 
         public MasterVolumeControl() {
-            control = GetMasterVolumeControl();
+            volume = GetMasterVolumeControl();
             MinVolume = 0.0001f;
+        }
+
+        public override bool Active {
+            get {
+                return true;
+            }
         }
 
         public override bool Mute {
             get {
                 bool result;
-                control.GetMute(out result);
+                volume.GetMute(out result);
                 return result;
             }
             set {
-                control.SetMute(value, ref Guid);
+                volume.SetMute(value, ref Guid);
             }
         }
 
         public override float Volume {
             get {
                 float result;
-                control.GetMasterVolumeLevelScalar(out result);
+                volume.GetMasterVolumeLevelScalar(out result);
                 return result;
             }
             set {
                 if (value < MinVolume) value = MinVolume;
                 if (value > MaxVolume) value = MaxVolume;
-                control.SetMasterVolumeLevelScalar(value, ref Guid);
+                volume.SetMasterVolumeLevelScalar(value, ref Guid);
             }
         }
 

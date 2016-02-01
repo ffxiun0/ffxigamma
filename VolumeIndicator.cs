@@ -14,9 +14,12 @@ namespace ffxigamma {
             SetInactiveTopMost();
         }
 
-        class NullVolumeControl : VolumeControl {
+        private class NullVolumeControl : VolumeControl {
+            public override bool Active {
+                get { return false; }
+            }
             public override bool Mute {
-                get { return true; }
+                get { return false; }
                 set { }
             }
             public override float Volume {
@@ -31,9 +34,7 @@ namespace ffxigamma {
             }
             set {
                 volumeControl = value;
-                speakerIcon.Enabled = !volumeControl.Mute;
-                speakerLevel.Enabled = !volumeControl.Mute;
-                speakerLevel.Value = volumeControl.Volume;
+                UpdateStates();
             }
         }
 
@@ -53,8 +54,7 @@ namespace ffxigamma {
             }
             set {
                 volumeControl.Mute = value;
-                speakerIcon.Enabled = !volumeControl.Mute;
-                speakerLevel.Enabled = !volumeControl.Mute;
+                UpdateStates();
                 ShowTimeout();
             }
         }
@@ -65,7 +65,7 @@ namespace ffxigamma {
             }
             set {
                 volumeControl.Volume = value;
-                speakerLevel.Value = volumeControl.Volume;
+                UpdateStates();
                 ShowTimeout();
 
                 if (Mute)
@@ -80,6 +80,13 @@ namespace ffxigamma {
             set {
                 timer.Interval = value;
             }
+        }
+
+        private void UpdateStates() {
+            speakerIcon.Mute = volumeControl.Mute;
+            speakerIcon.Enabled = volumeControl.Active;
+            speakerLevel.Value = volumeControl.Volume;
+            speakerLevel.Enabled = volumeControl.Active && !volumeControl.Mute;
         }
 
         public void ShowTimeout() {

@@ -41,6 +41,12 @@ namespace ffxigamma {
         PS_DLL = 0x80000000
     }
 
+    enum AudioSessionState {
+        Inactive = 0,
+        Active = 1,
+        Expired = 2
+    }
+
     [Guid("BCDE0395-E52F-467C-8E3D-C4579291692E"), ComImport]
     class MMDeviceEnumerator { }
 
@@ -97,7 +103,7 @@ namespace ffxigamma {
     [Guid("F4B1A599-7266-4319-A8CA-E70ACB11E8CD"),
         InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
     interface IAudioSessionControl {
-        int DONOTUSE_GetState();
+        int GetState(out AudioSessionState pRetVal);
         int GetDisplayName([MarshalAs(UnmanagedType.LPWStr)] out string pRetVal);
         int DONOTUSE_SetDisplayName();
         int DONOTUSE_GetIconPath();
@@ -111,7 +117,7 @@ namespace ffxigamma {
     [Guid("bfb7ff88-7239-4fc9-8fa2-07c950be9c6d"),
         InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
     interface IAudioSessionControl2 {
-        int DONOTUSE_GetState();
+        int GetState(out AudioSessionState pRetVal);
         int GetDisplayName([MarshalAs(UnmanagedType.LPWStr)] out string pRetVal);
         int DONOTUSE_SetDisplayName();
         int DONOTUSE_GetIconPath();

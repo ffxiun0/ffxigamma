@@ -2,39 +2,54 @@
 
 namespace ffxigamma {
     class ApplicationVolumeControl : VolumeControl {
-        private ISimpleAudioVolume control;
+        private IAudioSessionControl2 session;
+        private ISimpleAudioVolume volume;
 
         public ApplicationVolumeControl(int pid) {
-            control = GetAppVolumeControl(pid);
-            if (control == null)
+            session = GetSessionControl(pid);
+            if (session == null)
                 throw new VolumeControlNotFoundException("Application volume is not found.");
+
+            volume = (ISimpleAudioVolume)session;
+        }
+
+        public override bool Active {
+            get {
+                AudioSessionState state;
+                session.GetState(out state);
+                return state == AudioSessionState.Active;
+            }
         }
 
         public override bool Mute {
             get {
                 bool result;
-                control.GetMute(out result);
+                volume.GetMute(out result);
                 return result;
             }
             set {
-                control.SetMute(value, ref Guid);
+                if (!Active) return;
+
+                volume.SetMute(value, ref Guid);
             }
         }
 
         public override float Volume {
             get {
                 float result;
-                control.GetMasterVolume(out result);
+                volume.GetMasterVolume(out result);
                 return result;
             }
             set {
+                if (!Active) return;
+
                 if (value < MinVolume) value = MinVolume;
                 if (value > MaxVolume) value = MaxVolume;
-                control.SetMasterVolume(value, ref Guid);
+                volume.SetMasterVolume(value, ref Guid);
             }
         }
 
-        private static ISimpleAudioVolume GetAppVolumeControl(int pid) {
+        private static IAudioSessionControl2 GetSessionControl(int pid) {
             var mmde = (IMMDeviceEnumerator)new MMDeviceEnumerator();
 
             IMMDevice mmd;
@@ -62,10 +77,14 @@ namespace ffxigamma {
                 ase.GetSession(i, out asc);
                 var asc2 = (IAudioSessionControl2)asc;
 
-                uint sessionPid;
-                asc2.GetProcessId(out sessionPid);
-                if (sessionPid == pid)
-                    return (ISimpleAudioVolume)asc2;
+                AudioSessionState state;
+                asc2.GetState(out state);
+                if (state == AudioSessionState.Active) {
+                    uint sessionPid;
+                    asc2.GetProcessId(out sessionPid);
+                    if (sessionPid == pid)
+                        return asc2;
+                }
             }
 
             return null;

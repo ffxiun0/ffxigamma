@@ -2,6 +2,7 @@
 
 namespace ffxigamma {
     public abstract class VolumeControl {
+        public abstract bool Active { get; }
         public abstract bool Mute { get; set; }
         public abstract float Volume { get; set; }
 

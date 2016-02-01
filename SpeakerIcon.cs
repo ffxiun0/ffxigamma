@@ -5,6 +5,8 @@ using System.Windows.Forms;
 
 namespace ffxigamma {
     class SpeakerIcon : UserControl {
+        private bool mute = false;
+
         public SpeakerIcon() {
             DoubleBuffered = true;
         }
@@ -13,23 +15,54 @@ namespace ffxigamma {
         public Color EnabledColor { get; set; } = Color.Lime;
         [DefaultValue(typeof(Color), "Green")]
         public Color EnabledEdgeColor { get; set; } = Color.Green;
+
+        [DefaultValue(typeof(Color), "Gray")]
+        public Color DisabledColor { get; set; } = Color.Gray;
+        [DefaultValue(typeof(Color), "#606060")]
+        public Color DisabledEdgeColor { get; set; } = Color.FromArgb(0x60, 0x60, 0x60);
+
         [DefaultValue(typeof(Color), "Red")]
-        public Color DisabledColor { get; set; } = Color.Red;
+        public Color MuteColor { get; set; } = Color.Red;
         [DefaultValue(typeof(Color), "#FFE0E0")]
-        public Color DisabledEdgeColor { get; set; } = Color.FromArgb(0xff, 0xe0, 0xe0);
+        public Color MuteEdgeColor { get; set; } = Color.FromArgb(0xff, 0xe0, 0xe0);
+
+        [DefaultValue(false)]
+        public bool Mute {
+            get {
+                return mute;
+            }
+            set {
+                mute = value;
+                Refresh();
+            }
+        }
+
+        private Color GetColor() {
+            if (Enabled)
+                return Mute ? MuteColor : EnabledColor;
+            else
+                return DisabledColor;
+        }
+
+        private Color GetEdgeColor() {
+            if (Enabled)
+                return Mute ? MuteEdgeColor : EnabledEdgeColor;
+            else
+                return DisabledEdgeColor;
+        }
 
         protected override void OnPaint(PaintEventArgs e) {
             var brush = new SolidBrush(BackColor);
             e.Graphics.FillRectangle(brush, 0, 0, Width, Height);
 
-            var color = Enabled ? EnabledColor : DisabledColor;
-            var edgeColor = Enabled ? EnabledEdgeColor : DisabledEdgeColor;
+            var color = GetColor();
+            var edgeColor = GetEdgeColor();
 
             foreach (var o in offsets)
                 DrawSpeaker(e.Graphics, o.X, o.Y, edgeColor);
             DrawSpeaker(e.Graphics, 0, 0, color);
 
-            if (!Enabled) {
+            if (Mute) {
                 foreach (var o in offsets)
                     DrawMute(e.Graphics, o.X, o.Y, edgeColor);
                 DrawMute(e.Graphics, 0, 0, color);
@@ -48,7 +81,7 @@ namespace ffxigamma {
             g.DrawLines(pen, points);
         }
 
-        static PointF[] offsets = {
+        private static PointF[] offsets = {
             new PointF(-1, -1),
             new PointF(0, -1),
             new PointF(1, -1),
@@ -59,7 +92,7 @@ namespace ffxigamma {
             new PointF(-1, 0),
         };
 
-        static PointF[] speakerPoints = {
+        private static PointF[] speakerPoints = {
             new PointF(1, 1),
             new PointF(2, 1),
             new PointF(3, 0),
@@ -69,7 +102,7 @@ namespace ffxigamma {
             new PointF(1, 1),
         };
 
-        static PointF[] mutePoints = {
+        private static PointF[] mutePoints = {
             new PointF(0, 0),
             new PointF(4, 4),
         };

@@ -27,6 +27,7 @@ namespace ffxigamma {
         public Color EnabledColor { get; set; } = Color.Lime;
         [DefaultValue(typeof(Color), "Green")]
         public Color EnabledEdgeColor { get; set; } = Color.Green;
+
         [DefaultValue(typeof(Color), "Gray")]
         public Color DisabledColor { get; set; } = Color.Gray;
         [DefaultValue(typeof(Color), "#606060")]
@@ -45,7 +46,7 @@ namespace ffxigamma {
             DrawBar(e.Graphics, 0, 0, color);
         }
 
-        static PointF[] offsets = {
+        private static PointF[] offsets = {
             new PointF(-1, -1),
             new PointF(0, -1),
             new PointF(1, -1),
