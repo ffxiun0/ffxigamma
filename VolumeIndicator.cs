@@ -93,6 +93,7 @@ namespace ffxigamma {
             if (window == null) return;
 
             Location = GetCenterLocation(window);
+            SetInactiveTopMost();
             timer.Stop();
             timer.Start();
             Visible = true;
