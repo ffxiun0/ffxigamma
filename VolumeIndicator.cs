@@ -14,6 +14,14 @@ namespace ffxigamma {
             SetInactiveTopMost();
         }
 
+        protected override CreateParams CreateParams {
+            get {
+                var cp = base.CreateParams;
+                cp.ExStyle |= NativeMethods.WS_EX_TOOLWINDOW;
+                return cp;
+            }
+        }
+
         private class NullVolumeControl : VolumeControl {
             public override bool Active {
                 get { return false; }
