@@ -209,14 +209,18 @@ namespace ffxigamma {
             return ret == DialogResult.Yes;
         }
 
-        private List<Window> GetCapturableWindows() {
-            var result = new List<Window>();
-            foreach (var p in Process.GetProcesses()) {
-                var wnd = new Window(p.MainWindowHandle);
-                if (IsCapturableWindow(wnd))
-                    result.Add(wnd);
-            }
-            return result;
+        private IEnumerable<Window> GetTargetWindows() {
+            var wnds = from p in Process.GetProcesses()
+                       where config.GetWindowSettings(p.MainWindowTitle) != null
+                       select new Window(p.MainWindowHandle);
+            return wnds.ToArray();
+        }
+
+        private List<Window> GetCapturableWindows(IEnumerable<Window> wnds) {
+            var capWnds = from wnd in wnds
+                          where IsCapturableWindow(wnd)
+                          select wnd;
+            return capWnds.ToList();
         }
 
         private bool IsCapturableWindow(Window wnd) {
@@ -348,6 +352,63 @@ namespace ffxigamma {
                 return ImageFormat.Jpeg;
             else
                 return ImageFormat.Png;
+        }
+
+        private void SetMuteItems(ToolStripMenuItem menuItem, IEnumerable<Window> wnds) {
+            var winVols = from wnd in wnds
+                          select new { Window = wnd, Volume = GetVolumeControl(wnd) };
+            winVols = winVols.Where(w => w.Volume.Active);
+            winVols = winVols.ToArray();
+
+            menuItem.DropDownItems.Clear();
+
+            if (winVols.Count() == 0) {
+                menuItem.Enabled = false;
+                menuItem.Checked = false;
+                menuItem.Tag = null;
+            } else if (winVols.Count() == 1) {
+                var vols = winVols.Select(w => w.Volume);
+                menuItem.Tag = new VolumeControlGroup(vols);
+                UpdateMuteStates();
+            } else {
+                var vols = winVols.Select(w => w.Volume);
+                menuItem.Tag = new VolumeControlGroup(vols);
+                foreach (var wv in winVols) {
+                    if (wv.Volume.Active) {
+                        var item = new ToolStripMenuItem(wv.Window.GetWindowText());
+                        item.Tag = wv.Volume;
+                        item.Checked = wv.Volume.Mute;
+                        menuItem.DropDownItems.Add(item);
+                    }
+                }
+                UpdateMuteStates();
+            }
+        }
+
+        private static VolumeControl GetVolumeControl(Window wnd) {
+            if (wnd == null)
+                return new NullVolumeControl();
+
+            var vc = VolumeControl.FromProcessId(wnd.GetProcessId());
+            if (vc == null)
+                return new NullVolumeControl();
+
+            return vc;
+        }
+
+        private void UpdateMuteStates() {
+            UpdateMuteState(uiContextMute);
+            foreach (ToolStripMenuItem item in uiContextMute.DropDownItems)
+                UpdateMuteState(item);
+        }
+
+        private static void UpdateMuteState(ToolStripMenuItem menuItem) {
+            if (menuItem == null) return;
+            if (menuItem.Tag == null) return;
+
+            var vc = (VolumeControl)menuItem.Tag;
+            menuItem.Enabled = vc.Active;
+            menuItem.Checked = vc.Mute;
         }
 
         public void StartFFXI() {
@@ -563,10 +624,13 @@ namespace ffxigamma {
         }
 
         private void uiContextMenu_Opening(object sender, System.ComponentModel.CancelEventArgs e) {
-            var wnds = GetCapturableWindows();
-            SetCapturableItems(uiContextCaptureCopy, wnds);
-            SetCapturableItems(uiContextCaptureSaveAs, wnds);
-            SetCapturableItems(uiContextCaptureSaveFolder, wnds);
+            var wnds = GetTargetWindows();
+            SetMuteItems(uiContextMute, wnds);
+
+            var capWnds = GetCapturableWindows(wnds);
+            SetCapturableItems(uiContextCaptureCopy, capWnds);
+            SetCapturableItems(uiContextCaptureSaveAs, capWnds);
+            SetCapturableItems(uiContextCaptureSaveFolder, capWnds);
 
             uiContextStartFFXI.Enabled = !FFXI.IsRunning();
             uiContextRestartAdminMode.Enabled = !Program.IsAdminMode();
@@ -598,6 +662,24 @@ namespace ffxigamma {
 
         private void uiContextCaptureSaveFolder_DropDownItemClicked(object sender, ToolStripItemClickedEventArgs e) {
             CaptureSaveFolder((Window)e.ClickedItem.Tag);
+        }
+
+        private void uiContextMute_Click(object sender, EventArgs e) {
+            if (uiContextMute.Tag == null) return;
+
+            var mute = !uiContextMute.Checked;
+            var vc = (VolumeControl)uiContextMute.Tag;
+            vc.Mute = mute;
+            UpdateMuteStates();
+            uiContextMute.Checked = mute;
+        }
+
+        private void uiContextMute_DropDownItemClicked(object sender, ToolStripItemClickedEventArgs e) {
+            if (e.ClickedItem.Tag == null) return;
+
+            var vc = (VolumeControl)e.ClickedItem.Tag;
+            vc.Mute = !vc.Mute;
+            UpdateMuteStates();
         }
 
         private void uiContextStartFFXI_Click(object sender, EventArgs e) {

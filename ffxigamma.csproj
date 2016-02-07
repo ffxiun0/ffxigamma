@@ -80,6 +80,7 @@
     </Compile>
     <Compile Include="KeywordExchanger.cs" />
     <Compile Include="MasterVolumeControl.cs" />
+    <Compile Include="NullVolumeControl.cs" />
     <Compile Include="ProcessEx.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -99,6 +100,7 @@
     </Compile>
     <Compile Include="VolumeControl.cs" />
     <Compile Include="VolumeControlException.cs" />
+    <Compile Include="VolumeControlGroup.cs" />
     <Compile Include="VolumeIndicator.cs">
       <SubType>Form</SubType>
     </Compile>
