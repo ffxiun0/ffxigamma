@@ -24,7 +24,6 @@
         /// </summary>
         private void InitializeComponent() {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(App));
             this.uiNotifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.uiContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.uiContextStartFFXI = new System.Windows.Forms.ToolStripMenuItem();
@@ -36,12 +35,12 @@
             this.uiContextRestartUserMode = new System.Windows.Forms.ToolStripMenuItem();
             this.uiContextExit = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+            this.uiContextMute = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.uiContextCaptureCopy = new System.Windows.Forms.ToolStripMenuItem();
             this.uiContextCaptureSaveFolder = new System.Windows.Forms.ToolStripMenuItem();
             this.uiContextCaptureSaveAs = new System.Windows.Forms.ToolStripMenuItem();
             this.uiSaveAs = new System.Windows.Forms.SaveFileDialog();
-            this.uiContextMute = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.globalKeyReader = new ffxigamma.GlobalKeyReader(this.components);
             this.windowMonitor = new ffxigamma.WindowMonitor(this.components);
             this.uiContextMenu.SuspendLayout();
@@ -50,7 +49,6 @@
             // uiNotifyIcon
             // 
             this.uiNotifyIcon.ContextMenuStrip = this.uiContextMenu;
-            this.uiNotifyIcon.Icon = ((System.Drawing.Icon)(resources.GetObject("uiNotifyIcon.Icon")));
             this.uiNotifyIcon.Text = "FFXI Gamma";
             this.uiNotifyIcon.Visible = true;
             this.uiNotifyIcon.BalloonTipClicked += new System.EventHandler(this.uiNotifyIcon_BalloonTipClicked);
@@ -69,7 +67,7 @@
             this.uiContextCaptureSaveFolder,
             this.uiContextCaptureSaveAs});
             this.uiContextMenu.Name = "uiContextMenu";
-            this.uiContextMenu.Size = new System.Drawing.Size(231, 176);
+            this.uiContextMenu.Size = new System.Drawing.Size(231, 154);
             this.uiContextMenu.Opening += new System.ComponentModel.CancelEventHandler(this.uiContextMenu_Opening);
             // 
             // uiContextStartFFXI
@@ -134,6 +132,19 @@
             this.toolStripSeparator3.Name = "toolStripSeparator3";
             this.toolStripSeparator3.Size = new System.Drawing.Size(227, 6);
             // 
+            // uiContextMute
+            // 
+            this.uiContextMute.Name = "uiContextMute";
+            this.uiContextMute.Size = new System.Drawing.Size(230, 22);
+            this.uiContextMute.Text = "ミュート(&M)";
+            this.uiContextMute.DropDownItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.uiContextMute_DropDownItemClicked);
+            this.uiContextMute.Click += new System.EventHandler(this.uiContextMute_Click);
+            // 
+            // toolStripSeparator4
+            // 
+            this.toolStripSeparator4.Name = "toolStripSeparator4";
+            this.toolStripSeparator4.Size = new System.Drawing.Size(227, 6);
+            // 
             // uiContextCaptureCopy
             // 
             this.uiContextCaptureCopy.Name = "uiContextCaptureCopy";
@@ -162,19 +173,6 @@
             // 
             this.uiSaveAs.Filter = "PNG イメージ|*.png|JPEG イメージ|*.jpg|すべてのファイル|*";
             this.uiSaveAs.Title = "画像を保存 - FFXI Gamma";
-            // 
-            // uiContextMute
-            // 
-            this.uiContextMute.Name = "uiContextMute";
-            this.uiContextMute.Size = new System.Drawing.Size(230, 22);
-            this.uiContextMute.Text = "ミュート(&M)";
-            this.uiContextMute.DropDownItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.uiContextMute_DropDownItemClicked);
-            this.uiContextMute.Click += new System.EventHandler(this.uiContextMute_Click);
-            // 
-            // toolStripSeparator4
-            // 
-            this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(227, 6);
             // 
             // globalKeyReader
             // 

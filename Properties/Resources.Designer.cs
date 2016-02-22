@@ -88,6 +88,16 @@ namespace ffxigamma.Properties {
         }
         
         /// <summary>
+        ///   (アイコン) に類似した型 System.Drawing.Icon のローカライズされたリソースを検索します。
+        /// </summary>
+        internal static System.Drawing.Icon Icon {
+            get {
+                object obj = ResourceManager.GetObject("Icon", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   画像を保存しました。 に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string NotifySaved {

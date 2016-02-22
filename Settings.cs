@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace ffxigamma {
@@ -14,12 +15,16 @@ namespace ffxigamma {
 
         public Settings() {
             InitializeComponent();
+
+            Icon = Properties.Resources.Icon;
+
             inputHotKeyCapture = new InputHotKey();
             inputHotKeyMute = new InputHotKey();
             inputHotKeyVolumeUp = new InputHotKey();
             inputHotKeyVolumeDown = new InputHotKey();
             imageTextEditor = new ImageTextEditor();
             windowSettingsEditor = new WindowSettingsEditor();
+
             Config = Config.Default;
         }
 

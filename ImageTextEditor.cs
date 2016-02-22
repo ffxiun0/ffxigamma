@@ -8,6 +8,7 @@ namespace ffxigamma {
 
         public ImageTextEditor() {
             InitializeComponent();
+            Icon = Properties.Resources.Icon;
             InitializeDorpDownList();
             config = new ImageText();
         }

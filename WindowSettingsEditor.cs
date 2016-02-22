@@ -7,6 +7,7 @@ namespace ffxigamma {
 
         public WindowSettingsEditor() {
             InitializeComponent();
+            Icon = Properties.Resources.Icon;
         }
 
         public WindowSettings WindowSettings {

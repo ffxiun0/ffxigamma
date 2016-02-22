@@ -39,6 +39,8 @@ namespace ffxigamma {
 
             SetShieldIcon(uiContextStartFFXI);
             SetShieldIcon(uiContextRestartAdminMode);
+
+            uiNotifyIcon.Icon = new Icon(Properties.Resources.Icon, SystemInformation.SmallIconSize);            
         }
 
         private void SetShieldIcon(ToolStripMenuItem menuItem) {

@@ -123,26 +123,6 @@
   <metadata name="uiContextMenu.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>141, 17</value>
   </metadata>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="uiNotifyIcon.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        AAABAAEAEBAAAAAAGABoAwAAFgAAACgAAAAQAAAAIAAAAAEAGAAAAAAAAAMAAAAAAAAAAAAAAAAAAAAA
-        AAD/AAD/CQD/KwD/TgD/cgD/lQD+uQD/3wMAAAAAAAAAAAAAAAB5/wRU/wYs/wIH/wP/CQD/LgD/UQD/
-        dQD/mAD6twD+3gAAAAD///////////////8AAAAAAAAnricC/yX/LgD/UgD/dgD/mQD8ugDoywAAAAD/
-        //8AAAAAAAAAAAAAAAD///////8AAAAD/kv/UgD/dwD/mwD/vgD/9gIAAAD///8AAACf/whq/gBI/wAn
-        /gMAAAD///8AAAAD/G7/dwD/nAD/vwD84AEAAAD///8AAABs1gBp/QBG/wAj/wAI/AcAAAD///8AAAAE
-        +5D/mwD/wQD/5AD4/wQAAAD///8AAABy/wBF/wAi/wAC/wUAAAD///////////8AAAD/wAD/5gD2/wDZ
-        /wUAAAD///wAAABM/wMh/wAC/wUA/ygeuU4AAAAAAAAAAAARz7f/5gD1/wDR/wCy/wQAAAD///8AAAAj
-        /wAB/wYA/ygA/0wC+28C/JMC+rMC/NkB+fn0/gDQ/wCs/wCI+wEAAAD///8AAAAA9AAA/ioA/00A/3AA
-        /5QA/LUAAAAD//8A2v/Q/wCr/wCI/wBk/wA//wAAAAD///8AAAAF/1EA/3IA/5UA/rgAAAD///8AAAAA
-        tP2w/wCL/wBj/wA//wAX/wAA4gAAAAD///8AAAAAAAAAAAAAAAAAAAD///8AAAAAkf9JewsAAAAwiQ8A
-        AABEaEUAAAAA7kAAAAD///////////////////8AAAAAnf8AbP8AAAD///8AAAD///8AAAD///8AAAAE
-        /6MAAAAAAAAAAAAAAAAAAAAAnP8AbP0ASP89/wAAAAD///8AAAAAAAD///8AAAAA/74A/uAA9vsB0vwA
-        sf0Aj/8AbP8ASP8AI/8AAAD///8AAAD///8AAAD///8AAAAB/+MA+P8A1f8Asf8Ajv8Aa/8AR/8AI/8A
-        A/8A/w8AAAAAuzcAAAAAx3oAAAAA3soA9f8A0v8Ar/8Ai/8AaP8ARP8AIP8AA/8AAP8AAAAAAAAAAAAA
-        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-</value>
-  </data>
   <metadata name="uiSaveAs.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>276, 17</value>
   </metadata>
