@@ -32,6 +32,8 @@ namespace ffxigamma {
         public App() {
             InitializeComponent();
 
+            Icon = Properties.Resources.Icon;
+
             config = LoadConfig();
             prevScreens = new Screen[0];
             editSettings = new Settings();
@@ -40,7 +42,7 @@ namespace ffxigamma {
             SetShieldIcon(uiContextStartFFXI);
             SetShieldIcon(uiContextRestartAdminMode);
 
-            uiNotifyIcon.Icon = new Icon(Properties.Resources.Icon, SystemInformation.SmallIconSize);            
+            uiNotifyIcon.Icon = new Icon(Properties.Resources.Icon, SystemInformation.SmallIconSize);
         }
 
         private void SetShieldIcon(ToolStripMenuItem menuItem) {

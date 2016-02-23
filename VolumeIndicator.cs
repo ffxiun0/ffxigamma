@@ -10,6 +10,7 @@ namespace ffxigamma {
         public VolumeIndicator() {
             InitializeComponent();
 
+            Icon = Properties.Resources.Icon;
             Visible = false;
             SetInactiveTopMost();
         }

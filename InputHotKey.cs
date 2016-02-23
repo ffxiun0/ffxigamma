@@ -13,6 +13,7 @@ namespace ffxigamma {
         public InputHotKey() {
             InitializeComponent();
 
+            Icon = Properties.Resources.Icon;
             fix = false;
             editingKey = new HotKey();
             HotKey = new HotKey();
