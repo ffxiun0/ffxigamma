@@ -23,6 +23,7 @@ namespace ffxigamma {
         public bool EnableHotKeyVolumeControl { get; set; }
         public bool EnableImageText { get; set; }
         public ImageText[] ImageTextList { get; set; }
+        public bool EnableNotify { get; set; }
 
         public Config() {
             this.AppGamma = 1.8 / 2.2;
@@ -52,6 +53,7 @@ namespace ffxigamma {
                     MarginY = 0,
                 }
             };
+            this.EnableNotify = true;
             this.HotKeySettingsList = new HotKeySettings[] {
                 new HotKeySettings("Capture", Keys.F11),
                 new HotKeySettings("Mute", Keys.F12),

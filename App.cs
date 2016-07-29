@@ -303,6 +303,8 @@ namespace ffxigamma {
         }
 
         private void ShowNotifySaved(string path) {
+            if (!config.EnableNotify) return;
+
             var title = Properties.Resources.NotifySaved;
             var text = Path.GetDirectoryName(path) + "\n" + Path.GetFileName(path);
             uiNotifyIcon.ShowBalloonTip(1000, title, text, ToolTipIcon.Info);

@@ -72,6 +72,7 @@
             this.uiFontDialog = new System.Windows.Forms.FontDialog();
             this.uiColorDialog = new System.Windows.Forms.ColorDialog();
             this.uiFolderDialog = new System.Windows.Forms.FolderBrowserDialog();
+            this.uiEnableNotify = new System.Windows.Forms.CheckBox();
             this.tabControl1.SuspendLayout();
             this.tabPage3.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -549,6 +550,7 @@
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.uiEnableNotify);
             this.tabPage1.Controls.Add(this.uiAdminMode);
             this.tabPage1.Controls.Add(this.uiStartUpFFXI);
             this.tabPage1.Controls.Add(this.uiAppGamma);
@@ -593,6 +595,16 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(372, 30);
             this.panel1.TabIndex = 1;
+            // 
+            // uiNotify
+            // 
+            this.uiEnableNotify.AutoSize = true;
+            this.uiEnableNotify.Location = new System.Drawing.Point(10, 109);
+            this.uiEnableNotify.Name = "uiNotify";
+            this.uiEnableNotify.Size = new System.Drawing.Size(116, 16);
+            this.uiEnableNotify.TabIndex = 6;
+            this.uiEnableNotify.Text = "通知を表示する(&N)";
+            this.uiEnableNotify.UseVisualStyleBackColor = true;
             // 
             // Settings
             // 
@@ -673,5 +685,6 @@
         private System.Windows.Forms.CheckBox uiEnableHotKeyVolumeControl;
         private System.Windows.Forms.TextBox uiHotKeyMute;
         private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.CheckBox uiEnableNotify;
     }
 }

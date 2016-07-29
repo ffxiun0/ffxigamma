@@ -69,6 +69,8 @@ namespace ffxigamma {
             uiImageTextList.Items.Clear();
             foreach (var text in config.ImageTextList)
                 uiImageTextList.Items.Add(text);
+
+            uiEnableNotify.Checked = config.EnableNotify;
         }
 
         private Config GetConfigFromUI() {
@@ -103,6 +105,8 @@ namespace ffxigamma {
             foreach (ImageText imageText in uiImageTextList.Items)
                 itlist.Add(imageText);
             config.ImageTextList = itlist.ToArray();
+
+            config.EnableNotify = uiEnableNotify.Checked;
 
             return config;
         }
