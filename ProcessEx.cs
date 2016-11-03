@@ -119,10 +119,14 @@ namespace ffxigamma {
         }
 
         private static string QuoteArgument(string s) {
-            if (s.Contains(" "))
-                return "\"" + s + "\"";
+            if (s.Contains(" ") || s.Contains("\""))
+                return "\"" + EscapeQuotes(s) + "\"";
             else
                 return s;
+        }
+
+        private static string EscapeQuotes(string s) {
+            return s.Replace("\"", "\"\"");
         }
     }
 }
