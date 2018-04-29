@@ -29,6 +29,8 @@ namespace ffxigamma {
         private Settings editSettings;
         private VolumeIndicator volumeIndicator;
 
+        public bool EnableAutoStartProgram { get; set; } = false;
+
         public App() {
             InitializeComponent();
 
@@ -197,18 +199,18 @@ namespace ffxigamma {
         }
 
         private void ShowWarning(string s) {
-            MessageBox.Show(this, s, Text,
+            MessageBox.Show(null, s, Text,
                 MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
 
         private void ShowError(string s) {
-            MessageBox.Show(this, s, Text,
+            MessageBox.Show(null, s, Text,
                 MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
         private bool ShowYesNoWarning(string s) {
-            var ret = MessageBox.Show(this, s, Text,
-                 MessageBoxButtons.YesNo, MessageBoxIcon.Warning,
+            var ret = MessageBox.Show(null, s, Text,
+                MessageBoxButtons.YesNo, MessageBoxIcon.Warning,
                 MessageBoxDefaultButton.Button2);
             return ret == DialogResult.Yes;
         }
@@ -417,40 +419,73 @@ namespace ffxigamma {
             menuItem.Checked = vc.Mute;
         }
 
-        public void StartFFXI() {
-            if (FFXI.IsRunning()) return;
+        private void StartProgram() {
+            if (config.StartProgramType == "ffxi")
+                StartProgramFFXI();
+            else if (config.StartProgramType == "program")
+                StartProgramCustom();
+            else
+                ShowError(Properties.Resources.ProgramStartFail);
+        }
 
-            if (!FFXI.Start())
+        private void StartProgramFFXI() {
+            if (FFXI.IsRunning()) {
+                ShowWarning(Properties.Resources.FFXIAlreadyRunning);
+                return;
+            }
+
+            if (FFXI.Start() == StartResult.Failure)
                 ShowError(Properties.Resources.FFXIStartFail);
         }
 
-        public void StartFFXIinAdmin() {
-            if (FFXI.IsRunning()) return;
-
-            if (Program.IsAdminMode()) {
-                StartFFXI();
-            } else {
-                if (Program.RestartAdminMode("/ffxi"))
-                    Close();
-            }
-        }
-
-        private void RestartAdminMode() {
-            if (Program.IsAdminMode()) return;
-
-            if (FFXI.IsRunning()) {
-                if (!ShowYesNoWarning(Properties.Resources.RestartAdminModeWarning))
+        private void StartProgramCustom() {
+            if (!Program.IsAdminMode() && FFXI.IsRunning()) {
+                if (!ShowYesNoWarning(Properties.Resources.AdminModeWarning))
                     return;
             }
 
-            if (Program.RestartAdminMode())
+            var cl = CommandLine.Parse(config.StartProgramCommandLine);
+            if (cl == null) {
+                ShowError(Properties.Resources.ProgramStartFail);
+                return;
+            }
+
+            if (cl.Exe.Length > 0) {
+                if (ProcessEx.Start(cl.Exe, cl.Args) == StartResult.Failure)
+                    ShowError(Properties.Resources.ProgramStartFail);
+            }
+        }
+
+        public void StartProgramAsAdmin() {
+            if (Program.IsAdminMode())
+                StartProgram();
+            else
+                RestartAdminMode("/ffxi");
+        }
+
+        public void AutoStartProgram() {
+            if (config.AdminMode)
+                StartProgramAsAdmin();
+            else
+                StartProgram();
+        }
+
+        private void RestartAdminMode(params string[] args) {
+            if (Program.IsAdminMode()) return;
+
+            if (FFXI.IsRunning()) {
+                if (!ShowYesNoWarning(Properties.Resources.AdminModeWarning))
+                    return;
+            }
+
+            if (Program.RestartAdminMode(args) == StartResult.Success)
                 Close();
         }
 
         private void RestartUserMode() {
             if (!Program.IsAdminMode()) return;
 
-            if (Program.RestartUserMode())
+            if (Program.RestartUserMode() == StartResult.Success)
                 Close();
         }
 
@@ -606,6 +641,9 @@ namespace ffxigamma {
             ResetScreenGamma();
             windowMonitor.Start();
             StartRemoteControl();
+
+            if (EnableAutoStartProgram || config.StartFFXI)
+                AutoStartProgram();
         }
 
         private void App_FormClosing(object sender, FormClosingEventArgs e) {
@@ -638,7 +676,7 @@ namespace ffxigamma {
             SetCapturableItems(uiContextCaptureSaveAs, capWnds);
             SetCapturableItems(uiContextCaptureSaveFolder, capWnds);
 
-            uiContextStartFFXI.Enabled = !FFXI.IsRunning();
+            uiContextStartFFXI.Enabled = !FFXI.IsRunning() || config.StartProgramType == "program";
             uiContextRestartAdminMode.Enabled = !Program.IsAdminMode();
             uiContextRestartUserMode.Enabled = Program.IsAdminMode() && !config.AdminMode;
         }
@@ -689,7 +727,7 @@ namespace ffxigamma {
         }
 
         private void uiContextStartFFXI_Click(object sender, EventArgs e) {
-            StartFFXIinAdmin();
+            StartProgramAsAdmin();
         }
 
         private void uiContextRestartAdminMode_Click(object sender, EventArgs e) {

@@ -66,13 +66,19 @@
             this.uiHotKeyMute = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.uiStartProgramType = new System.Windows.Forms.ComboBox();
+            this.uiEditProgramCommandLine = new System.Windows.Forms.Button();
+            this.uiStartProgramCommandLine = new System.Windows.Forms.TextBox();
+            this.uiEnableNotify = new System.Windows.Forms.CheckBox();
             this.uiAdminMode = new System.Windows.Forms.CheckBox();
-            this.uiStartUpFFXI = new System.Windows.Forms.CheckBox();
+            this.uiAutoStartProgram = new System.Windows.Forms.CheckBox();
             this.panel1 = new System.Windows.Forms.Panel();
             this.uiFontDialog = new System.Windows.Forms.FontDialog();
             this.uiColorDialog = new System.Windows.Forms.ColorDialog();
             this.uiFolderDialog = new System.Windows.Forms.FolderBrowserDialog();
-            this.uiEnableNotify = new System.Windows.Forms.CheckBox();
+            this.uiProgramDialog = new System.Windows.Forms.OpenFileDialog();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabPage3.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -550,9 +556,14 @@
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.label8);
+            this.tabPage1.Controls.Add(this.label7);
+            this.tabPage1.Controls.Add(this.uiStartProgramType);
+            this.tabPage1.Controls.Add(this.uiEditProgramCommandLine);
+            this.tabPage1.Controls.Add(this.uiStartProgramCommandLine);
             this.tabPage1.Controls.Add(this.uiEnableNotify);
             this.tabPage1.Controls.Add(this.uiAdminMode);
-            this.tabPage1.Controls.Add(this.uiStartUpFFXI);
+            this.tabPage1.Controls.Add(this.uiAutoStartProgram);
             this.tabPage1.Controls.Add(this.uiAppGamma);
             this.tabPage1.Controls.Add(this.uiSystemGamma);
             this.tabPage1.Controls.Add(this.label1);
@@ -564,6 +575,51 @@
             this.tabPage1.TabIndex = 1;
             this.tabPage1.Text = "その他";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // uiStartUpProgramType
+            // 
+            this.uiStartProgramType.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.uiStartProgramType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.uiStartProgramType.FormattingEnabled = true;
+            this.uiStartProgramType.Items.AddRange(new object[] {
+            "FINAL FANTASY XI",
+            "その他のプログラム"});
+            this.uiStartProgramType.Location = new System.Drawing.Point(10, 123);
+            this.uiStartProgramType.Name = "uiStartUpProgramType";
+            this.uiStartProgramType.Size = new System.Drawing.Size(265, 20);
+            this.uiStartProgramType.TabIndex = 7;
+            this.uiStartProgramType.SelectedIndexChanged += new System.EventHandler(this.uiStartProgramType_SelectedIndexChanged);
+            // 
+            // uiEditProgramCommandLine
+            // 
+            this.uiEditProgramCommandLine.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.uiEditProgramCommandLine.Location = new System.Drawing.Point(281, 159);
+            this.uiEditProgramCommandLine.Name = "uiEditProgramCommandLine";
+            this.uiEditProgramCommandLine.Size = new System.Drawing.Size(75, 23);
+            this.uiEditProgramCommandLine.TabIndex = 10;
+            this.uiEditProgramCommandLine.Text = "参照...";
+            this.uiEditProgramCommandLine.UseVisualStyleBackColor = true;
+            this.uiEditProgramCommandLine.Click += new System.EventHandler(this.uiEditProgramCommandLine_Click);
+            // 
+            // uiStartUpProgramCommandLine
+            // 
+            this.uiStartProgramCommandLine.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.uiStartProgramCommandLine.Location = new System.Drawing.Point(10, 161);
+            this.uiStartProgramCommandLine.Name = "uiStartUpProgramCommandLine";
+            this.uiStartProgramCommandLine.Size = new System.Drawing.Size(265, 19);
+            this.uiStartProgramCommandLine.TabIndex = 9;
+            // 
+            // uiEnableNotify
+            // 
+            this.uiEnableNotify.AutoSize = true;
+            this.uiEnableNotify.Location = new System.Drawing.Point(10, 189);
+            this.uiEnableNotify.Name = "uiEnableNotify";
+            this.uiEnableNotify.Size = new System.Drawing.Size(116, 16);
+            this.uiEnableNotify.TabIndex = 11;
+            this.uiEnableNotify.Text = "通知を表示する(&N)";
+            this.uiEnableNotify.UseVisualStyleBackColor = true;
             // 
             // uiAdminMode
             // 
@@ -577,13 +633,13 @@
             // 
             // uiStartUpFFXI
             // 
-            this.uiStartUpFFXI.AutoSize = true;
-            this.uiStartUpFFXI.Location = new System.Drawing.Point(10, 84);
-            this.uiStartUpFFXI.Name = "uiStartUpFFXI";
-            this.uiStartUpFFXI.Size = new System.Drawing.Size(238, 16);
-            this.uiStartUpFFXI.TabIndex = 5;
-            this.uiStartUpFFXI.Text = "起動時に FINAL FANTSY XI を起動する(&F)";
-            this.uiStartUpFFXI.UseVisualStyleBackColor = true;
+            this.uiAutoStartProgram.AutoSize = true;
+            this.uiAutoStartProgram.Location = new System.Drawing.Point(10, 84);
+            this.uiAutoStartProgram.Name = "uiStartUpFFXI";
+            this.uiAutoStartProgram.Size = new System.Drawing.Size(182, 16);
+            this.uiAutoStartProgram.TabIndex = 5;
+            this.uiAutoStartProgram.Text = "自動的にプログラムを起動する(&B)";
+            this.uiAutoStartProgram.UseVisualStyleBackColor = true;
             // 
             // panel1
             // 
@@ -596,15 +652,28 @@
             this.panel1.Size = new System.Drawing.Size(372, 30);
             this.panel1.TabIndex = 1;
             // 
-            // uiNotify
+            // uiProgramDialog
             // 
-            this.uiEnableNotify.AutoSize = true;
-            this.uiEnableNotify.Location = new System.Drawing.Point(10, 109);
-            this.uiEnableNotify.Name = "uiNotify";
-            this.uiEnableNotify.Size = new System.Drawing.Size(116, 16);
-            this.uiEnableNotify.TabIndex = 6;
-            this.uiEnableNotify.Text = "通知を表示する(&N)";
-            this.uiEnableNotify.UseVisualStyleBackColor = true;
+            this.uiProgramDialog.Filter = "プログラム (*.exe)|*.exe|全てのファイル (*.*)|*.*";
+            this.uiProgramDialog.Title = "プログラムを選択 - FFXI Gamma";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(8, 108);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(110, 12);
+            this.label7.TabIndex = 6;
+            this.label7.Text = "起動するプログラム(&P):";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(8, 146);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(139, 12);
+            this.label8.TabIndex = 8;
+            this.label8.Text = "プログラムのコマンドライン(&C):";
             // 
             // Settings
             // 
@@ -665,7 +734,7 @@
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.ComboBox uiImageFormatName;
         private System.Windows.Forms.FolderBrowserDialog uiFolderDialog;
-        private System.Windows.Forms.CheckBox uiStartUpFFXI;
+        private System.Windows.Forms.CheckBox uiAutoStartProgram;
         private System.Windows.Forms.CheckBox uiAdminMode;
         private System.Windows.Forms.Button uiImageTextDelete;
         private System.Windows.Forms.Button uiImageTextEdit;
@@ -686,5 +755,11 @@
         private System.Windows.Forms.TextBox uiHotKeyMute;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.CheckBox uiEnableNotify;
+        private System.Windows.Forms.ComboBox uiStartProgramType;
+        private System.Windows.Forms.Button uiEditProgramCommandLine;
+        private System.Windows.Forms.TextBox uiStartProgramCommandLine;
+        private System.Windows.Forms.OpenFileDialog uiProgramDialog;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label label7;
     }
 }

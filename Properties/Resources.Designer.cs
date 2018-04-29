@@ -19,7 +19,7 @@ namespace ffxigamma.Properties {
     // または Visual Studio のようなツールを使用して自動生成されました。
     // メンバーを追加または削除するには、.ResX ファイルを編集して、/str オプションと共に
     // ResGen を実行し直すか、または VS プロジェクトをビルドし直します。
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
@@ -70,11 +70,40 @@ namespace ffxigamma.Properties {
         }
         
         /// <summary>
-        ///   既に起動しています。 に類似しているローカライズされた文字列を検索します。
+        ///   管理者モードで実行すると
+        ///FINAL FANTASY XI の画面を喪失する可能性があります。
+        ///実行してもよろしいですか？ に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string AdminModeWarning {
+            get {
+                return ResourceManager.GetString("AdminModeWarning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   FFXI Gamma は既に起動しています。 に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string AlreadyRunning {
             get {
                 return ResourceManager.GetString("AlreadyRunning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   プログラムのコマンドライン書式に間違いがあります。 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string CommandLineFormattError {
+            get {
+                return ResourceManager.GetString("CommandLineFormattError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   FINAL FANTASY XI は既に起動しています。 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string FFXIAlreadyRunning {
+            get {
+                return ResourceManager.GetString("FFXIAlreadyRunning", resourceCulture);
             }
         }
         
@@ -107,6 +136,15 @@ namespace ffxigamma.Properties {
         }
         
         /// <summary>
+        ///   プログラムの起動に失敗しました。 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string ProgramStartFail {
+            get {
+                return ResourceManager.GetString("ProgramStartFail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   リモートコントロールに失敗しました。 に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string RemoteControlFail {
@@ -125,17 +163,6 @@ namespace ffxigamma.Properties {
         internal static string RequireAdminWarning {
             get {
                 return ResourceManager.GetString("RequireAdminWarning", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   管理者モードで再起動を実行すると
-        ///FINAL FANTASY XI の画面を喪失する可能性があります。
-        ///再起動してもよろしいですか？ に類似しているローカライズされた文字列を検索します。
-        /// </summary>
-        internal static string RestartAdminModeWarning {
-            get {
-                return ResourceManager.GetString("RestartAdminModeWarning", resourceCulture);
             }
         }
         

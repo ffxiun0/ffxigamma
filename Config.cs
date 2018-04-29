@@ -15,6 +15,8 @@ namespace ffxigamma {
         public double SystemGamma { get; set; }
         public bool AdminMode { get; set; }
         public bool StartFFXI { get; set; }
+        public string StartProgramType { get; set; }
+        public string StartProgramCommandLine { get; set; }
         public bool EnableSaveWindowPosition { get; set; }
         public bool EnableImageGamma { get; set; }
         public string ImageFolder { get; set; }
@@ -30,6 +32,8 @@ namespace ffxigamma {
             this.SystemGamma = 1.0;
             this.AdminMode = false;
             this.StartFFXI = false;
+            this.StartProgramType = "ffxi";
+            this.StartProgramCommandLine = "";
             this.EnableSaveWindowPosition = false;
             this.WindowSettingsList = new WindowSettings[] {
                 new WindowSettings() { Name = "FINAL FANTASY XI" },

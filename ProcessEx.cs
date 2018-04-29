@@ -1,53 +1,76 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Linq;
+using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
 
 namespace ffxigamma {
+    enum StartResult {
+        Success,
+        Failure,
+        Cancelled,
+    }
+
     class ProcessEx {
         public static bool IsUserAnAdmin() {
             return NativeMethods.IsUserAnAdmin();
         }
 
-        public static bool Start(string exe, params string[] args) {
+        public static StartResult Start(string exe, params string[] args) {
             try {
                 var psi = new ProcessStartInfo(exe);
-                psi.Arguments = QuoteArguments(args);
+                psi.Arguments = CommandLine.ToString(args);
+                psi.WorkingDirectory = GetCurrentDirectory(exe);
                 Process.Start(psi);
-                return true;
+                return StartResult.Success;
             }
-            catch (Win32Exception) {
-                return false;
+            catch (Win32Exception e) {
+                return ToStartResult(e.NativeErrorCode);
             }
         }
 
-        public static bool StartAdmin(string exe, params string[] args) {
+        public static StartResult StartAdmin(string exe, params string[] args) {
             try {
                 var psi = new ProcessStartInfo(exe);
-                psi.Arguments = QuoteArguments(args);
+                psi.Arguments = CommandLine.ToString(args);
+                psi.WorkingDirectory = GetCurrentDirectory(exe);
                 psi.Verb = "runas";
                 Process.Start(psi);
-                return true;
+                return StartResult.Success;
             }
-            catch (Win32Exception) {
-                return false;
+            catch (Win32Exception e) {
+                return ToStartResult(e.NativeErrorCode);
             }
         }
 
-        public static bool StartUser(string exe, params string[] args) {
+        public static StartResult StartUser(string exe, params string[] args) {
             if (!IsUserAnAdmin()) return Start(exe, args);
 
             var hToken = DuplicateShellToken();
-            if (hToken == IntPtr.Zero) return false;
+            if (hToken == IntPtr.Zero) return StartResult.Failure;
             try {
                 return StartWithToken(hToken, exe, args);
             }
             finally {
                 NativeMethods.CloseHandle(hToken);
             }
+        }
+
+        private static string GetCurrentDirectory(string path) {
+            try {
+                return Path.GetDirectoryName(path);
+            }
+            catch (ArgumentException) {
+                return "";
+            }
+        }
+
+        private static StartResult ToStartResult(int errorCode) {
+            if (errorCode == NativeMethods.ERROR_CANCELLED)
+                return StartResult.Cancelled;
+            else
+                return StartResult.Failure;
         }
 
         private static IntPtr DuplicateShellToken() {
@@ -90,43 +113,22 @@ namespace ffxigamma {
             return ok ? hDupToken : IntPtr.Zero;
         }
 
-        private static bool StartWithToken(IntPtr hToken, string exe, params string[] args) {
+        private static StartResult StartWithToken(IntPtr hToken, string exe, params string[] args) {
             var commandLine = new StringBuilder(1024 + 1);
-            commandLine.Append(MakeCommandLine(exe, args));
+            commandLine.Append(CommandLine.ToString(exe, args));
 
+            var dir = GetCurrentDirectory(exe);
             var si = new NativeMethods.STARTUPINFOW();
             si.cb = (uint)Marshal.SizeOf(si);
             var pi = new NativeMethods.PROCESS_INFORMATION();
 
-            return NativeMethods.CreateProcessWithToken(hToken, 0, exe, commandLine,
-                0, IntPtr.Zero, null, ref si, out pi);
-        }
+            var ok = NativeMethods.CreateProcessWithToken(hToken, 0, exe, commandLine,
+                0, IntPtr.Zero, dir, ref si, out pi);
 
-        private static string MakeCommandLine(string exe, params string[] args) {
-            var commandLine = Concat(exe, args);
-            return QuoteArguments(commandLine);
-        }
-
-        private static IEnumerable<T> Concat<T>(T element, IEnumerable<T> list) {
-            yield return element;
-            foreach (var item in list)
-                yield return item;
-        }
-
-        private static string QuoteArguments(IEnumerable<string> args) {
-            var quotedArgs = from arg in args select QuoteArgument(arg);
-            return string.Join(" ", quotedArgs);
-        }
-
-        private static string QuoteArgument(string s) {
-            if (s.Contains(" ") || s.Contains("\""))
-                return "\"" + EscapeQuotes(s) + "\"";
+            if (ok)
+                return StartResult.Success;
             else
-                return s;
-        }
-
-        private static string EscapeQuotes(string s) {
-            return s.Replace("\"", "\"\"");
+                return ToStartResult(NativeMethods.GetLastError());
         }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using Microsoft.Win32;
-using System.ComponentModel;
 using System.Diagnostics;
 
 namespace ffxigamma {
@@ -31,18 +30,13 @@ namespace ffxigamma {
             return path + @"\" + "polboot.exe";
         }
 
-        public static bool Start() {
-            if (FFXI.IsRunning()) return true;
+        public static StartResult Start() {
+            if (FFXI.IsRunning()) return StartResult.Success;
 
             var path = FFXI.GetProgramPath();
-            if (path == null) return false;
-            try {
-                Process.Start(path);
-                return true;
-            }
-            catch (Win32Exception) {
-                return false;
-            }
+            if (path == null) return StartResult.Failure;
+
+            return ProcessEx.Start(path);
         }
     }
 }

@@ -120,8 +120,19 @@
   <data name="AdminMode" xml:space="preserve">
     <value>管理者モード</value>
   </data>
+  <data name="AdminModeWarning" xml:space="preserve">
+    <value>管理者モードで実行すると
+FINAL FANTASY XI の画面を喪失する可能性があります。
+実行してもよろしいですか？</value>
+  </data>
   <data name="AlreadyRunning" xml:space="preserve">
-    <value>既に起動しています。</value>
+    <value>FFXI Gamma は既に起動しています。</value>
+  </data>
+  <data name="CommandLineFormattError" xml:space="preserve">
+    <value>プログラムのコマンドライン書式に間違いがあります。</value>
+  </data>
+  <data name="FFXIAlreadyRunning" xml:space="preserve">
+    <value>FINAL FANTASY XI は既に起動しています。</value>
   </data>
   <data name="FFXIStartFail" xml:space="preserve">
     <value>FINAL FANTASY XI の起動に失敗しました。</value>
@@ -133,6 +144,9 @@
   <data name="NotifySaved" xml:space="preserve">
     <value>画像を保存しました。</value>
   </data>
+  <data name="ProgramStartFail" xml:space="preserve">
+    <value>プログラムの起動に失敗しました。</value>
+  </data>
   <data name="RemoteControlFail" xml:space="preserve">
     <value>リモートコントロールに失敗しました。</value>
   </data>
@@ -142,11 +156,6 @@
  FINAL FANTASY XI を終了し、コンテキストメニューより
 「FINAL FANTASY XI を起動」または「管理者モードで再起動」を
 実行することで使用できるようになります。</value>
-  </data>
-  <data name="RestartAdminModeWarning" xml:space="preserve">
-    <value>管理者モードで再起動を実行すると
-FINAL FANTASY XI の画面を喪失する可能性があります。
-再起動してもよろしいですか？</value>
   </data>
   <data name="RestartFail" xml:space="preserve">
     <value>再起動に失敗しました。</value>

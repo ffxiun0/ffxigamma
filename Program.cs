@@ -9,6 +9,9 @@ namespace ffxigamma {
     static class Program {
         [STAThread]
         static void Main() {
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+
             var config = App.LoadConfig();
 
             if (HaveOption("/restart")) {
@@ -19,9 +22,9 @@ namespace ffxigamma {
             }
 
             if (IsRunning()) {
-                if (HaveOption("/ffxi") || config.StartFFXI && !FFXI.IsRunning()) {
-                    if (!StartFFXIinRemote(config))
-                        ShowWarning(Properties.Resources.RemoteControlFail);
+                if (HaveOption("/ffxi") || config.StartFFXI) {
+                    if (!RemoteStartProgram())
+                        ShowError(Properties.Resources.RemoteControlFail);
                 } else {
                     ShowWarning(Properties.Resources.AlreadyRunning);
                 }
@@ -29,18 +32,18 @@ namespace ffxigamma {
             }
 
             if (config.AdminMode && !IsAdminMode()) {
+                if (FFXI.IsRunning()) {
+                    if (!ShowYesNoWarning(Properties.Resources.AdminModeWarning))
+                        return;
+                }
                 RestartAdminMode();
                 return;
             }
 
-            if (HaveOption("/ffxi") || config.StartFFXI) {
-                if (!FFXI.Start())
-                    ShowError(Properties.Resources.FFXIStartFail);
-            }
+            var app = new App();
+            app.EnableAutoStartProgram = HaveOption("/ffxi") || config.StartFFXI;
 
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new App());
+            Application.Run(app);
         }
 
         private static void ShowWarning(string s) {
@@ -51,6 +54,13 @@ namespace ffxigamma {
         private static void ShowError(string s) {
             MessageBox.Show(s, App.AppName,
                 MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+
+        private static bool ShowYesNoWarning(string s) {
+            var ret = MessageBox.Show(null, s, App.AppName,
+                MessageBoxButtons.YesNo, MessageBoxIcon.Warning,
+                MessageBoxDefaultButton.Button2);
+            return ret == DialogResult.Yes;
         }
 
         private static bool HaveOption(string option) {
@@ -75,7 +85,7 @@ namespace ffxigamma {
             return ProcessEx.IsUserAnAdmin();
         }
 
-        public static bool RestartAdminMode(params string[] args) {
+        public static StartResult RestartAdminMode(params string[] args) {
             var path = Environment.GetCommandLineArgs()[0];
             var newArgs = new List<string>();
             newArgs.Add("/restart");
@@ -83,7 +93,7 @@ namespace ffxigamma {
             return ProcessEx.StartAdmin(path, newArgs.ToArray());
         }
 
-        public static bool RestartUserMode(params string[] args) {
+        public static StartResult RestartUserMode(params string[] args) {
             var path = Environment.GetCommandLineArgs()[0];
             var newArgs = new List<string>();
             newArgs.Add("/restart");
@@ -102,14 +112,10 @@ namespace ffxigamma {
             return true;
         }
 
-        private static bool StartFFXIinRemote(Config config) {
+        private static bool RemoteStartProgram() {
             try {
                 var remote = App.GetRemoteControl();
-                if (config.AdminMode)
-                    remote.StartFFXIinAdmin();
-                else
-                    remote.StartFFXI();
-
+                remote.StartProgram();
                 return true;
             }
             catch (RemotingException) {

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
+using System.Reflection;
 using System.Windows.Forms;
 
 namespace ffxigamma {
@@ -42,7 +44,9 @@ namespace ffxigamma {
             uiAppGamma.Text = config.AppGamma.ToString();
             uiSystemGamma.Text = config.SystemGamma.ToString();
             uiAdminMode.Checked = config.AdminMode;
-            uiStartUpFFXI.Checked = config.StartFFXI;
+            uiAutoStartProgram.Checked = config.StartFFXI;
+            StartProgramType = config.StartProgramType;
+            uiStartProgramCommandLine.Text = config.StartProgramCommandLine;
 
             uiSaveWindowPosition.Checked = config.EnableSaveWindowPosition;
             uiWindowSettingsList.Items.Clear();
@@ -79,7 +83,9 @@ namespace ffxigamma {
             config.AppGamma = double.Parse(uiAppGamma.Text);
             config.SystemGamma = double.Parse(uiSystemGamma.Text);
             config.AdminMode = uiAdminMode.Checked;
-            config.StartFFXI = uiStartUpFFXI.Checked;
+            config.StartFFXI = uiAutoStartProgram.Checked;
+            config.StartProgramType = StartProgramType;
+            config.StartProgramCommandLine = uiStartProgramCommandLine.Text;
 
             config.EnableSaveWindowPosition = uiSaveWindowPosition.Checked;
             var wslist = new List<WindowSettings>();
@@ -111,9 +117,44 @@ namespace ffxigamma {
             return config;
         }
 
+        private bool CheckConfig() {
+            if (CommandLine.Parse(uiStartProgramCommandLine.Text) == null) {
+                ShowError(Properties.Resources.CommandLineFormattError);
+                return false;
+            }
+
+            return true;
+        }
+
+        private Dictionary<string, int> programTypeMap = new Dictionary<string, int>() {
+            {"ffxi", 0 },
+            {"program", 1 },
+        };
+
+        private string StartProgramType {
+            get {
+                foreach (var pair in programTypeMap) {
+                    if (pair.Value == uiStartProgramType.SelectedIndex)
+                        return pair.Key;
+                }
+                return "ffxi";
+            }
+            set {
+                if (programTypeMap.ContainsKey(value))
+                    uiStartProgramType.SelectedIndex = programTypeMap[value];
+                else
+                    uiStartProgramType.SelectedIndex = 0;
+            }
+        }
+
         private void ShowWarning(string s) {
             MessageBox.Show(this, s, Text,
                 MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        }
+
+        private void ShowError(string s) {
+            MessageBox.Show(this, s, Text,
+                MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
         private void Settings_Load(object sender, EventArgs e) {
@@ -154,6 +195,8 @@ namespace ffxigamma {
         }
 
         private void uiOk_Click(object sender, EventArgs e) {
+            if (!CheckConfig()) return;
+
             try {
                 config = GetConfigFromUI();
                 DialogResult = DialogResult.OK;
@@ -221,6 +264,24 @@ namespace ffxigamma {
         private void uiEditHotKeyVolumeDown_Click(object sender, EventArgs e) {
             if (inputHotKeyVolumeDown.ShowDialog(this) == DialogResult.OK)
                 uiHotKeyVolumeDown.Text = inputHotKeyVolumeDown.HotKey.ToString();
+        }
+
+        private void uiStartProgramType_SelectedIndexChanged(object sender, EventArgs e) {
+            var enabled = StartProgramType == "program";
+            uiStartProgramCommandLine.Enabled = enabled;
+            uiEditProgramCommandLine.Enabled = enabled;
+        }
+
+        private void uiEditProgramCommandLine_Click(object sender, EventArgs e) {
+            if (uiProgramDialog.ShowDialog(this) == DialogResult.OK) {
+                var path = uiProgramDialog.FileName;
+
+                var exe = Path.GetFileName(Assembly.GetExecutingAssembly().Location);
+                if (path.Contains(exe))
+                    path = "";
+
+                uiStartProgramCommandLine.Text = CommandLine.ToString(path);
+            }
         }
     }
 }

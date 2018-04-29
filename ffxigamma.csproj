@@ -58,6 +58,7 @@
       <DependentUpon>App.cs</DependentUpon>
     </Compile>
     <Compile Include="ApplicationVolumeControl.cs" />
+    <Compile Include="CommandLine.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="CoreAudio.cs" />
     <Compile Include="FFXI.cs" />

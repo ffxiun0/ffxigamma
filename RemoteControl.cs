@@ -10,12 +10,8 @@ namespace ffxigamma {
 
         delegate void InvokeDelegate();
 
-        public void StartFFXI() {
-            app.BeginInvoke(new InvokeDelegate(app.StartFFXI));
-        }
-
-        public void StartFFXIinAdmin() {
-            app.BeginInvoke(new InvokeDelegate(app.StartFFXIinAdmin));
+        public void StartProgram() {
+            app.BeginInvoke(new InvokeDelegate(app.AutoStartProgram));
         }
     }
 }

@@ -256,6 +256,11 @@ namespace ffxigamma {
         [DllImport("kernel32.dll", CharSet = CharSet.Unicode)]
         public static extern bool CloseHandle(IntPtr hObject);
 
+        [DllImport("kernel32.dll", CharSet = CharSet.Unicode)]
+        public static extern int GetLastError();
+
+        public const int ERROR_CANCELLED = 1223;
+
         [DllImport("advapi32.dll", CharSet = CharSet.Unicode)]
         public static extern bool OpenProcessToken(
             IntPtr ProcessHandle,
