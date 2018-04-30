@@ -59,6 +59,8 @@
     </Compile>
     <Compile Include="ApplicationVolumeControl.cs" />
     <Compile Include="CommandLine.cs" />
+    <Compile Include="CommandLineEncoder.cs" />
+    <Compile Include="CommandLineParser.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="CoreAudio.cs" />
     <Compile Include="FFXI.cs" />
