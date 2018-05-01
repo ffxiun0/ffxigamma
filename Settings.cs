@@ -278,9 +278,9 @@ namespace ffxigamma {
 
                 var exe = Path.GetFileName(Assembly.GetExecutingAssembly().Location);
                 if (path.Contains(exe))
-                    path = "";
-
-                uiStartProgramCommandLine.Text = CommandLine.ToString(path);
+                    uiStartProgramCommandLine.Text = "";
+                else
+                    uiStartProgramCommandLine.Text = CommandLine.ToString(path);
             }
         }
     }
