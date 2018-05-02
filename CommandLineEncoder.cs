@@ -6,8 +6,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 
-namespace ffxigamma {
+namespace CLParser {
     class CommandLineEncoder {
+        private CommandLineEncoder() { }
+
         public static string Encode(string s) {
             if (s.Length == 0) return "\"\"";
 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CLParser;
+using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
@@ -25,6 +26,9 @@ namespace ffxigamma {
                 Process.Start(psi);
                 return StartResult.Success;
             }
+            catch (InvalidOperationException) {
+                return StartResult.Failure;
+            }
             catch (Win32Exception e) {
                 return ToStartResult(e.NativeErrorCode);
             }
@@ -38,6 +42,9 @@ namespace ffxigamma {
                 psi.Verb = "runas";
                 Process.Start(psi);
                 return StartResult.Success;
+            }
+            catch (InvalidOperationException) {
+                return StartResult.Failure;
             }
             catch (Win32Exception e) {
                 return ToStartResult(e.NativeErrorCode);

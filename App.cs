@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CLParser;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
@@ -450,7 +451,7 @@ namespace ffxigamma {
                 return;
             }
 
-            if (cl.Exe.Length > 0) {
+            if (!cl.IsEmpty) {
                 if (ProcessEx.Start(cl.Exe, cl.Args) == StartResult.Failure)
                     ShowError(Properties.Resources.ProgramStartFail);
             }
