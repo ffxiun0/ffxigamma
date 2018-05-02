@@ -447,7 +447,7 @@ namespace ffxigamma {
 
             var cl = CommandLine.Parse(config.StartProgramCommandLine);
             if (cl == null) {
-                ShowError(Properties.Resources.ProgramStartFail);
+                ShowError(Properties.Resources.CommandLineFormattError);
                 return;
             }
 
