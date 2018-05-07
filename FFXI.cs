@@ -1,4 +1,8 @@
-﻿using Microsoft.Win32;
+﻿/*
+ * Copyright (c) 2015 ffxiun0
+ * https://opensource.org/licenses/MIT
+ */
+using Microsoft.Win32;
 using System.Diagnostics;
 
 namespace ffxigamma {

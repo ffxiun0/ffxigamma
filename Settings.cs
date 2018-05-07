@@ -1,7 +1,10 @@
-﻿using CLParser;
+﻿/*
+ * Copyright (c) 2015 ffxiun0
+ * https://opensource.org/licenses/MIT
+ */
+using CLParser;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Reflection;
 using System.Windows.Forms;

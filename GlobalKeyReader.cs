@@ -1,4 +1,8 @@
-﻿using System;
+﻿/*
+ * Copyright (c) 2015 ffxiun0
+ * https://opensource.org/licenses/MIT
+ */
+using System;
 using System.ComponentModel;
 using System.Windows.Forms;
 

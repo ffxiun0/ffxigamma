@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright (c) 2018 ffxiun0@gmail.com
+ * Copyright (c) 2018 ffxiun0
  * https://opensource.org/licenses/MIT
  */
 using System.Collections.Generic;

@@ -1,4 +1,8 @@
-﻿using System.ComponentModel;
+﻿/*
+ * Copyright (c) 2015 ffxiun0
+ * https://opensource.org/licenses/MIT
+ */
+using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;

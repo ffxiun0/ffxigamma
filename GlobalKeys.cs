@@ -1,4 +1,8 @@
-﻿using System.Windows.Forms;
+﻿/*
+ * Copyright (c) 2015 ffxiun0
+ * https://opensource.org/licenses/MIT
+ */
+using System.Windows.Forms;
 
 namespace ffxigamma {
     class GlobalKeys {
