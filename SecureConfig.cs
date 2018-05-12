@@ -24,6 +24,8 @@ namespace ffxigamma {
         }
 
         public static SecureConfig Load(string path) {
+            if (!CheckPermission(path)) return Default;
+
             var doc = new XmlDocument();
             doc.PreserveWhitespace = true;
             doc.Load(path);
@@ -70,6 +72,15 @@ namespace ffxigamma {
             sec.AddAccessRule(userRule);
 
             File.SetAccessControl(path, sec);
+        }
+
+        private static bool CheckPermission(string path) {
+            if (!File.Exists(path)) return false;
+
+            var ac = File.GetAccessControl(path);
+            var owner = ac.GetOwner(typeof(NTAccount));
+
+            return owner.Value == @"BUILTIN\Administrators";
         }
     }
 }
