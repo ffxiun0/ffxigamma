@@ -10,6 +10,12 @@ using System.Reflection;
 using System.Windows.Forms;
 
 namespace ffxigamma {
+    public enum SettingsAction {
+        OK,
+        Cancel,
+        RestartAdmin,
+    }
+
     public partial class Settings : Form {
         private InputHotKey inputHotKeyCapture;
         private InputHotKey inputHotKeyMute;
@@ -18,11 +24,13 @@ namespace ffxigamma {
         private ImageTextEditor imageTextEditor;
         private WindowSettingsEditor windowSettingsEditor;
         private Config config;
+        private SecureConfig secureConfig;
 
         public Settings() {
             InitializeComponent();
 
             Icon = Properties.Resources.Icon;
+            uiEditProgramCommandLine.Image = NativeMethods.GetShieldIcon();
 
             inputHotKeyCapture = new InputHotKey();
             inputHotKeyMute = new InputHotKey();
@@ -34,6 +42,8 @@ namespace ffxigamma {
             Config = Config.Default;
         }
 
+        public SettingsAction Action { get; set; }
+
         public Config Config {
             set {
                 config = value;
@@ -44,13 +54,22 @@ namespace ffxigamma {
             }
         }
 
+        public SecureConfig SecureConfig {
+            set {
+                secureConfig = value;
+                SetSecureConfigToUI(secureConfig);
+            }
+            get {
+                return secureConfig;
+            }
+        }
+
         private void SetConfigToUI(Config config) {
             uiAppGamma.Text = config.AppGamma.ToString();
             uiSystemGamma.Text = config.SystemGamma.ToString();
             uiAdminMode.Checked = config.AdminMode;
             uiAutoStartProgram.Checked = config.StartFFXI;
             StartProgramType = config.StartProgramType;
-            uiStartProgramCommandLine.Text = config.StartProgramCommandLine;
 
             uiSaveWindowPosition.Checked = config.EnableSaveWindowPosition;
             uiWindowSettingsList.Items.Clear();
@@ -89,7 +108,6 @@ namespace ffxigamma {
             config.AdminMode = uiAdminMode.Checked;
             config.StartFFXI = uiAutoStartProgram.Checked;
             config.StartProgramType = StartProgramType;
-            config.StartProgramCommandLine = uiStartProgramCommandLine.Text;
 
             config.EnableSaveWindowPosition = uiSaveWindowPosition.Checked;
             var wslist = new List<WindowSettings>();
@@ -119,6 +137,18 @@ namespace ffxigamma {
             config.EnableNotify = uiEnableNotify.Checked;
 
             return config;
+        }
+
+        private void SetSecureConfigToUI(SecureConfig secureConfig) {
+            uiStartProgramCommandLine.Text = secureConfig.StartProgramCommandLine;
+        }
+
+        private SecureConfig GetSecureConfigFromUI() {
+            var secureConfig = new SecureConfig();
+
+            secureConfig.StartProgramCommandLine = uiStartProgramCommandLine.Text;
+
+            return secureConfig;
         }
 
         private bool CheckConfig() {
@@ -161,10 +191,40 @@ namespace ffxigamma {
                 MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
+        private bool ShowYesNoWarning(string s) {
+            var ret = MessageBox.Show(null, s, Text,
+                MessageBoxButtons.YesNo, MessageBoxIcon.Warning,
+                MessageBoxDefaultButton.Button2);
+            return ret == DialogResult.Yes;
+        }
+
+        private bool CommitSettings(SettingsAction action) {
+            try {
+                config = GetConfigFromUI();
+                secureConfig = GetSecureConfigFromUI();
+                DialogResult = DialogResult.OK;
+                Action = action;
+                return true;
+            }
+            catch (FormatException ex) {
+                ShowWarning(ex.Message);
+            }
+            catch (OverflowException ex) {
+                ShowWarning(ex.Message);
+            }
+            return false;
+        }
+
         private void Settings_Load(object sender, EventArgs e) {
             Text = App.AppName + " " + App.Version;
-            if (Program.IsAdminMode())
+            Action = SettingsAction.Cancel;
+
+            if (Program.IsAdminMode()) {
                 Text += " (" + Properties.Resources.AdminMode + ")";
+                uiStartProgramCommandLine.Enabled = StartProgramType == "program";
+            } else {
+                uiStartProgramCommandLine.Enabled = false;
+            }
         }
 
         private void uiSaveWindowPosition_Click(object sender, EventArgs e) {
@@ -201,17 +261,8 @@ namespace ffxigamma {
         private void uiOk_Click(object sender, EventArgs e) {
             if (!CheckConfig()) return;
 
-            try {
-                config = GetConfigFromUI();
-                DialogResult = DialogResult.OK;
+            if (CommitSettings(SettingsAction.OK))
                 Close();
-            }
-            catch (FormatException ex) {
-                ShowWarning(ex.Message);
-            }
-            catch (OverflowException ex) {
-                ShowWarning(ex.Message);
-            }
         }
 
         private void uiEditImageFolder_Click(object sender, EventArgs e) {
@@ -272,19 +323,26 @@ namespace ffxigamma {
 
         private void uiStartProgramType_SelectedIndexChanged(object sender, EventArgs e) {
             var enabled = StartProgramType == "program";
-            uiStartProgramCommandLine.Enabled = enabled;
+            uiStartProgramCommandLine.Enabled = enabled && Program.IsAdminMode();
             uiEditProgramCommandLine.Enabled = enabled;
         }
 
         private void uiEditProgramCommandLine_Click(object sender, EventArgs e) {
-            if (uiProgramDialog.ShowDialog(this) == DialogResult.OK) {
-                var path = uiProgramDialog.FileName;
+            if (Program.IsAdminMode()) {
+                if (uiProgramDialog.ShowDialog(this) == DialogResult.OK) {
+                    var path = uiProgramDialog.FileName;
 
-                var exe = Path.GetFileName(Assembly.GetExecutingAssembly().Location);
-                if (path.Contains(exe))
-                    uiStartProgramCommandLine.Text = "";
-                else
-                    uiStartProgramCommandLine.Text = CommandLine.ToString(path);
+                    var exe = Path.GetFileName(Assembly.GetExecutingAssembly().Location);
+                    if (path.Contains(exe))
+                        uiStartProgramCommandLine.Text = "";
+                    else
+                        uiStartProgramCommandLine.Text = CommandLine.ToString(path);
+                }
+            } else {
+                if (ShowYesNoWarning(Properties.Resources.ChangeCommandLine)) {
+                    if (CommitSettings(SettingsAction.RestartAdmin))
+                        Close();
+                }
             }
         }
     }

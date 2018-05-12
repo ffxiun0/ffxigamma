@@ -66,6 +66,8 @@
             this.uiHotKeyMute = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.label8 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
             this.uiStartProgramType = new System.Windows.Forms.ComboBox();
             this.uiEditProgramCommandLine = new System.Windows.Forms.Button();
             this.uiStartProgramCommandLine = new System.Windows.Forms.TextBox();
@@ -77,8 +79,6 @@
             this.uiColorDialog = new System.Windows.Forms.ColorDialog();
             this.uiFolderDialog = new System.Windows.Forms.FolderBrowserDialog();
             this.uiProgramDialog = new System.Windows.Forms.OpenFileDialog();
-            this.label7 = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabPage3.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -576,7 +576,25 @@
             this.tabPage1.Text = "その他";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
-            // uiStartUpProgramType
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(8, 146);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(139, 12);
+            this.label8.TabIndex = 8;
+            this.label8.Text = "プログラムのコマンドライン(&C):";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(8, 108);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(110, 12);
+            this.label7.TabIndex = 6;
+            this.label7.Text = "起動するプログラム(&P):";
+            // 
+            // uiStartProgramType
             // 
             this.uiStartProgramType.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
@@ -586,7 +604,7 @@
             "FINAL FANTASY XI",
             "その他のプログラム"});
             this.uiStartProgramType.Location = new System.Drawing.Point(10, 123);
-            this.uiStartProgramType.Name = "uiStartUpProgramType";
+            this.uiStartProgramType.Name = "uiStartProgramType";
             this.uiStartProgramType.Size = new System.Drawing.Size(265, 20);
             this.uiStartProgramType.TabIndex = 7;
             this.uiStartProgramType.SelectedIndexChanged += new System.EventHandler(this.uiStartProgramType_SelectedIndexChanged);
@@ -599,15 +617,16 @@
             this.uiEditProgramCommandLine.Size = new System.Drawing.Size(75, 23);
             this.uiEditProgramCommandLine.TabIndex = 10;
             this.uiEditProgramCommandLine.Text = "参照...";
+            this.uiEditProgramCommandLine.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.uiEditProgramCommandLine.UseVisualStyleBackColor = true;
             this.uiEditProgramCommandLine.Click += new System.EventHandler(this.uiEditProgramCommandLine_Click);
             // 
-            // uiStartUpProgramCommandLine
+            // uiStartProgramCommandLine
             // 
             this.uiStartProgramCommandLine.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.uiStartProgramCommandLine.Location = new System.Drawing.Point(10, 161);
-            this.uiStartProgramCommandLine.Name = "uiStartUpProgramCommandLine";
+            this.uiStartProgramCommandLine.Name = "uiStartProgramCommandLine";
             this.uiStartProgramCommandLine.Size = new System.Drawing.Size(265, 19);
             this.uiStartProgramCommandLine.TabIndex = 9;
             // 
@@ -631,11 +650,11 @@
             this.uiAdminMode.Text = "常に管理者モードで起動する(&A)";
             this.uiAdminMode.UseVisualStyleBackColor = true;
             // 
-            // uiStartUpFFXI
+            // uiAutoStartProgram
             // 
             this.uiAutoStartProgram.AutoSize = true;
             this.uiAutoStartProgram.Location = new System.Drawing.Point(10, 84);
-            this.uiAutoStartProgram.Name = "uiStartUpFFXI";
+            this.uiAutoStartProgram.Name = "uiAutoStartProgram";
             this.uiAutoStartProgram.Size = new System.Drawing.Size(182, 16);
             this.uiAutoStartProgram.TabIndex = 5;
             this.uiAutoStartProgram.Text = "自動的にプログラムを起動する(&B)";
@@ -656,24 +675,6 @@
             // 
             this.uiProgramDialog.Filter = "プログラム (*.exe)|*.exe|全てのファイル (*.*)|*.*";
             this.uiProgramDialog.Title = "プログラムを選択 - FFXI Gamma";
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(8, 108);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(110, 12);
-            this.label7.TabIndex = 6;
-            this.label7.Text = "起動するプログラム(&P):";
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(8, 146);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(139, 12);
-            this.label8.TabIndex = 8;
-            this.label8.Text = "プログラムのコマンドライン(&C):";
             // 
             // Settings
             // 

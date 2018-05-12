@@ -46,6 +46,7 @@ namespace ffxigamma {
 
             var app = new App();
             app.EnableAutoStartProgram = HaveOption("/ffxi") || config.StartFFXI;
+            app.OpenSettings = HaveOption("/settings");
 
             Application.Run(app);
         }

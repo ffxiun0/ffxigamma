@@ -90,6 +90,17 @@ namespace ffxigamma.Properties {
         }
         
         /// <summary>
+        ///   プログラムのコマンドラインを変更するには、
+        ///管理者モードで起動する必要があります。
+        ///再起動しますか？ に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string ChangeCommandLine {
+            get {
+                return ResourceManager.GetString("ChangeCommandLine", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   プログラムのコマンドライン書式に間違いがあります。 に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string CommandLineFormattError {

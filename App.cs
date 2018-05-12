@@ -25,16 +25,19 @@ namespace ffxigamma {
         public const string AppName = "FFXI Gamma";
         private const string AppFolderName = "ffxigamma";
         private const string ConfigFileName = "config.xml";
+        private const string SecureConfigFileName = "sconfig.xml";
         private const int SetWindowPositionTimeout = 5000;
         private const int SetWindowPositionDelay = 100;
         private const float VolumeStep = 0.02f;
 
         private Config config;
+        private SecureConfig secureConfig;
         private Screen[] prevScreens;
         private Settings editSettings;
         private VolumeIndicator volumeIndicator;
 
         public bool EnableAutoStartProgram { get; set; } = false;
+        public bool OpenSettings { get; set; } = false;
 
         public App() {
             InitializeComponent();
@@ -42,6 +45,7 @@ namespace ffxigamma {
             Icon = Properties.Resources.Icon;
 
             config = LoadConfig();
+            secureConfig = LoadSecureConfig();
             prevScreens = new Screen[0];
             editSettings = new Settings();
             volumeIndicator = new VolumeIndicator();
@@ -157,6 +161,38 @@ namespace ffxigamma {
             }
         }
 
+        private static SecureConfig LoadSecureConfig() {
+            try {
+                return SecureConfig.Load(GetSecureConfigPath());
+            }
+            catch (IOException) {
+                return SecureConfig.Default;
+            }
+            catch (InvalidOperationException) {
+                return SecureConfig.Default;
+            }
+            catch (UnauthorizedAccessException) {
+                return SecureConfig.Default;
+            }
+        }
+
+        private void SaveSecureConfig(SecureConfig config) {
+            InitAppFolder();
+            try {
+                config.Version = Version;
+                config.Save(GetSecureConfigPath());
+            }
+            catch (IOException ex) {
+                ShowError(ex.Message);
+            }
+            catch (InvalidOperationException ex) {
+                ShowError(ex.Message);
+            }
+            catch (UnauthorizedAccessException ex) {
+                ShowError(ex.Message);
+            }
+        }
+
         private void ApplyConfig(Config config) {
             globalKeyReader.Enabled =
                 config.EnableHotKeyCapture || config.EnableHotKeyVolumeControl;
@@ -168,6 +204,10 @@ namespace ffxigamma {
 
         private static string GetConfigPath() {
             return GetAppFolder() + @"\" + ConfigFileName;
+        }
+
+        private static string GetSecureConfigPath() {
+            return GetAppFolder() + @"\" + SecureConfigFileName;
         }
 
         private static string GetAppFolder() {
@@ -186,14 +226,27 @@ namespace ffxigamma {
                 editSettings.Activate();
             } else {
                 editSettings.Config = config;
-                if (editSettings.ShowDialog(this) == DialogResult.OK) {
-                    config = editSettings.Config;
-                    ApplyConfig(config);
-                    ResetScreenGamma();
-                    SaveConfig(config);
-                    windowMonitor.Reset();
-                }
+                editSettings.SecureConfig = secureConfig;
+                if (editSettings.ShowDialog(this) == DialogResult.OK)
+                    ApplySettings(editSettings);
             }
+        }
+
+        private void ApplySettings(Settings settings) {
+            config = settings.Config;
+            SaveConfig(config);
+
+            if (Program.IsAdminMode()) {
+                secureConfig = settings.SecureConfig;
+                SaveSecureConfig(secureConfig);
+            }
+
+            ApplyConfig(config);
+            ResetScreenGamma();
+            windowMonitor.Reset();
+
+            if (settings.Action == SettingsAction.RestartAdmin)
+                RestartAdminMode("/settings");
         }
 
         private static void ShowCotextMenu(NotifyIcon notifyIcon) {
@@ -449,7 +502,7 @@ namespace ffxigamma {
                     return;
             }
 
-            var cl = CommandLine.Parse(config.StartProgramCommandLine);
+            var cl = CommandLine.Parse(secureConfig.StartProgramCommandLine);
             if (cl == null) {
                 ShowError(Properties.Resources.CommandLineFormattError);
                 return;
@@ -647,7 +700,9 @@ namespace ffxigamma {
             windowMonitor.Start();
             StartRemoteControl();
 
-            if (EnableAutoStartProgram || config.StartFFXI)
+            if (OpenSettings)
+                EditSettings();
+            else if (EnableAutoStartProgram || config.StartFFXI)
                 AutoStartProgram();
         }
 
