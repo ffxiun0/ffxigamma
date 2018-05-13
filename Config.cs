@@ -8,6 +8,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using System.Security.Principal;
 using System.Windows.Forms;
 using System.Xml;
 using System.Xml.Serialization;
@@ -154,11 +155,26 @@ namespace ffxigamma {
         }
 
         public void Save(string path) {
+            CreateEmptyFile(path);
+            SetOwnerToCurrentUser(path);
+
             using (var fs = File.OpenWrite(path)) {
                 fs.SetLength(0);
                 var xs = new XmlSerializer(typeof(Config));
                 xs.Serialize(fs, this);
             }
+        }
+
+        private static void CreateEmptyFile(string path) {
+            using (var fs = File.OpenWrite(path)) {
+                fs.SetLength(0);
+            }
+        }
+
+        private static void SetOwnerToCurrentUser(string path) {
+            var sec = File.GetAccessControl(path);
+            sec.SetOwner(WindowsIdentity.GetCurrent().User);
+            File.SetAccessControl(path, sec);
         }
     }
 
