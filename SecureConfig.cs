@@ -24,7 +24,7 @@ namespace ffxigamma {
         }
 
         public static SecureConfig Load(string path) {
-            if (!CheckPermission(path)) return Default;
+            if (!OwnerIsAdmin(path)) return Default;
 
             var doc = new XmlDocument();
             doc.PreserveWhitespace = true;
@@ -49,38 +49,37 @@ namespace ffxigamma {
         }
 
         private static void CreateEmptyFile(string path) {
-            if (File.Exists(path)) return;
-
             using (var fs = File.OpenWrite(path)) {
                 fs.SetLength(0);
             }
         }
 
         private static void ChangePermission(string path) {
-            var adminUser = "Administrators";
+            var adminUser = new NTAccount("Administrators");
             var adminRule = new FileSystemAccessRule(adminUser,
                 FileSystemRights.FullControl, AccessControlType.Allow);
 
-            var currentUser = WindowsIdentity.GetCurrent().Name;
+            var currentUser = WindowsIdentity.GetCurrent().User;
             var userRule = new FileSystemAccessRule(currentUser,
                 FileSystemRights.Read, AccessControlType.Allow);
 
             var sec = File.GetAccessControl(path);
             sec.SetAccessRuleProtection(true, false);
-            sec.SetOwner(new NTAccount(adminUser));
+            sec.SetOwner(adminUser);
             sec.AddAccessRule(adminRule);
             sec.AddAccessRule(userRule);
 
             File.SetAccessControl(path, sec);
         }
 
-        private static bool CheckPermission(string path) {
-            if (!File.Exists(path)) return false;
+        private static bool OwnerIsAdmin(string path) {
+            var ntAdmin = new NTAccount("Administrators");
+            var sidAdmin = ntAdmin.Translate(typeof(SecurityIdentifier));
 
             var ac = File.GetAccessControl(path);
-            var owner = ac.GetOwner(typeof(NTAccount));
+            var sidOwner = ac.GetOwner(typeof(SecurityIdentifier));
 
-            return owner.Value == @"BUILTIN\Administrators";
+            return sidOwner.Value == sidAdmin.Value;
         }
     }
 }
