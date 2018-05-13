@@ -256,6 +256,7 @@ namespace ffxigamma {
 
         private void uiReset_Click(object sender, EventArgs e) {
             Config = Config.Default;
+            SecureConfig = SecureConfig.Default;
         }
 
         private void uiOk_Click(object sender, EventArgs e) {
