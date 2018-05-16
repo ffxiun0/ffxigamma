@@ -40,7 +40,8 @@ namespace ffxigamma {
                     if (!Popup.YesNoWarning(Properties.Resources.AdminModeWarning))
                         return;
                 }
-                RestartAdminMode();
+                if (RestartAdminMode() == StartResult.Failure)
+                    Popup.Error(Properties.Resources.RestartFail);
                 return;
             }
 

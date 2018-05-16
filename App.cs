@@ -519,15 +519,27 @@ namespace ffxigamma {
                     return;
             }
 
-            if (Program.RestartAdminMode(args) == StartResult.Success)
-                Close();
+            switch (Program.RestartAdminMode(args)) {
+                case StartResult.Success:
+                    Close();
+                    break;
+                case StartResult.Failure:
+                    Popup.Error(Properties.Resources.RestartFail);
+                    break;
+            }
         }
 
         private void RestartUserMode() {
             if (!Program.IsAdminMode()) return;
 
-            if (Program.RestartUserMode() == StartResult.Success)
-                Close();
+            switch (Program.RestartUserMode()) {
+                case StartResult.Success:
+                    Close();
+                    break;
+                case StartResult.Failure:
+                    Popup.Error(Properties.Resources.RestartFail);
+                    break;
+            }
         }
 
         private static void SetWindowPositionRetry(WindowInfo wndInfo, WindowSettings wndSettings) {
