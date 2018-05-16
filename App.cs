@@ -151,13 +151,13 @@ namespace ffxigamma {
                 config.Save(GetConfigPath());
             }
             catch (IOException ex) {
-                ShowError(ex.Message);
+                Popup.Error(ex.Message);
             }
             catch (InvalidOperationException ex) {
-                ShowError(ex.Message);
+                Popup.Error(ex.Message);
             }
             catch (UnauthorizedAccessException ex) {
-                ShowError(ex.Message);
+                Popup.Error(ex.Message);
             }
         }
 
@@ -183,13 +183,13 @@ namespace ffxigamma {
                 config.Save(GetSecureConfigPath());
             }
             catch (IOException ex) {
-                ShowError(ex.Message);
+                Popup.Error(ex.Message);
             }
             catch (InvalidOperationException ex) {
-                ShowError(ex.Message);
+                Popup.Error(ex.Message);
             }
             catch (UnauthorizedAccessException ex) {
-                ShowError(ex.Message);
+                Popup.Error(ex.Message);
             }
         }
 
@@ -254,23 +254,6 @@ namespace ffxigamma {
             var mi = type.GetMethod("ShowContextMenu", BindingFlags.Instance | BindingFlags.NonPublic);
             if (mi != null)
                 mi.Invoke(notifyIcon, null);
-        }
-
-        private void ShowWarning(string s) {
-            MessageBox.Show(null, s, Text,
-                MessageBoxButtons.OK, MessageBoxIcon.Warning);
-        }
-
-        private void ShowError(string s) {
-            MessageBox.Show(null, s, Text,
-                MessageBoxButtons.OK, MessageBoxIcon.Error);
-        }
-
-        private bool ShowYesNoWarning(string s) {
-            var ret = MessageBox.Show(null, s, Text,
-                MessageBoxButtons.YesNo, MessageBoxIcon.Warning,
-                MessageBoxDefaultButton.Button2);
-            return ret == DialogResult.Yes;
         }
 
         private IEnumerable<Window> GetTargetWindows() {
@@ -403,10 +386,10 @@ namespace ffxigamma {
                 }
             }
             catch (IOException e) {
-                ShowError(e.Message);
+                Popup.Error(e.Message);
             }
             catch (UnauthorizedAccessException ex) {
-                ShowError(ex.Message);
+                Popup.Error(ex.Message);
             }
         }
 
@@ -483,34 +466,34 @@ namespace ffxigamma {
             else if (config.StartProgramType == "program")
                 StartProgramCustom();
             else
-                ShowError(Properties.Resources.ProgramStartFail);
+                Popup.Error(Properties.Resources.ProgramStartFail);
         }
 
         private void StartProgramFFXI() {
             if (FFXI.IsRunning()) {
-                ShowWarning(Properties.Resources.FFXIAlreadyRunning);
+                Popup.Warning(Properties.Resources.FFXIAlreadyRunning);
                 return;
             }
 
             if (FFXI.Start() == StartResult.Failure)
-                ShowError(Properties.Resources.FFXIStartFail);
+                Popup.Error(Properties.Resources.FFXIStartFail);
         }
 
         private void StartProgramCustom() {
             if (!Program.IsAdminMode() && FFXI.IsRunning()) {
-                if (!ShowYesNoWarning(Properties.Resources.AdminModeWarning))
+                if (!Popup.YesNoWarning(Properties.Resources.AdminModeWarning))
                     return;
             }
 
             var cl = CommandLine.Parse(secureConfig.StartProgramCommandLine);
             if (cl == null) {
-                ShowError(Properties.Resources.CommandLineFormattError);
+                Popup.Error(Properties.Resources.CommandLineFormattError);
                 return;
             }
 
             if (!cl.IsEmpty) {
                 if (ProcessEx.Start(cl.Exe, cl.Args) == StartResult.Failure)
-                    ShowError(Properties.Resources.ProgramStartFail);
+                    Popup.Error(Properties.Resources.ProgramStartFail);
             }
         }
 
@@ -532,7 +515,7 @@ namespace ffxigamma {
             if (Program.IsAdminMode()) return;
 
             if (FFXI.IsRunning()) {
-                if (!ShowYesNoWarning(Properties.Resources.AdminModeWarning))
+                if (!Popup.YesNoWarning(Properties.Resources.AdminModeWarning))
                     return;
             }
 

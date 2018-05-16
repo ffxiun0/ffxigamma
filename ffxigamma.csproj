@@ -99,6 +99,7 @@
       <DependentUpon>Settings.cs</DependentUpon>
     </Compile>
     <Compile Include="NativeMethods.cs" />
+    <Compile Include="Popup.cs" />
     <Compile Include="SpeakerIcon.cs">
       <SubType>UserControl</SubType>
     </Compile>

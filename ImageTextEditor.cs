@@ -68,11 +68,6 @@ namespace ffxigamma {
             return config;
         }
 
-        private void ShowWarning(string s) {
-            MessageBox.Show(this, s, Text,
-                MessageBoxButtons.OK, MessageBoxIcon.Warning);
-        }
-
         private void uiEditFont_Click(object sender, EventArgs e) {
             uiFontDialog.Font = uiText.Font;
             if (uiFontDialog.ShowDialog(this) == DialogResult.OK) {
@@ -101,10 +96,10 @@ namespace ffxigamma {
                 Close();
             }
             catch (FormatException ex) {
-                ShowWarning(ex.Message);
+                Popup.Warning(this, ex.Message);
             }
             catch (OverflowException ex) {
-                ShowWarning(ex.Message);
+                Popup.Warning(this, ex.Message);
             }
         }
 

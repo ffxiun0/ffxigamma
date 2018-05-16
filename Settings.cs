@@ -153,7 +153,7 @@ namespace ffxigamma {
 
         private bool CheckConfig() {
             if (CommandLine.Parse(uiStartProgramCommandLine.Text) == null) {
-                ShowError(Properties.Resources.CommandLineFormattError);
+                Popup.Error(this, Properties.Resources.CommandLineFormattError);
                 return false;
             }
 
@@ -181,23 +181,6 @@ namespace ffxigamma {
             }
         }
 
-        private void ShowWarning(string s) {
-            MessageBox.Show(this, s, Text,
-                MessageBoxButtons.OK, MessageBoxIcon.Warning);
-        }
-
-        private void ShowError(string s) {
-            MessageBox.Show(this, s, Text,
-                MessageBoxButtons.OK, MessageBoxIcon.Error);
-        }
-
-        private bool ShowYesNoWarning(string s) {
-            var ret = MessageBox.Show(null, s, Text,
-                MessageBoxButtons.YesNo, MessageBoxIcon.Warning,
-                MessageBoxDefaultButton.Button2);
-            return ret == DialogResult.Yes;
-        }
-
         private bool CommitSettings(SettingsAction action) {
             try {
                 config = GetConfigFromUI();
@@ -207,10 +190,10 @@ namespace ffxigamma {
                 return true;
             }
             catch (FormatException ex) {
-                ShowWarning(ex.Message);
+                Popup.Warning(this, ex.Message);
             }
             catch (OverflowException ex) {
-                ShowWarning(ex.Message);
+                Popup.Warning(this, ex.Message);
             }
             return false;
         }
@@ -229,7 +212,7 @@ namespace ffxigamma {
 
         private void uiSaveWindowPosition_Click(object sender, EventArgs e) {
             if (uiSaveWindowPosition.Checked)
-                ShowWarning(Properties.Resources.RequireAdminWarning);
+                Popup.Warning(this, Properties.Resources.RequireAdminWarning);
         }
 
         private void uiWindowSettingsAdd_Click(object sender, EventArgs e) {
@@ -279,7 +262,7 @@ namespace ffxigamma {
 
         private void uiEnableHotKey_Click(object sender, EventArgs e) {
             if (uiEnableHotKeyCapture.Checked)
-                ShowWarning(Properties.Resources.RequireAdminWarning);
+                Popup.Warning(this, Properties.Resources.RequireAdminWarning);
         }
 
         private void uiImageTextAdd_Click(object sender, EventArgs e) {
@@ -304,7 +287,7 @@ namespace ffxigamma {
 
         private void uiEnableVolumeControl_Click(object sender, EventArgs e) {
             if (uiEnableHotKeyVolumeControl.Checked)
-                ShowWarning(Properties.Resources.RequireAdminWarning);
+                Popup.Warning(this, Properties.Resources.RequireAdminWarning);
         }
 
         private void uiEditHotKeyMute_Click(object sender, EventArgs e) {
@@ -340,7 +323,7 @@ namespace ffxigamma {
                         uiStartProgramCommandLine.Text = CommandLine.ToString(path);
                 }
             } else {
-                if (ShowYesNoWarning(Properties.Resources.ChangeCommandLine)) {
+                if (Popup.YesNoWarning(this, Properties.Resources.ChangeCommandLine)) {
                     if (CommitSettings(SettingsAction.RestartAdmin))
                         Close();
                 }

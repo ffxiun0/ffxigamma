@@ -20,7 +20,7 @@ namespace ffxigamma {
 
             if (HaveOption("/restart")) {
                 if (!WaitForClose(5)) {
-                    ShowError(Properties.Resources.RestartFail);
+                    Popup.Error(Properties.Resources.RestartFail);
                     return;
                 }
             }
@@ -28,16 +28,16 @@ namespace ffxigamma {
             if (IsRunning()) {
                 if (HaveOption("/ffxi") || config.StartFFXI) {
                     if (!RemoteStartProgram())
-                        ShowError(Properties.Resources.RemoteControlFail);
+                        Popup.Error(Properties.Resources.RemoteControlFail);
                 } else {
-                    ShowWarning(Properties.Resources.AlreadyRunning);
+                    Popup.Warning(Properties.Resources.AlreadyRunning);
                 }
                 return;
             }
 
             if (config.AdminMode && !IsAdminMode()) {
                 if (FFXI.IsRunning()) {
-                    if (!ShowYesNoWarning(Properties.Resources.AdminModeWarning))
+                    if (!Popup.YesNoWarning(Properties.Resources.AdminModeWarning))
                         return;
                 }
                 RestartAdminMode();
@@ -49,23 +49,6 @@ namespace ffxigamma {
             app.OpenSettings = HaveOption("/settings");
 
             Application.Run(app);
-        }
-
-        private static void ShowWarning(string s) {
-            MessageBox.Show(s, App.AppName,
-                MessageBoxButtons.OK, MessageBoxIcon.Warning);
-        }
-
-        private static void ShowError(string s) {
-            MessageBox.Show(s, App.AppName,
-                MessageBoxButtons.OK, MessageBoxIcon.Error);
-        }
-
-        private static bool ShowYesNoWarning(string s) {
-            var ret = MessageBox.Show(null, s, App.AppName,
-                MessageBoxButtons.YesNo, MessageBoxIcon.Warning,
-                MessageBoxDefaultButton.Button2);
-            return ret == DialogResult.Yes;
         }
 
         private static bool HaveOption(string option) {
