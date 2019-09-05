@@ -95,7 +95,7 @@ namespace ffxigamma {
             var fg = Window.GetForegroundWindow();
             if (fg == null) return false;
 
-            return fg.GetWindowText() == wndInfo.Name;
+            return fg.Handle == wndInfo.Handle;
         }
 
         private static Screen[] FindUsingScreens(IEnumerable<WindowInfo> wndInfos) {
@@ -199,7 +199,8 @@ namespace ffxigamma {
 
             var names = from ws in config.WindowSettingsList select ws.Name;
             names = new HashSet<string>(names);
-            windowMonitor.Filter = wnd => names.Contains(wnd.GetWindowText());
+            windowMonitor.Filter =
+                wnd => names.Contains(wnd.GetWindowText()) && !wnd.IsExplorer();
         }
 
         private static string GetConfigPath() {

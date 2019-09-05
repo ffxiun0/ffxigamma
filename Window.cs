@@ -26,6 +26,10 @@ namespace ffxigamma {
             return NativeMethods.GetWindowText(hWnd);
         }
 
+        public string GetClassName() {
+            return NativeMethods.GetClassName(hWnd);
+        }
+
         public Rectangle GetWindowRect() {
             return NativeMethods.GetWindowRect(hWnd);
         }
@@ -48,6 +52,11 @@ namespace ffxigamma {
 
         public bool IsVisible() {
             return NativeMethods.IsWindowVisible(hWnd);
+        }
+
+        public bool IsExplorer() {
+            var name = GetClassName();
+            return name == "CabinetWClass" || name == "ExploreWClass";
         }
 
         public int GetProcessId() {

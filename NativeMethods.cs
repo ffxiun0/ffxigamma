@@ -17,6 +17,20 @@ namespace ffxigamma {
             return sb.ToString();
         }
 
+        public static string GetClassName(IntPtr hWnd) {
+            var sb = new StringBuilder(128);
+
+            while (true) {
+                var len = GetClassName(hWnd, sb, sb.Capacity);
+                if (len <= 0)
+                    return "";
+                else if (len < sb.Capacity - 1)
+                    return sb.ToString();
+
+                sb.Capacity *= 2;
+            }
+        }
+
         public static Rectangle GetWindowRect(IntPtr hWnd) {
             var rect = new RECT();
             GetWindowRect(hWnd, ref rect);
@@ -99,6 +113,9 @@ namespace ffxigamma {
 
         [DllImport("user32.dll")]
         public static extern int GetWindowTextLength(IntPtr hWnd);
+
+        [DllImport("user32.dll", CharSet = CharSet.Unicode)]
+        private static extern int GetClassName(IntPtr hWnd, StringBuilder lpClassName, int nMaxCount);
 
         [StructLayout(LayoutKind.Sequential)]
         public struct RECT {
