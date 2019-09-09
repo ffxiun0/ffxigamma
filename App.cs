@@ -62,8 +62,8 @@ namespace ffxigamma {
         }
 
         private void UpdateScreenGamma(IEnumerable<WindowInfo> wndInfos) {
-            var validWindows = ExtractValidWindows(wndInfos);
-            var usingScreens = FindUsingScreens(validWindows);
+            var gammaWindows = ExtractGammaWindows(wndInfos);
+            var usingScreens = FindUsingScreens(gammaWindows);
 
             if (ScreenHasChanged(prevScreens, usingScreens))
                 SetScreenGamma(usingScreens);
@@ -71,31 +71,33 @@ namespace ffxigamma {
             prevScreens = usingScreens;
         }
 
-        private IEnumerable<WindowInfo> ExtractValidWindows(IEnumerable<WindowInfo> wndInfos) {
+        private IEnumerable<WindowInfo> ExtractGammaWindows(IEnumerable<WindowInfo> wndInfos) {
             if (FFXI.IsFullScreenMode() && FFXI.IsRunning())
                 return new WindowInfo[0];
 
             var result = from wndInfo in wndInfos
-                         where IsValidWindow(wndInfo)
+                         where IsGammaWindow(wndInfo.Window)
                          select wndInfo;
             return result.ToArray();
         }
 
-        private bool IsValidWindow(WindowInfo wndInfo) {
-            if (wndInfo.Window.IsIconic()) return false;
+        private bool IsGammaWindow(Window wnd) {
+            if (!IsTargetWindow(wnd)) return false;
+            if (wnd.IsIconic()) return false;
 
-            var ws = config.GetWindowSettings(wndInfo.Name);
+            var ws = config.GetWindowSettings(wnd.GetWindowText());
             if (ws == null) return false;
-            if (ws.AlwaysGamma) return true;
 
-            return IsForegroundWindow(wndInfo);
+            return ws.AlwaysGamma || wnd.IsForeground();
         }
 
-        private bool IsForegroundWindow(WindowInfo wndInfo) {
-            var fg = Window.GetForegroundWindow();
-            if (fg == null) return false;
+        private bool IsTargetWindow(Window wnd) {
+            if (wnd == null) return false;
 
-            return fg.Handle == wndInfo.Handle;
+            var ws = config.GetWindowSettings(wnd.GetWindowText());
+            if (ws == null) return false;
+
+            return !wnd.IsExplorer();
         }
 
         private static Screen[] FindUsingScreens(IEnumerable<WindowInfo> wndInfos) {
@@ -197,10 +199,7 @@ namespace ffxigamma {
             globalKeyReader.Enabled =
                 config.EnableHotKeyCapture || config.EnableHotKeyVolumeControl;
 
-            var names = from ws in config.WindowSettingsList select ws.Name;
-            names = new HashSet<string>(names);
-            windowMonitor.Filter =
-                wnd => names.Contains(wnd.GetWindowText()) && !wnd.IsExplorer();
+            windowMonitor.Filter = wnd => IsTargetWindow(wnd);
         }
 
         private static string GetConfigPath() {
@@ -257,10 +256,10 @@ namespace ffxigamma {
                 mi.Invoke(notifyIcon, null);
         }
 
-        private IEnumerable<Window> GetTargetWindows() {
+        private IEnumerable<Window> GetTargetProcessWindows() {
             var wnds = from p in Process.GetProcesses()
-                       where config.GetWindowSettings(p.MainWindowTitle) != null
                        select new Window(p.MainWindowHandle);
+            wnds = from w in wnds where IsTargetWindow(w) select w;
             return wnds.ToArray();
         }
 
@@ -273,10 +272,8 @@ namespace ffxigamma {
 
         private bool IsCapturableWindow(Window wnd) {
             if (wnd == null) return false;
-            if (wnd.IsIconic()) return false;
 
-            var ws = config.GetWindowSettings(wnd.GetWindowText());
-            return ws != null;
+            return IsTargetWindow(wnd) && !wnd.IsIconic();
         }
 
         private static void SetCapturableItems(ToolStripMenuItem menuItem, List<Window> wnds) {
@@ -647,7 +644,7 @@ namespace ffxigamma {
 
             if (mute || volumeUp || volumeDown) {
                 if (!volumeIndicator.Visible)
-                    volumeIndicator.Window = GetForegroundWindow();
+                    volumeIndicator.Window = GetForegroundVolumeControlWindow();
 
                 if (mute)
                     volumeIndicator.Mute = !volumeIndicator.Mute;
@@ -660,12 +657,11 @@ namespace ffxigamma {
             }
         }
 
-        private Window GetForegroundWindow() {
+        private Window GetForegroundVolumeControlWindow() {
             var wnd = Window.GetForegroundWindow();
             if (wnd == null) return null;
-
-            var ws = config.GetWindowSettings(wnd.GetWindowText());
-            if (ws == null) return null;
+            if (!IsTargetWindow(wnd)) return null;
+            if (wnd.IsIconic()) return null;
 
             return wnd;
         }
@@ -724,7 +720,7 @@ namespace ffxigamma {
         }
 
         private void uiContextMenu_Opening(object sender, System.ComponentModel.CancelEventArgs e) {
-            var wnds = GetTargetWindows();
+            var wnds = GetTargetProcessWindows();
             SetMuteItems(uiContextMute, wnds);
 
             var capWnds = GetCapturableWindows(wnds);

@@ -54,6 +54,13 @@ namespace ffxigamma {
             return NativeMethods.IsWindowVisible(hWnd);
         }
 
+        public bool IsForeground() {
+            var fg = GetForegroundWindow();
+            if (fg == null) return false;
+
+            return fg.Handle == Handle;
+        }
+
         public bool IsExplorer() {
             var name = GetClassName();
             return name == "CabinetWClass" || name == "ExploreWClass";
