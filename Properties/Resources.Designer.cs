@@ -19,7 +19,7 @@ namespace ffxigamma.Properties {
     // または Visual Studio のようなツールを使用して自動生成されました。
     // メンバーを追加または削除するには、.ResX ファイルを編集して、/str オプションと共に
     // ResGen を実行し直すか、または VS プロジェクトをビルドし直します。
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
@@ -47,7 +47,7 @@ namespace ffxigamma.Properties {
         }
         
         /// <summary>
-        ///   厳密に型指定されたこのリソース クラスを使用して、すべての検索リソースに対し、
+        ///   すべてについて、現在のスレッドの CurrentUICulture プロパティをオーバーライドします
         ///   現在のスレッドの CurrentUICulture プロパティをオーバーライドします。
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
@@ -106,6 +106,24 @@ namespace ffxigamma.Properties {
         internal static string CommandLineFormattError {
             get {
                 return ResourceManager.GetString("CommandLineFormattError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   設定ファイルの読み込みに失敗しました。 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string ConfigLoadError {
+            get {
+                return ResourceManager.GetString("ConfigLoadError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   設定ファイルの保存に失敗しました。 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string ConfigSaveError {
+            get {
+                return ResourceManager.GetString("ConfigSaveError", resourceCulture);
             }
         }
         

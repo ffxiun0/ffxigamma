@@ -136,6 +136,12 @@ FINAL FANTASY XI の画面を喪失する可能性があります。
   <data name="CommandLineFormattError" xml:space="preserve">
     <value>プログラムのコマンドライン書式に間違いがあります。</value>
   </data>
+  <data name="ConfigLoadError" xml:space="preserve">
+    <value>設定ファイルの読み込みに失敗しました。</value>
+  </data>
+  <data name="ConfigSaveError" xml:space="preserve">
+    <value>設定ファイルの保存に失敗しました。</value>
+  </data>
   <data name="FFXIAlreadyRunning" xml:space="preserve">
     <value>FINAL FANTASY XI は既に起動しています。</value>
   </data>

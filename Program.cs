@@ -16,7 +16,7 @@ namespace ffxigamma {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            var config = App.LoadConfig();
+            var config = App.LoadConfig(false);
 
             if (HaveOption("/restart")) {
                 if (!WaitForClose(5)) {

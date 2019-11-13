@@ -44,8 +44,8 @@ namespace ffxigamma {
 
             Icon = Properties.Resources.Icon;
 
-            config = LoadConfig();
-            secureConfig = LoadSecureConfig();
+            config = LoadConfig(true);
+            secureConfig = LoadSecureConfig(true);
             prevScreens = new Screen[0];
             editSettings = new Settings();
             volumeIndicator = new VolumeIndicator();
@@ -131,17 +131,16 @@ namespace ffxigamma {
             prevScreens = new Screen[0];
         }
 
-        public static Config LoadConfig() {
+        public static Config LoadConfig(bool showError) {
             try {
                 return Config.Load(GetConfigPath());
             }
-            catch (IOException) {
-                return Config.Default;
-            }
-            catch (InvalidOperationException) {
-                return Config.Default;
-            }
-            catch (UnauthorizedAccessException) {
+            catch (FileNotFoundException) { return Config.Default; }
+            catch (DirectoryNotFoundException) { return Config.Default; }
+            catch (InvalidOperationException) { return Config.Default; }
+            catch (Exception ex) {
+                if (showError)
+                    Popup.Exception(ex, Properties.Resources.ConfigLoadError);
                 return Config.Default;
             }
         }
@@ -152,28 +151,21 @@ namespace ffxigamma {
                 config.Version = Version;
                 config.Save(GetConfigPath());
             }
-            catch (IOException ex) {
-                Popup.Error(ex.Message);
-            }
-            catch (InvalidOperationException ex) {
-                Popup.Error(ex.Message);
-            }
-            catch (UnauthorizedAccessException ex) {
-                Popup.Error(ex.Message);
+            catch (Exception ex) {
+                Popup.Exception(ex, Properties.Resources.ConfigSaveError);
             }
         }
 
-        private static SecureConfig LoadSecureConfig() {
+        private static SecureConfig LoadSecureConfig(bool showError) {
             try {
                 return SecureConfig.Load(GetSecureConfigPath());
             }
-            catch (IOException) {
-                return SecureConfig.Default;
-            }
-            catch (InvalidOperationException) {
-                return SecureConfig.Default;
-            }
-            catch (UnauthorizedAccessException) {
+            catch (FileNotFoundException) { return SecureConfig.Default; }
+            catch (DirectoryNotFoundException) { return SecureConfig.Default; }
+            catch (InvalidOperationException) { return SecureConfig.Default; }
+            catch (Exception ex) {
+                if (showError)
+                    Popup.Exception(ex, Properties.Resources.ConfigLoadError);
                 return SecureConfig.Default;
             }
         }
@@ -184,14 +176,8 @@ namespace ffxigamma {
                 config.Version = Version;
                 config.Save(GetSecureConfigPath());
             }
-            catch (IOException ex) {
-                Popup.Error(ex.Message);
-            }
-            catch (InvalidOperationException ex) {
-                Popup.Error(ex.Message);
-            }
-            catch (UnauthorizedAccessException ex) {
-                Popup.Error(ex.Message);
+            catch (Exception ex) {
+                Popup.Exception(ex, Properties.Resources.ConfigSaveError);
             }
         }
 
