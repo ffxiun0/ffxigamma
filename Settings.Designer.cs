@@ -79,6 +79,8 @@
             this.uiColorDialog = new System.Windows.Forms.ColorDialog();
             this.uiFolderDialog = new System.Windows.Forms.FolderBrowserDialog();
             this.uiProgramDialog = new System.Windows.Forms.OpenFileDialog();
+            this.uiEnableImageSubFolder = new System.Windows.Forms.CheckBox();
+            this.uiImageSubFolderFormat = new System.Windows.Forms.ComboBox();
             this.tabControl1.SuspendLayout();
             this.tabPage3.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -221,6 +223,7 @@
             this.tabPage3.Controls.Add(this.uiImageTextAdd);
             this.tabPage3.Controls.Add(this.uiImageTextList);
             this.tabPage3.Controls.Add(this.uiEnableImageText);
+            this.tabPage3.Controls.Add(this.uiImageSubFolderFormat);
             this.tabPage3.Controls.Add(this.uiImageFormatName);
             this.tabPage3.Controls.Add(this.uiEditHotKeyCapture);
             this.tabPage3.Controls.Add(this.uiEnableHotKeyCapture);
@@ -230,6 +233,7 @@
             this.tabPage3.Controls.Add(this.uiEditImageFolder);
             this.tabPage3.Controls.Add(this.uiImageFolder);
             this.tabPage3.Controls.Add(this.label12);
+            this.tabPage3.Controls.Add(this.uiEnableImageSubFolder);
             this.tabPage3.Controls.Add(this.uiEnableImageGamma);
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
@@ -241,10 +245,10 @@
             // uiImageTextDelete
             // 
             this.uiImageTextDelete.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.uiImageTextDelete.Location = new System.Drawing.Point(281, 236);
+            this.uiImageTextDelete.Location = new System.Drawing.Point(281, 249);
             this.uiImageTextDelete.Name = "uiImageTextDelete";
             this.uiImageTextDelete.Size = new System.Drawing.Size(75, 23);
-            this.uiImageTextDelete.TabIndex = 14;
+            this.uiImageTextDelete.TabIndex = 16;
             this.uiImageTextDelete.Text = "削除";
             this.uiImageTextDelete.UseVisualStyleBackColor = true;
             this.uiImageTextDelete.Click += new System.EventHandler(this.uiImageTextDelete_Click);
@@ -252,10 +256,10 @@
             // uiImageTextEdit
             // 
             this.uiImageTextEdit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.uiImageTextEdit.Location = new System.Drawing.Point(281, 207);
+            this.uiImageTextEdit.Location = new System.Drawing.Point(281, 220);
             this.uiImageTextEdit.Name = "uiImageTextEdit";
             this.uiImageTextEdit.Size = new System.Drawing.Size(75, 23);
-            this.uiImageTextEdit.TabIndex = 13;
+            this.uiImageTextEdit.TabIndex = 15;
             this.uiImageTextEdit.Text = "編集...";
             this.uiImageTextEdit.UseVisualStyleBackColor = true;
             this.uiImageTextEdit.Click += new System.EventHandler(this.uiImageTextEdit_Click);
@@ -263,10 +267,10 @@
             // uiImageTextAdd
             // 
             this.uiImageTextAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.uiImageTextAdd.Location = new System.Drawing.Point(281, 178);
+            this.uiImageTextAdd.Location = new System.Drawing.Point(281, 191);
             this.uiImageTextAdd.Name = "uiImageTextAdd";
             this.uiImageTextAdd.Size = new System.Drawing.Size(75, 23);
-            this.uiImageTextAdd.TabIndex = 12;
+            this.uiImageTextAdd.TabIndex = 14;
             this.uiImageTextAdd.Text = "追加...";
             this.uiImageTextAdd.UseVisualStyleBackColor = true;
             this.uiImageTextAdd.Click += new System.EventHandler(this.uiImageTextAdd_Click);
@@ -278,20 +282,20 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.uiImageTextList.FormattingEnabled = true;
             this.uiImageTextList.ItemHeight = 12;
-            this.uiImageTextList.Location = new System.Drawing.Point(8, 178);
+            this.uiImageTextList.Location = new System.Drawing.Point(8, 191);
             this.uiImageTextList.Name = "uiImageTextList";
             this.uiImageTextList.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
-            this.uiImageTextList.Size = new System.Drawing.Size(267, 112);
-            this.uiImageTextList.TabIndex = 11;
+            this.uiImageTextList.Size = new System.Drawing.Size(267, 100);
+            this.uiImageTextList.TabIndex = 13;
             this.uiImageTextList.DoubleClick += new System.EventHandler(this.uiImageTextEdit_Click);
             // 
             // uiEnableImageText
             // 
             this.uiEnableImageText.AutoSize = true;
-            this.uiEnableImageText.Location = new System.Drawing.Point(8, 156);
+            this.uiEnableImageText.Location = new System.Drawing.Point(8, 169);
             this.uiEnableImageText.Name = "uiEnableImageText";
             this.uiEnableImageText.Size = new System.Drawing.Size(149, 16);
-            this.uiEnableImageText.TabIndex = 10;
+            this.uiEnableImageText.TabIndex = 12;
             this.uiEnableImageText.Text = "画像に文字を追記する(&A)";
             this.uiEnableImageText.UseVisualStyleBackColor = true;
             // 
@@ -302,18 +306,18 @@
             this.uiImageFormatName.Items.AddRange(new object[] {
             "png",
             "jpg"});
-            this.uiImageFormatName.Location = new System.Drawing.Point(84, 74);
+            this.uiImageFormatName.Location = new System.Drawing.Point(84, 94);
             this.uiImageFormatName.Name = "uiImageFormatName";
             this.uiImageFormatName.Size = new System.Drawing.Size(86, 20);
-            this.uiImageFormatName.TabIndex = 5;
+            this.uiImageFormatName.TabIndex = 7;
             // 
             // uiEditHotKeyCapture
             // 
             this.uiEditHotKeyCapture.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.uiEditHotKeyCapture.Location = new System.Drawing.Point(281, 126);
+            this.uiEditHotKeyCapture.Location = new System.Drawing.Point(281, 140);
             this.uiEditHotKeyCapture.Name = "uiEditHotKeyCapture";
             this.uiEditHotKeyCapture.Size = new System.Drawing.Size(75, 23);
-            this.uiEditHotKeyCapture.TabIndex = 9;
+            this.uiEditHotKeyCapture.TabIndex = 11;
             this.uiEditHotKeyCapture.Text = "設定...";
             this.uiEditHotKeyCapture.UseVisualStyleBackColor = true;
             this.uiEditHotKeyCapture.Click += new System.EventHandler(this.uiEditHotKey_Click);
@@ -321,10 +325,10 @@
             // uiEnableHotKeyCapture
             // 
             this.uiEnableHotKeyCapture.AutoSize = true;
-            this.uiEnableHotKeyCapture.Location = new System.Drawing.Point(8, 106);
+            this.uiEnableHotKeyCapture.Location = new System.Drawing.Point(8, 120);
             this.uiEnableHotKeyCapture.Name = "uiEnableHotKeyCapture";
             this.uiEnableHotKeyCapture.Size = new System.Drawing.Size(146, 16);
-            this.uiEnableHotKeyCapture.TabIndex = 6;
+            this.uiEnableHotKeyCapture.TabIndex = 8;
             this.uiEnableHotKeyCapture.Text = "ホットキーを有効にする(&H)";
             this.uiEnableHotKeyCapture.UseVisualStyleBackColor = true;
             this.uiEnableHotKeyCapture.Click += new System.EventHandler(this.uiEnableHotKey_Click);
@@ -333,34 +337,34 @@
             // 
             this.uiHotKeyCapture.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.uiHotKeyCapture.Location = new System.Drawing.Point(84, 128);
+            this.uiHotKeyCapture.Location = new System.Drawing.Point(84, 142);
             this.uiHotKeyCapture.Name = "uiHotKeyCapture";
             this.uiHotKeyCapture.ReadOnly = true;
             this.uiHotKeyCapture.Size = new System.Drawing.Size(191, 19);
-            this.uiHotKeyCapture.TabIndex = 8;
+            this.uiHotKeyCapture.TabIndex = 10;
             // 
             // label14
             // 
             this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(8, 131);
+            this.label14.Location = new System.Drawing.Point(8, 145);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(67, 12);
-            this.label14.TabIndex = 7;
+            this.label14.TabIndex = 9;
             this.label14.Text = "ホットキー(&K):";
             // 
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(8, 77);
+            this.label13.Location = new System.Drawing.Point(8, 97);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(70, 12);
-            this.label13.TabIndex = 4;
+            this.label13.TabIndex = 6;
             this.label13.Text = "画像形式(&T):";
             // 
             // uiEditImageFolder
             // 
             this.uiEditImageFolder.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.uiEditImageFolder.Location = new System.Drawing.Point(281, 47);
+            this.uiEditImageFolder.Location = new System.Drawing.Point(281, 43);
             this.uiEditImageFolder.Name = "uiEditImageFolder";
             this.uiEditImageFolder.Size = new System.Drawing.Size(75, 23);
             this.uiEditImageFolder.TabIndex = 3;
@@ -372,7 +376,7 @@
             // 
             this.uiImageFolder.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.uiImageFolder.Location = new System.Drawing.Point(8, 49);
+            this.uiImageFolder.Location = new System.Drawing.Point(8, 45);
             this.uiImageFolder.Name = "uiImageFolder";
             this.uiImageFolder.Size = new System.Drawing.Size(267, 19);
             this.uiImageFolder.TabIndex = 2;
@@ -380,7 +384,7 @@
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(8, 34);
+            this.label12.Location = new System.Drawing.Point(8, 30);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(103, 12);
             this.label12.TabIndex = 1;
@@ -676,6 +680,29 @@
             this.uiProgramDialog.Filter = "プログラム (*.exe)|*.exe|全てのファイル (*.*)|*.*";
             this.uiProgramDialog.Title = "プログラムを選択 - FFXI Gamma";
             // 
+            // uiEnableImageSubFolder
+            // 
+            this.uiEnableImageSubFolder.AutoSize = true;
+            this.uiEnableImageSubFolder.Location = new System.Drawing.Point(8, 72);
+            this.uiEnableImageSubFolder.Name = "uiEnableImageSubFolder";
+            this.uiEnableImageSubFolder.Size = new System.Drawing.Size(169, 16);
+            this.uiEnableImageSubFolder.TabIndex = 4;
+            this.uiEnableImageSubFolder.Text = "サブフォルダーに分けて保存(&S):";
+            this.uiEnableImageSubFolder.UseVisualStyleBackColor = true;
+            // 
+            // uiImageSubFolderFormat
+            // 
+            this.uiImageSubFolderFormat.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.uiImageSubFolderFormat.FormattingEnabled = true;
+            this.uiImageSubFolderFormat.Items.AddRange(new object[] {
+            "yyyy",
+            "yyyy/mm",
+            "yyyy/mm/dd"});
+            this.uiImageSubFolderFormat.Location = new System.Drawing.Point(183, 70);
+            this.uiImageSubFolderFormat.Name = "uiImageSubFolderFormat";
+            this.uiImageSubFolderFormat.Size = new System.Drawing.Size(92, 20);
+            this.uiImageSubFolderFormat.TabIndex = 5;
+            // 
             // Settings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -762,5 +789,7 @@
         private System.Windows.Forms.OpenFileDialog uiProgramDialog;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.CheckBox uiEnableImageSubFolder;
+        private System.Windows.Forms.ComboBox uiImageSubFolderFormat;
     }
 }

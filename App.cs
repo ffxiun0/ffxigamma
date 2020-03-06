@@ -305,24 +305,60 @@ namespace ffxigamma {
             }
         }
 
-        private void CaptureSaveFolder() {
+        private void CaptureSaveToFolder() {
             var wnd = Window.GetForegroundWindow();
-            CaptureSaveFolder(wnd);
+            CaptureSaveToFolder(wnd);
         }
 
-        private void CaptureSaveFolder(Window wnd) {
+        private void CaptureSaveToFolder(Window wnd) {
             if (!IsCapturableWindow(wnd)) return;
 
             var time = DateTime.Now;
-            var path = GetCaptureFileName(time);
+            var folder = GetCaptureSaveFolder(time);
+            if (!CreateSubFolder(folder)) return;
+
+            var path = GetCaptureFileName(folder, time);
             using (var bmp = CaptureWithEffects(wnd, time)) {
                 SaveImage(bmp, path);
             }
             ShowNotifySaved(path);
         }
 
-        private string GetCaptureFileName(DateTime time) {
-            var folder = config.ImageFolder;
+        private bool CreateSubFolder(string path) {
+            if (!config.EnableImageSubFolder) return true;
+            if (Directory.Exists(path)) return true;
+
+            try {
+                Directory.CreateDirectory(path);
+                return true;
+            }
+            catch (IOException ex) {
+                Popup.Error(ex.Message);
+            }
+            catch (UnauthorizedAccessException ex) {
+                Popup.Error(ex.Message);
+            }
+
+            return false;
+        }
+
+        private string GetCaptureSaveFolder(DateTime time) {
+            if (config.EnableImageSubFolder)
+                return config.ImageFolder + @"\" + time.ToString(GetSubFolderFormat());
+            else
+                return config.ImageFolder;
+        }
+
+        private string GetSubFolderFormat() {
+            switch (config.ImageSubFolderFormat) {
+                case "yyyy": return "yyyy";
+                case "yyyy/mm": return @"yyyy\\MM";
+                case "yyyy/mm/dd": return @"yyyy\\MM\\dd";
+                default: return @"yyyy\\MM\\dd";
+            }
+        }
+
+        private string GetCaptureFileName(string folder, DateTime time) {
             var name = time.ToString("yyyyMMdd-HHmmss.ff");
             var suffix = config.ImageFormatName;
 
@@ -369,8 +405,8 @@ namespace ffxigamma {
                     image.Save(fs, GetImageFormat(path));
                 }
             }
-            catch (IOException e) {
-                Popup.Error(e.Message);
+            catch (IOException ex) {
+                Popup.Error(ex.Message);
             }
             catch (UnauthorizedAccessException ex) {
                 Popup.Error(ex.Message);
@@ -618,7 +654,7 @@ namespace ffxigamma {
             if (!config.EnableHotKeyCapture) return;
 
             if (IsKeyDown("Capture", e))
-                CaptureSaveFolder();
+                CaptureSaveToFolder();
         }
 
         private void HotKeyVolumeControl(GlobalKeyEventArgs e) {
@@ -739,11 +775,11 @@ namespace ffxigamma {
 
         private void uiContextCaptureSaveFolder_Click(object sender, EventArgs e) {
             if (uiContextCaptureSaveFolder.Tag != null)
-                CaptureSaveFolder((Window)uiContextCaptureSaveFolder.Tag);
+                CaptureSaveToFolder((Window)uiContextCaptureSaveFolder.Tag);
         }
 
         private void uiContextCaptureSaveFolder_DropDownItemClicked(object sender, ToolStripItemClickedEventArgs e) {
-            CaptureSaveFolder((Window)e.ClickedItem.Tag);
+            CaptureSaveToFolder((Window)e.ClickedItem.Tag);
         }
 
         private void uiContextMute_Click(object sender, EventArgs e) {

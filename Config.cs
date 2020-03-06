@@ -24,6 +24,8 @@ namespace ffxigamma {
         public bool EnableSaveWindowPosition { get; set; }
         public bool EnableImageGamma { get; set; }
         public string ImageFolder { get; set; }
+        public bool EnableImageSubFolder { get; set; }
+        public string ImageSubFolderFormat { get; set; }
         public string ImageFormatName { get; set; }
         public bool EnableHotKeyCapture { get; set; }
         public bool EnableHotKeyVolumeControl { get; set; }
@@ -43,6 +45,8 @@ namespace ffxigamma {
             };
             this.EnableImageGamma = true;
             this.ImageFolder = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
+            this.EnableImageSubFolder = false;
+            this.ImageSubFolderFormat = "yyyy/mm/dd";
             this.ImageFormatName = "jpg";
             this.EnableHotKeyCapture = false;
             this.EnableHotKeyVolumeControl = false;

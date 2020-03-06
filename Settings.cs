@@ -78,6 +78,8 @@ namespace ffxigamma {
 
             uiEnableImageGamma.Checked = config.EnableImageGamma;
             uiImageFolder.Text = config.ImageFolder;
+            uiEnableImageSubFolder.Checked = config.EnableImageSubFolder;
+            uiImageSubFolderFormat.Text = config.ImageSubFolderFormat;
             uiImageFormatName.Text = config.ImageFormatName;
 
             uiEnableHotKeyCapture.Checked = config.EnableHotKeyCapture;
@@ -117,6 +119,8 @@ namespace ffxigamma {
 
             config.EnableImageGamma = uiEnableImageGamma.Checked;
             config.ImageFolder = uiImageFolder.Text;
+            config.EnableImageSubFolder = uiEnableImageSubFolder.Checked;
+            config.ImageSubFolderFormat = uiImageSubFolderFormat.Text;
             config.ImageFormatName = uiImageFormatName.Text;
 
             config.EnableHotKeyCapture = uiEnableHotKeyCapture.Checked;
