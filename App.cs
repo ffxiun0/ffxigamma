@@ -606,6 +606,8 @@ namespace ffxigamma {
         }
 
         private void SaveWindowPosition(WindowInfo wndInfo) {
+            if (wndInfo.IsIconic) return;
+            if (wndInfo.IsZoomed) return;
             if (!IntersectsWithScreen(wndInfo.Rect)) return;
 
             foreach (var wndSettings in config.WindowSettingsList) {

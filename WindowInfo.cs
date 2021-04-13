@@ -12,6 +12,8 @@ namespace ffxigamma {
         public IntPtr Handle { get; set; }
         public int ProcessId { get; set; }
         public Rectangle Rect { get; set; }
+        public bool IsIconic { get; set; }
+        public bool IsZoomed { get; set; }
         public DateTime Time { get; set; }
 
         public WindowInfo(Window wnd) {
@@ -20,6 +22,8 @@ namespace ffxigamma {
             Handle = wnd.Handle;
             ProcessId = wnd.GetProcessId();
             Rect = wnd.GetWindowRect();
+            IsIconic = wnd.IsIconic();
+            IsZoomed = wnd.IsZoomed();
             Time = DateTime.Now;
         }
 

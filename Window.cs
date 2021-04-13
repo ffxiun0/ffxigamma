@@ -50,6 +50,10 @@ namespace ffxigamma {
             return NativeMethods.IsIconic(hWnd);
         }
 
+        public bool IsZoomed() {
+            return NativeMethods.IsZoomed(hWnd);
+        }
+
         public bool IsVisible() {
             return NativeMethods.IsWindowVisible(hWnd);
         }
