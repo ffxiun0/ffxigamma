@@ -136,10 +136,13 @@ namespace ffxigamma {
             var ok = NativeMethods.CreateProcessWithToken(hToken, 0, exe, commandLine,
                 0, IntPtr.Zero, dir, ref si, out pi);
 
-            if (ok)
+            if (ok) {
+                NativeMethods.CloseHandle(pi.hProcess);
+                NativeMethods.CloseHandle(pi.hThread);
                 return StartResult.Success;
-            else
+            } else {
                 return ToStartResult(NativeMethods.GetLastError());
+            }
         }
     }
 }
