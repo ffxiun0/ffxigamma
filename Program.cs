@@ -75,7 +75,7 @@ namespace ffxigamma {
         }
 
         public static StartResult RestartAdminMode(params string[] args) {
-            var path = Environment.GetCommandLineArgs()[0];
+            var path = NativeMethods.GetModuleFileName();
             var newArgs = new List<string>();
             newArgs.Add("/restart");
             newArgs.AddRange(args);
@@ -83,7 +83,7 @@ namespace ffxigamma {
         }
 
         public static StartResult RestartUserMode(params string[] args) {
-            var path = Environment.GetCommandLineArgs()[0];
+            var path = NativeMethods.GetModuleFileName();
             var newArgs = new List<string>();
             newArgs.Add("/restart");
             newArgs.AddRange(args);

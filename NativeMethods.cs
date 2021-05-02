@@ -10,6 +10,12 @@ using System.Windows.Forms;
 
 namespace ffxigamma {
     class NativeMethods {
+        public static string GetModuleFileName() {
+            var sb = new StringBuilder(1024 + 1);
+            GetModuleFileName(IntPtr.Zero, sb, sb.Capacity);
+            return sb.ToString();
+        }
+
         public static string GetWindowText(IntPtr hWnd) {
             int len = GetWindowTextLength(hWnd);
             var sb = new StringBuilder(len + 1);
@@ -269,6 +275,13 @@ namespace ffxigamma {
 
         [DllImport("shell32.dll", CharSet = CharSet.Unicode)]
         public static extern bool IsUserAnAdmin();
+
+        [DllImport("Kernel32.dll", CharSet = CharSet.Unicode)]
+        public static extern int GetModuleFileName(
+            IntPtr hModule,
+            StringBuilder lpFilename,
+            int nSize
+            );
 
         [DllImport("kernel32.dll", CharSet = CharSet.Unicode)]
         public static extern IntPtr OpenProcess(
