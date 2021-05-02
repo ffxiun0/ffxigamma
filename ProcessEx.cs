@@ -133,7 +133,7 @@ namespace ffxigamma {
             si.cb = (uint)Marshal.SizeOf(si);
             var pi = new NativeMethods.PROCESS_INFORMATION();
 
-            var ok = NativeMethods.CreateProcessWithToken(hToken, 0, exe, commandLine,
+            var ok = NativeMethods.CreateProcessWithToken(hToken, 0, null, commandLine,
                 0, IntPtr.Zero, dir, ref si, out pi);
 
             if (ok) {
