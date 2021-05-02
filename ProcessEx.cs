@@ -9,6 +9,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace ffxigamma {
     enum StartResult {
@@ -69,12 +70,16 @@ namespace ffxigamma {
         }
 
         private static string GetCurrentDirectory(string path) {
-            try {
-                return Path.GetDirectoryName(path);
+            if (IsPathFullyQualified(path)) {
+                var pathDir = Path.GetDirectoryName(path);
+                if (pathDir.Length >= 0)
+                    return pathDir;
             }
-            catch (ArgumentException) {
-                return "";
-            }
+            return Environment.CurrentDirectory;
+        }
+
+        private static bool IsPathFullyQualified(string path) {
+            return Regex.IsMatch(path, @"^[a-zA-Z]:[\\/]|^[\\/]{2}[^\\/]+[\\/]");
         }
 
         private static StartResult ToStartResult(int errorCode) {
