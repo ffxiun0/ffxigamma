@@ -43,6 +43,7 @@
             this.uiSaveAs = new System.Windows.Forms.SaveFileDialog();
             this.globalKeyReader = new ffxigamma.GlobalKeyReader(this.components);
             this.windowMonitor = new ffxigamma.WindowMonitor(this.components);
+            this.remoteControl = new ffxigamma.RemoteControl(this.components);
             this.uiContextMenu.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -184,6 +185,13 @@
             this.windowMonitor.WindowClosed += new ffxigamma.WindowMonitorEventHandler(this.windowMonitor_WindowClosed);
             this.windowMonitor.WindowUpdate += new ffxigamma.WindowMonitorEventHandler(this.windowMonitor_WindowUpdate);
             // 
+            // remoteControl
+            // 
+            this.remoteControl.EventInterval = 100;
+            this.remoteControl.Name = null;
+            this.remoteControl.SendTimeout = 1000;
+            this.remoteControl.CommandReceived += new ffxigamma.RemoteControlEventHandler(this.RemoteControl_CommandReceived);
+            // 
             // App
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -221,6 +229,7 @@
         private WindowMonitor windowMonitor;
         private System.Windows.Forms.ToolStripMenuItem uiContextMute;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
+        private RemoteControl remoteControl;
     }
 }
 

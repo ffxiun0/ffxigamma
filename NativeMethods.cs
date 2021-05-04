@@ -2,6 +2,7 @@
  * Copyright (c) 2015 ffxiun0
  * https://opensource.org/licenses/MIT
  */
+using Microsoft.Win32.SafeHandles;
 using System;
 using System.Drawing;
 using System.Runtime.InteropServices;
@@ -264,6 +265,29 @@ namespace ffxigamma {
             public string szPath;
         }
 
+        [DllImport("Shell32.dll", CharSet = CharSet.Unicode)]
+        public extern static IntPtr ShellExecute(
+            IntPtr hwnd,
+            string lpOperation,
+            string lpFile,
+            string lpParameters,
+            string lpDirectory,
+            int nShowCmd
+            );
+
+        public const int SW_HIDE = 0;
+        public const int SW_MAXIMIZE = 3;
+        public const int SW_MINIMIZE = 6;
+        public const int SW_RESTORE = 9;
+        public const int SW_SHOW = 5;
+        public const int SW_SHOWDEFAULT = 10;
+        public const int SW_SHOWMAXIMIZED = 3;
+        public const int SW_SHOWMINIMIZED = 2;
+        public const int SW_SHOWMINNOACTIVE = 7;
+        public const int SW_SHOWNA = 8;
+        public const int SW_SHOWNOACTIVATE = 4;
+        public const int SW_SHOWNORMAL = 1;
+
         [DllImport("shell32.dll")]
         public static extern int SHOpenFolderAndSelectItems(IntPtr pidlFolder, uint cidl, IntPtr apidl, uint dwFlags);
 
@@ -296,7 +320,40 @@ namespace ffxigamma {
         [DllImport("kernel32.dll", CharSet = CharSet.Unicode)]
         public static extern int GetLastError();
 
+        public const int ERROR_SUCCESS = 0;
         public const int ERROR_CANCELLED = 1223;
+
+        [DllImport("Kernel32.dll", CharSet = CharSet.Unicode)]
+        public static extern SafePipeHandle CreateNamedPipe(
+            string lpName,
+            uint dwOpenMode,
+            uint dwPipeMode,
+            int nMaxInstances,
+            int nOutBufferSize,
+            int nInBufferSize,
+            int nDefaultTimeOut,
+            ref SECURITY_ATTRIBUTES lpSecurityAttributes
+            );
+
+        public const uint PIPE_ACCESS_INBOUND = 0x00000001;
+        public const uint PIPE_ACCESS_OUTBOUND = 0x00000002;
+        public const uint PIPE_ACCESS_DUPLEX = 0x00000003;
+
+        public const uint PIPE_WAIT = 0x00000000;
+        public const uint PIPE_NOWAIT = 0x00000001;
+        public const uint PIPE_READMODE_BYTE = 0x00000000;
+        public const uint PIPE_READMODE_MESSAGE = 0x00000002;
+        public const uint PIPE_TYPE_BYTE = 0x00000000;
+        public const uint PIPE_TYPE_MESSAGE = 0x00000004;
+        public const uint PIPE_ACCEPT_REMOTE_CLIENTS = 0x00000000;
+        public const uint PIPE_REJECT_REMOTE_CLIENTS = 0x00000008;
+
+        [StructLayout(LayoutKind.Sequential)]
+        public struct SECURITY_ATTRIBUTES {
+            public int nLength;
+            public IntPtr lpSecurityDescriptor;
+            public bool bInheritHandle;
+        }
 
         [DllImport("advapi32.dll", CharSet = CharSet.Unicode)]
         public static extern bool OpenProcessToken(

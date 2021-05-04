@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+ <PropertyGroup>
+  <OutputType>WinExe</OutputType>
+  <TargetFramework>net5.0-windows</TargetFramework>
+  <UseWindowsForms>true</UseWindowsForms>
+  <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+  <RootNamespace>ffxigamma</RootNamespace>
+  <AssemblyName>ffxigamma</AssemblyName>
+ </PropertyGroup>
+ <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+   <Prefer32Bit>true</Prefer32Bit>
+   <PlatformTarget>x86</PlatformTarget>
+   <WarningsAsErrors>;NU1605</WarningsAsErrors>
+   <NoWarn>1701;1702;CA1416</NoWarn>
+ </PropertyGroup>
+ <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+   <Prefer32Bit>true</Prefer32Bit>
+   <PlatformTarget>x86</PlatformTarget>
+   <NoWarn>1701;1702;CA1416</NoWarn>
+ </PropertyGroup>
+</Project>

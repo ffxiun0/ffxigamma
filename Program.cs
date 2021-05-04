@@ -5,7 +5,6 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Runtime.Remoting;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -102,14 +101,8 @@ namespace ffxigamma {
         }
 
         private static bool RemoteStartProgram() {
-            try {
-                var remote = App.GetRemoteControl();
-                remote.StartProgram();
-                return true;
-            }
-            catch (RemotingException) {
-                return false;
-            }
+            var rc = App.GetRemoteControl();
+            return rc.SendCommand("StartProgram");
         }
     }
 }

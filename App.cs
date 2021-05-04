@@ -11,10 +11,6 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.Remoting;
-using System.Runtime.Remoting.Channels;
-using System.Runtime.Remoting.Channels.Ipc;
-using System.Runtime.Remoting.Lifetime;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -29,6 +25,7 @@ namespace ffxigamma {
         private const int SetWindowPositionTimeout = 5000;
         private const int SetWindowPositionDelay = 100;
         private const float VolumeStep = 0.02f;
+        private const string pipeName = "ffxigamma-remote-control";
 
         private Config config;
         private SecureConfig secureConfig;
@@ -636,20 +633,12 @@ namespace ffxigamma {
         }
 
         private void StartRemoteControl() {
-            LifetimeServices.LeaseTime = TimeSpan.Zero;
-
-            var channel = new IpcServerChannel("ffxigamma");
-            ChannelServices.RegisterChannel(channel, true);
-            var remote = new RemoteControl(this);
-            RemotingServices.Marshal(remote, "remote-control", typeof(RemoteControl));
+            remoteControl.Name = pipeName;
+            remoteControl.ServerStart();
         }
 
         public static RemoteControl GetRemoteControl() {
-            var channel = new IpcClientChannel();
-            ChannelServices.RegisterChannel(channel, true);
-            var remote = (RemoteControl)Activator.GetObject(typeof(RemoteControl),
-                "ipc://ffxigamma/remote-control");
-            return remote;
+            return new RemoteControl(pipeName);
         }
 
         private void HotKeyCapture(GlobalKeyEventArgs e) {
@@ -829,6 +818,11 @@ namespace ffxigamma {
 
         private void windowMonitor_WindowUpdate(object sender, WindowMonitorEventArgs e) {
             UpdateScreenGamma(e.WindowInfo);
+        }
+
+        private void RemoteControl_CommandReceived(object sender, string command) {
+            if (command == "StartProgram")
+                AutoStartProgram();
         }
     }
 }

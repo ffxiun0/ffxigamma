@@ -63,20 +63,22 @@ namespace ffxigamma {
             var userRule = new FileSystemAccessRule(currentUser,
                 FileSystemRights.Read, AccessControlType.Allow);
 
-            var sec = File.GetAccessControl(path);
+            var fi = new FileInfo(path);
+            var sec = fi.GetAccessControl();
             sec.SetAccessRuleProtection(true, false);
             sec.SetOwner(adminUser);
             sec.AddAccessRule(adminRule);
             sec.AddAccessRule(userRule);
 
-            File.SetAccessControl(path, sec);
+            fi.SetAccessControl(sec);
         }
 
         private static bool OwnerIsAdmin(string path) {
             var ntAdmin = new NTAccount("Administrators");
             var sidAdmin = ntAdmin.Translate(typeof(SecurityIdentifier));
 
-            var ac = File.GetAccessControl(path);
+            var fi = new FileInfo(path);
+            var ac = fi.GetAccessControl();
             var sidOwner = ac.GetOwner(typeof(SecurityIdentifier));
 
             return sidOwner.Value == sidAdmin.Value;

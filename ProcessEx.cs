@@ -4,8 +4,6 @@
  */
 using CLParser;
 using System;
-using System.ComponentModel;
-using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -24,36 +22,18 @@ namespace ffxigamma {
         }
 
         public static StartResult Start(string exe, params string[] args) {
-            try {
-                var psi = new ProcessStartInfo(exe);
-                psi.Arguments = CommandLine.ToString(args);
-                psi.WorkingDirectory = GetCurrentDirectory(exe);
-                Process.Start(psi);
-                return StartResult.Success;
-            }
-            catch (InvalidOperationException) {
-                return StartResult.Failure;
-            }
-            catch (Win32Exception e) {
-                return ToStartResult(e.NativeErrorCode);
-            }
+            return Start(null, exe, args);
         }
 
         public static StartResult StartAdmin(string exe, params string[] args) {
-            try {
-                var psi = new ProcessStartInfo(exe);
-                psi.Arguments = CommandLine.ToString(args);
-                psi.WorkingDirectory = GetCurrentDirectory(exe);
-                psi.Verb = "runas";
-                Process.Start(psi);
-                return StartResult.Success;
-            }
-            catch (InvalidOperationException) {
-                return StartResult.Failure;
-            }
-            catch (Win32Exception e) {
-                return ToStartResult(e.NativeErrorCode);
-            }
+            return Start("runas", exe, args);
+        }
+
+        private static StartResult Start(string operation, string exe, params string[] args) {
+            var strArgs = CommandLine.ToString(args);
+            var dir = GetCurrentDirectory(exe);
+            NativeMethods.ShellExecute(IntPtr.Zero, operation, exe, strArgs, dir, NativeMethods.SW_SHOWNORMAL);
+            return ToStartResult(NativeMethods.GetLastError());
         }
 
         public static StartResult StartUser(string exe, params string[] args) {
@@ -83,10 +63,14 @@ namespace ffxigamma {
         }
 
         private static StartResult ToStartResult(int errorCode) {
-            if (errorCode == NativeMethods.ERROR_CANCELLED)
-                return StartResult.Cancelled;
-            else
-                return StartResult.Failure;
+            switch (errorCode) {
+                case NativeMethods.ERROR_SUCCESS:
+                    return StartResult.Success;
+                case NativeMethods.ERROR_CANCELLED:
+                    return StartResult.Cancelled;
+                default:
+                    return StartResult.Failure;
+            }
         }
 
         private static IntPtr DuplicateShellToken() {

@@ -174,11 +174,11 @@ namespace ffxigamma {
                 fs.SetLength(0);
             }
         }
-
         private static void SetOwnerToCurrentUser(string path) {
-            var sec = File.GetAccessControl(path);
+            var fi = new FileInfo(path);
+            var sec = fi.GetAccessControl();
             sec.SetOwner(WindowsIdentity.GetCurrent().User);
-            File.SetAccessControl(path, sec);
+            fi.SetAccessControl(sec);
         }
     }
 
