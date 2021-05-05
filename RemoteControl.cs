@@ -9,18 +9,21 @@ using System.IO;
 using System.IO.Pipes;
 using System.Runtime.InteropServices;
 using System.Security.AccessControl;
+using System.Threading;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace ffxigamma {
     public delegate void RemoteControlEventHandler(object sender, string command);
 
     public class RemoteControl : Component {
+        private bool disposed;
         private List<string> commandBuffer;
+        private CancellationTokenSource serverCancel;
         private Task serverTask;
-        private Timer timer;
+        private System.Windows.Forms.Timer timer;
 
         public RemoteControl() {
+            disposed = false;
             commandBuffer = new List<string>();
         }
 
@@ -30,6 +33,14 @@ namespace ffxigamma {
 
         public RemoteControl(IContainer container) : this() {
             container.Add(this);
+        }
+
+        protected override void Dispose(bool disposing) {
+            if (disposed) return;
+            if (disposing)
+                ServerStop();
+            disposed = true;
+            base.Dispose(disposing);
         }
 
         public string Name { get; set; } = null;
@@ -53,12 +64,24 @@ namespace ffxigamma {
         public void ServerStart() {
             if (serverTask != null) return;
 
+            serverCancel = new CancellationTokenSource();
             serverTask = Task.Run(ServerMain);
 
-            timer = new Timer();
+            timer = new System.Windows.Forms.Timer();
             timer.Interval = EventInterval;
             timer.Tick += Timer_Tick;
             timer.Start();
+        }
+
+        public void ServerStop() {
+            if (serverTask == null) return;
+
+            timer.Stop();
+            timer.Dispose();
+
+            serverCancel.Cancel();
+            serverTask.Wait();
+            serverTask = null;
         }
 
         private void ServerMain() {
@@ -66,15 +89,23 @@ namespace ffxigamma {
             var par = new PipeAccessRule("Everyone", PipeAccessRights.ReadWrite, AccessControlType.Allow);
             ps.AddAccessRule(par);
 
-            while (true) {
-                using (var pipe = CreateNamedPipeServerStream(Name, ps)) {
-                    pipe.WaitForConnection();
-                    var sr = new StreamReader(pipe);
-                    var cmd = sr.ReadLine();
-                    if (cmd != null)
-                        PushCommand(cmd);
+            try {
+                while (true) {
+                    using (var pipe = CreateNamedPipeServerStream(Name, ps)) {
+                        var connection = pipe.WaitForConnectionAsync();
+                        connection.Wait(serverCancel.Token);
+
+                        var sr = new StreamReader(pipe);
+                        var read = sr.ReadLineAsync();
+                        read.Wait(serverCancel.Token);
+
+                        var cmd = read.Result;
+                        if (cmd != null)
+                            PushCommand(cmd);
+                    }
                 }
             }
+            catch (OperationCanceledException) { }
         }
 
         private void PushCommand(string command) {
