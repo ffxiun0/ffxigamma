@@ -6,6 +6,8 @@
   <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   <RootNamespace>ffxigamma</RootNamespace>
   <AssemblyName>ffxigamma</AssemblyName>
+  <ApplicationIcon>Resources\icon.ico</ApplicationIcon>
+  <ApplicationManifest>app.manifest</ApplicationManifest>
  </PropertyGroup>
  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
    <Prefer32Bit>true</Prefer32Bit>
