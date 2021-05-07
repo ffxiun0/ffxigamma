@@ -187,7 +187,6 @@
             // 
             // remoteControl
             // 
-            this.remoteControl.EventInterval = 100;
             this.remoteControl.Name = null;
             this.remoteControl.SendTimeout = 1000;
             this.remoteControl.CommandReceived += new ffxigamma.RemoteControlEventHandler(this.RemoteControl_CommandReceived);
