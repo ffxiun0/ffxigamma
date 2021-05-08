@@ -90,6 +90,7 @@ namespace ffxigamma {
 
         private bool IsTargetWindow(Window wnd) {
             if (wnd == null) return false;
+            if (!wnd.IsVisible()) return false;
 
             var ws = config.GetWindowSettings(wnd.GetWindowText());
             if (ws == null) return false;
