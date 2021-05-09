@@ -50,8 +50,11 @@ namespace ffxigamma {
                 SendCommand(Name, command, SendTimeout);
                 return true;
             }
-            catch (InvalidOperationException) { return false; }
-            catch (TimeoutException) { return false; }
+            catch (InvalidOperationException) { }
+            catch (TimeoutException) { }
+            catch (UnauthorizedAccessException) { }
+
+            return false;
         }
 
         private static void SendCommand(string name, string command, int timeout) {
