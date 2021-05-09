@@ -7,6 +7,7 @@ using System.ComponentModel;
 using System.IO;
 using System.IO.Pipes;
 using System.Security.AccessControl;
+using System.Security.Principal;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -97,8 +98,9 @@ namespace ffxigamma {
         }
 
         private async Task ServerMainAsync(CancellationToken token) {
+            var user = WindowsIdentity.GetCurrent().User;
             var ps = new PipeSecurity();
-            var par = new PipeAccessRule("Everyone", PipeAccessRights.ReadWrite, AccessControlType.Allow);
+            var par = new PipeAccessRule(user, PipeAccessRights.ReadWrite, AccessControlType.Allow);
             ps.AddAccessRule(par);
 
             while (true) {
