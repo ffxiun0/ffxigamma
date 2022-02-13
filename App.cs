@@ -17,7 +17,7 @@ using System.Windows.Forms;
 
 namespace ffxigamma {
     public partial class App : Form {
-        public const string Version = "2.2.1";
+        public const string Version = "2.3";
         public const string AppName = "FFXI Gamma";
         private const string AppFolderName = "ffxigamma";
         private const string ConfigFileName = "config.xml";
