@@ -24,33 +24,28 @@ namespace ffxigamma {
         }
 
         public static SecureConfig Load(string path) {
-            if (!OwnerIsAdmin(path)) return Default;
+            using (var fs = File.OpenRead(path)) {
+                if (!OwnerIsAdmin(path)) return Default;
 
-            var doc = new XmlDocument();
-            doc.PreserveWhitespace = true;
-            doc.Load(path);
+                var doc = new XmlDocument();
+                doc.PreserveWhitespace = true;
+                doc.Load(fs);
 
-            var xnr = new XmlNodeReader(doc.DocumentElement);
-            var xs = new XmlSerializer(typeof(SecureConfig));
-            var config = (SecureConfig)xs.Deserialize(xnr);
-
-            return config;
-        }
-
-        public void Save(string path) {
-            CreateEmptyFile(path);
-            ChangePermission(path);
-
-            using (var fs = File.OpenWrite(path)) {
-                fs.SetLength(0);
+                var xnr = new XmlNodeReader(doc.DocumentElement);
                 var xs = new XmlSerializer(typeof(SecureConfig));
-                xs.Serialize(fs, this);
+                var config = (SecureConfig)xs.Deserialize(xnr);
+
+                return config;
             }
         }
 
-        private static void CreateEmptyFile(string path) {
+        public void Save(string path) {
             using (var fs = File.OpenWrite(path)) {
+                ChangePermission(path);
+
                 fs.SetLength(0);
+                var xs = new XmlSerializer(typeof(SecureConfig));
+                xs.Serialize(fs, this);
             }
         }
 
