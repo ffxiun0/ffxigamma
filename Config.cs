@@ -159,21 +159,15 @@ namespace ffxigamma {
         }
 
         public void Save(string path) {
-            CreateEmptyFile(path);
-            SetOwnerToCurrentUser(path);
-
             using (var fs = File.OpenWrite(path)) {
+                SetOwnerToCurrentUser(path);
+
                 fs.SetLength(0);
                 var xs = new XmlSerializer(typeof(Config));
                 xs.Serialize(fs, this);
             }
         }
 
-        private static void CreateEmptyFile(string path) {
-            using (var fs = File.OpenWrite(path)) {
-                fs.SetLength(0);
-            }
-        }
         private static void SetOwnerToCurrentUser(string path) {
             var fi = new FileInfo(path);
             var sec = fi.GetAccessControl();
