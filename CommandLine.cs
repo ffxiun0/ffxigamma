@@ -14,7 +14,7 @@ namespace CLParser {
         private CommandLine(IEnumerable<string> args) {
             this.all = args.ToArray();
             this.exe = all.FirstOrDefault();
-            this.args = Tail(all).ToArray();
+            this.args = all.Skip(1).ToArray();
         }
 
         public string[] All { get => all; }
@@ -52,17 +52,6 @@ namespace CLParser {
 
             foreach (var item in list)
                 yield return item;
-        }
-
-        private static IEnumerable<T> Tail<T>(IEnumerable<T> list) {
-            var skip = 1;
-
-            foreach (var item in list) {
-                if (skip > 0)
-                    skip--;
-                else
-                    yield return item;
-            }
         }
     }
 }
