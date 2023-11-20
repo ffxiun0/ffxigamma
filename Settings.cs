@@ -320,8 +320,8 @@ namespace ffxigamma {
                 if (uiProgramDialog.ShowDialog(this) == DialogResult.OK) {
                     var path = uiProgramDialog.FileName;
 
-                    var exe = Path.GetFileName(Assembly.GetExecutingAssembly().Location);
-                    if (path.Contains(exe))
+                    var exe = Path.GetFileName(NativeMethods.GetModuleFileName()).ToLower();
+                    if (path.ToLower().EndsWith(exe))
                         uiStartProgramCommandLine.Text = "";
                     else
                         uiStartProgramCommandLine.Text = CommandLine.ToString(path);
