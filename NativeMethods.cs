@@ -2,6 +2,7 @@
  * Copyright (c) 2015 ffxiun0
  * https://opensource.org/licenses/MIT
  */
+using Microsoft.Win32.SafeHandles;
 using System;
 using System.Drawing;
 using System.Runtime.InteropServices;
@@ -315,7 +316,7 @@ namespace ffxigamma {
             );
 
         [DllImport("kernel32.dll", CharSet = CharSet.Unicode)]
-        public static extern IntPtr OpenProcess(
+        public static extern SafeProcessHandle OpenProcess(
             uint dwDesiredAccess,
             bool bInheritHandle,
             uint dwProcessId
@@ -332,20 +333,20 @@ namespace ffxigamma {
 
         [DllImport("advapi32.dll", CharSet = CharSet.Unicode)]
         public static extern bool OpenProcessToken(
-            IntPtr ProcessHandle,
+            SafeProcessHandle ProcessHandle,
             uint DesiredAccess,
-            out IntPtr TokenHandle
+            out SafeAccessTokenHandle TokenHandle
             );
         public const uint MAXIMUM_ALLOWED = 0x02000000;
 
         [DllImport("advapi32.dll", CharSet = CharSet.Unicode)]
         public static extern bool DuplicateTokenEx(
-            IntPtr hExistingToken,
+            SafeAccessTokenHandle hExistingToken,
             uint dwDesiredAccess,
             IntPtr lpTokenAttributes,
             SECURITY_IMPERSONATION_LEVEL ImpersonationLevel,
             TOKEN_TYPE TokenType,
-            out IntPtr phNewToken
+            out SafeAccessTokenHandle phNewToken
             );
 
         public enum TOKEN_TYPE {
@@ -362,7 +363,7 @@ namespace ffxigamma {
 
         [DllImport("advapi32.dll", CharSet = CharSet.Unicode)]
         public static extern bool CreateProcessWithToken(
-            IntPtr hToken,
+            SafeAccessTokenHandle hToken,
             uint dwLogonFlags,
             string lpApplicationName,
             StringBuilder lpCommandLine,

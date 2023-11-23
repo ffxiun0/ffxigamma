@@ -3,6 +3,7 @@
  * https://opensource.org/licenses/MIT
  */
 using CLParser;
+using Microsoft.Win32.SafeHandles;
 using System;
 using System.IO;
 using System.Runtime.InteropServices;
@@ -39,13 +40,10 @@ namespace ffxigamma {
         public static StartResult StartUser(string exe, params string[] args) {
             if (!IsUserAnAdmin()) return Start(exe, args);
 
-            var hToken = DuplicateShellToken();
-            if (hToken == IntPtr.Zero) return StartResult.Failure;
-            try {
+            using (var hToken = DuplicateShellToken()) {
+                if (hToken.IsInvalid) return StartResult.Failure;
+
                 return StartWithToken(hToken, exe, args);
-            }
-            finally {
-                NativeMethods.CloseHandle(hToken);
             }
         }
 
@@ -73,28 +71,22 @@ namespace ffxigamma {
             }
         }
 
-        private static IntPtr DuplicateShellToken() {
-            var hToken = GetShellToken();
-            if (hToken == IntPtr.Zero) return IntPtr.Zero;
-            try {
+        private static SafeAccessTokenHandle DuplicateShellToken() {
+            using (var hToken = OpenShellToken()) {
+                if (hToken.IsInvalid) return SafeAccessTokenHandle.InvalidHandle;
+
                 return DuplicateToken(hToken);
-            }
-            finally {
-                NativeMethods.CloseHandle(hToken);
             }
         }
 
-        private static IntPtr GetShellToken() {
+        private static SafeAccessTokenHandle OpenShellToken() {
             var pid = GetShellProcessId();
-            var hProcess = NativeMethods.OpenProcess(NativeMethods.MAXIMUM_ALLOWED, false, pid);
-            if (hProcess == IntPtr.Zero) return IntPtr.Zero;
-            try {
-                IntPtr hToken;
+            using (var hProcess = NativeMethods.OpenProcess(NativeMethods.MAXIMUM_ALLOWED, false, pid)) {
+                if (hProcess.IsInvalid) return SafeAccessTokenHandle.InvalidHandle;
+
+                SafeAccessTokenHandle hToken;
                 var ok = NativeMethods.OpenProcessToken(hProcess, NativeMethods.MAXIMUM_ALLOWED, out hToken);
-                return ok ? hToken : IntPtr.Zero;
-            }
-            finally {
-                NativeMethods.CloseHandle(hProcess);
+                return ok ? hToken : SafeAccessTokenHandle.InvalidHandle;
             }
         }
 
@@ -105,15 +97,15 @@ namespace ffxigamma {
             return pid;
         }
 
-        private static IntPtr DuplicateToken(IntPtr hToken) {
-            IntPtr hDupToken;
+        private static SafeAccessTokenHandle DuplicateToken(SafeAccessTokenHandle hToken) {
+            SafeAccessTokenHandle hDupToken;
             var ok = NativeMethods.DuplicateTokenEx(hToken, NativeMethods.MAXIMUM_ALLOWED, IntPtr.Zero,
                 NativeMethods.SECURITY_IMPERSONATION_LEVEL.SecurityDelegation,
                 NativeMethods.TOKEN_TYPE.TokenPrimary, out hDupToken);
-            return ok ? hDupToken : IntPtr.Zero;
+            return ok ? hDupToken : SafeAccessTokenHandle.InvalidHandle;
         }
 
-        private static StartResult StartWithToken(IntPtr hToken, string exe, params string[] args) {
+        private static StartResult StartWithToken(SafeAccessTokenHandle hToken, string exe, params string[] args) {
             var commandLine = new StringBuilder(1024 + 1);
             commandLine.Append(CommandLine.ToString(exe, args));
 
