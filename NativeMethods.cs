@@ -98,21 +98,36 @@ namespace ffxigamma {
         }
 
         public static Image GetShieldIcon() {
+            var hIcon = GetStockIcon(SIID_SHIELD, SHGSI_ICON | SHGSI_SMALLICON);
+            if (hIcon == IntPtr.Zero) return null;
+            try {
+                var icon = Icon.FromHandle(hIcon);
+                return icon.ToBitmap();
+            }
+            finally {
+                DestroyIcon(hIcon);
+            }
+        }
+
+        private static IntPtr GetStockIcon(int siid, uint uFlags) {
             var sii = new SHSTOCKICONINFO();
             sii.cbSize = (uint)Marshal.SizeOf(sii);
-
-            SHGetStockIconInfo(SIID_SHIELD, SHGSI_ICON | SHGSI_SMALLICON, ref sii);
-            if (sii.hIcon == IntPtr.Zero) return null;
-
-            var icon = Icon.FromHandle(sii.hIcon);
-            return icon.ToBitmap();
+            try {
+                var hr = SHGetStockIconInfo(siid, uFlags, ref sii);
+                Marshal.ThrowExceptionForHR(hr);
+                return sii.hIcon;
+            }
+            catch (Exception) {
+                return IntPtr.Zero;
+            }
         }
 
         public static bool OpenFolderAndSelectItem(string path) {
             var pidl = ILCreateFromPath(path);
             if (pidl == IntPtr.Zero) return false;
             try {
-                Marshal.ThrowExceptionForHR(SHOpenFolderAndSelectItems(pidl, 0, IntPtr.Zero, 0));
+                var hr = SHOpenFolderAndSelectItems(pidl, 0, IntPtr.Zero, 0);
+                Marshal.ThrowExceptionForHR(hr);
                 return true;
             }
             catch (Exception) {
@@ -209,6 +224,9 @@ namespace ffxigamma {
 
         public const int WS_EX_TOOLWINDOW = 0x00000080;
 
+        [DllImport("user32.dll")]
+        public static extern bool DestroyIcon(IntPtr hIcon);
+
         [DllImport("gdi32.dll", CharSet = CharSet.Unicode)]
         public static extern IntPtr CreateDC(string lpszDriver, string lpszDevice, string lpszOutput, IntPtr lpInitData);
 
@@ -253,7 +271,7 @@ namespace ffxigamma {
         };
 
         [DllImport("shell32.dll")]
-        public static extern IntPtr SHGetStockIconInfo(int siid, uint uFlags, ref SHSTOCKICONINFO psii);
+        public static extern int SHGetStockIconInfo(int siid, uint uFlags, ref SHSTOCKICONINFO psii);
 
         public const int SIID_SHIELD = 77;
 
