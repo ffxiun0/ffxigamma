@@ -125,22 +125,17 @@ namespace ffxigamma {
         }
 
         private Rectangle GetDeviceRect() {
-            using (var g = Graphics.FromHwnd(hWnd)) {
-                var hdc = g.GetHdc();
-                try {
-                    var hbmp = NativeMethods.GetCurrentObject(hdc, NativeMethods.OBJ_BITMAP);
-                    if (hbmp == IntPtr.Zero)
-                        return Rectangle.Empty;
+            using (var g = Graphics.FromHwnd(hWnd))
+            using (var hdc = g.GetHdcSafe()) {
+                var hbmp = NativeMethods.GetCurrentObject(hdc, NativeMethods.OBJ_BITMAP);
+                if (hbmp == IntPtr.Zero)
+                    return Rectangle.Empty;
 
-                    var sbmp = new NativeMethods.BITMAP();
-                    if (NativeMethods.GetObject(hbmp, Marshal.SizeOf(sbmp), ref sbmp) == 0)
-                        return Rectangle.Empty;
+                var sbmp = new NativeMethods.BITMAP();
+                if (NativeMethods.GetObject(hbmp, Marshal.SizeOf(sbmp), ref sbmp) == 0)
+                    return Rectangle.Empty;
 
-                    return new Rectangle(0, 0, sbmp.bmWidth, sbmp.bmHeight);
-                }
-                finally {
-                    g.ReleaseHdc(hdc);
-                }
+                return new Rectangle(0, 0, sbmp.bmWidth, sbmp.bmHeight);
             }
         }
 

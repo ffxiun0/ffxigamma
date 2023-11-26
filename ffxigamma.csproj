@@ -93,6 +93,7 @@
     <Compile Include="RemoteControl.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="SafeHandles.cs" />
     <Compile Include="SecureConfig.cs" />
     <Compile Include="Settings.cs">
       <SubType>Form</SubType>

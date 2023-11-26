@@ -65,17 +65,14 @@ namespace ffxigamma {
         }
 
         public static bool SetDeviceGammaRamp(string driver, string device, double gamma) {
-            var hDC = CreateDC(driver, device, null, IntPtr.Zero);
-            if (hDC == IntPtr.Zero) return false;
-            try {
+            using (var hDC = CreateDC(driver, device, null, IntPtr.Zero)) {
+                if (hDC.IsInvalid) return false;
+
                 return SetDeviceGammaRamp(hDC, gamma);
-            }
-            finally {
-                DeleteDC(hDC);
             }
         }
 
-        public static bool SetDeviceGammaRamp(IntPtr hDC, double gamma) {
+        public static bool SetDeviceGammaRamp(SafeDeviceContextHandle hDC, double gamma) {
             var ramp = new ushort[256 * 3];
             for (int i = 0; i < 256; i++) {
                 ushort gi = (ushort)Math.Floor(Math.Pow(i / 255.0, gamma) * 255.0 + 0.5);
@@ -85,56 +82,47 @@ namespace ffxigamma {
         }
 
         public static int BitBlt(Graphics dest, Rectangle rect, Graphics src, Point srcPos, int rop) {
-            var hdcDest = dest.GetHdc();
-            var hdcSrc = src.GetHdc();
-            try {
+            using (var hdcDest = dest.GetHdcSafe())
+            using (var hdcSrc = src.GetHdcSafe()) {
                 return NativeMethods.BitBlt(hdcDest, rect.X, rect.Y, rect.Width, rect.Height,
                     hdcSrc, srcPos.X, srcPos.Y, rop);
-            }
-            finally {
-                dest.ReleaseHdc(hdcDest);
-                src.ReleaseHdc(hdcSrc);
             }
         }
 
         public static Image GetShieldIcon() {
-            var hIcon = GetStockIcon(SIID_SHIELD, SHGSI_ICON | SHGSI_SMALLICON);
-            if (hIcon == IntPtr.Zero) return null;
-            try {
-                var icon = Icon.FromHandle(hIcon);
+            using (var hIcon = GetStockIcon(SIID_SHIELD, SHGSI_ICON | SHGSI_SMALLICON)) {
+                if (hIcon.IsInvalid) return null;
+
+                var icon = Icon.FromHandle(hIcon.DangerousGetHandle());
                 return icon.ToBitmap();
-            }
-            finally {
-                DestroyIcon(hIcon);
             }
         }
 
-        private static IntPtr GetStockIcon(int siid, uint uFlags) {
+        private static SafeIconHandle GetStockIcon(int siid, uint uFlags) {
             var sii = new SHSTOCKICONINFO();
             sii.cbSize = (uint)Marshal.SizeOf(sii);
             try {
                 var hr = SHGetStockIconInfo(siid, uFlags, ref sii);
                 Marshal.ThrowExceptionForHR(hr);
-                return sii.hIcon;
+                return new SafeIconHandle(sii.hIcon);
             }
             catch (Exception) {
-                return IntPtr.Zero;
+                return new SafeIconHandle(IntPtr.Zero);
             }
         }
 
         public static bool OpenFolderAndSelectItem(string path) {
-            var pidl = ILCreateFromPath(path);
-            if (pidl == IntPtr.Zero) return false;
-            try {
-                var hr = SHOpenFolderAndSelectItems(pidl, 0, IntPtr.Zero, 0);
-                Marshal.ThrowExceptionForHR(hr);
-                return true;
-            }
-            catch (Exception) {
-                return false;
-            }
-            finally {
-                ILFree(pidl);
+            using (var pidl = ILCreateFromPath(path)) {
+                if (pidl.IsInvalid) return false;
+
+                try {
+                    var hr = SHOpenFolderAndSelectItems(pidl, 0, IntPtr.Zero, 0);
+                    Marshal.ThrowExceptionForHR(hr);
+                    return true;
+                }
+                catch (Exception) {
+                    return false;
+                }
             }
         }
 
@@ -228,32 +216,29 @@ namespace ffxigamma {
         public static extern bool DestroyIcon(IntPtr hIcon);
 
         [DllImport("gdi32.dll", CharSet = CharSet.Unicode)]
-        public static extern IntPtr CreateDC(string lpszDriver, string lpszDevice, string lpszOutput, IntPtr lpInitData);
+        public static extern SafeCreateDCHandle CreateDC(string lpszDriver, string lpszDevice, string lpszOutput, IntPtr lpInitData);
 
         [DllImport("gdi32.dll")]
         public static extern bool DeleteDC(IntPtr hDC);
 
         [DllImport("gdi32.dll")]
-        public static extern bool SetDeviceGammaRamp(IntPtr hDC, ushort[] lpRamp);
-
-        [DllImport("gdi32.dll")]
-        public static extern bool GetDeviceGammaRamp(IntPtr hDC, ushort[] lpRamp);
+        public static extern bool SetDeviceGammaRamp(SafeDeviceContextHandle hDC, ushort[] lpRamp);
 
         [DllImport("gdi32.dll")]
         public static extern int BitBlt(
-            IntPtr hDestDC,
+            SafeDeviceContextHandle hDestDC,
             int x,
             int y,
             int nWidth,
             int nHeight,
-            IntPtr hSrcDC,
+            SafeDeviceContextHandle hSrcDC,
             int xSrc,
             int ySrc,
             int dwRop);
         public const int SRCCOPY = 13369376;
 
         [DllImport("gdi32.dll")]
-        public static extern IntPtr GetCurrentObject(IntPtr hdc, uint uObjectType);
+        public static extern IntPtr GetCurrentObject(SafeDeviceContextHandle hdc, uint uObjectType);
         public const uint OBJ_BITMAP = 7;
 
         [DllImport("gdi32.dll")]
@@ -315,10 +300,10 @@ namespace ffxigamma {
         public const int SW_SHOWNORMAL = 1;
 
         [DllImport("shell32.dll")]
-        public static extern int SHOpenFolderAndSelectItems(IntPtr pidlFolder, uint cidl, IntPtr apidl, uint dwFlags);
+        public static extern int SHOpenFolderAndSelectItems(SafeItemIdList pidlFolder, uint cidl, IntPtr apidl, uint dwFlags);
 
         [DllImport("shell32.dll", CharSet = CharSet.Unicode)]
-        public static extern IntPtr ILCreateFromPath(string pszPath);
+        public static extern SafeItemIdList ILCreateFromPath(string pszPath);
 
         [DllImport("shell32.dll")]
         public static extern void ILFree(IntPtr pidl);
