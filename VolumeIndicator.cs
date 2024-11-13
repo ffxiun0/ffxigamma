@@ -3,6 +3,7 @@
  * https://opensource.org/licenses/MIT
  */
 using System;
+using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -27,6 +28,7 @@ namespace ffxigamma {
             }
         }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public VolumeControl VolumeControl {
             get {
                 return volumeControl;
@@ -37,6 +39,7 @@ namespace ffxigamma {
             }
         }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public Window Window {
             get {
                 return window;
@@ -47,6 +50,7 @@ namespace ffxigamma {
             }
         }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool Mute {
             get {
                 return VolumeControl.Mute;
@@ -58,6 +62,7 @@ namespace ffxigamma {
             }
         }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public float Volume {
             get {
                 return volumeControl.Volume;
@@ -72,6 +77,7 @@ namespace ffxigamma {
             }
         }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public int Timeout {
             get {
                 return timer.Interval;

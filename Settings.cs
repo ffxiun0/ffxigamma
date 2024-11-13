@@ -5,6 +5,7 @@
 using CLParser;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Reflection;
 using System.Windows.Forms;
@@ -42,8 +43,10 @@ namespace ffxigamma {
             Config = Config.Default;
         }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public SettingsAction Action { get; set; }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public Config Config {
             set {
                 config = value;
@@ -54,6 +57,7 @@ namespace ffxigamma {
             }
         }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public SecureConfig SecureConfig {
             set {
                 secureConfig = value;

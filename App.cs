@@ -5,6 +5,7 @@
 using CLParser;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
@@ -33,7 +34,9 @@ namespace ffxigamma {
         private Settings editSettings;
         private VolumeIndicator volumeIndicator;
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool EnableAutoStartProgram { get; set; } = false;
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool OpenSettings { get; set; } = false;
 
         public App() {

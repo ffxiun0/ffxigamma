@@ -3,6 +3,7 @@
  * https://opensource.org/licenses/MIT
  */
 using System;
+using System.ComponentModel;
 using System.Windows.Forms;
 
 namespace ffxigamma {
@@ -14,6 +15,7 @@ namespace ffxigamma {
             Icon = Properties.Resources.Icon;
         }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public WindowSettings WindowSettings {
             get {
                 return windowSettings;

@@ -3,6 +3,7 @@
  * https://opensource.org/licenses/MIT
  */
 using System;
+using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -17,6 +18,7 @@ namespace ffxigamma {
             config = new ImageText();
         }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public ImageText Config {
             get {
                 return config;

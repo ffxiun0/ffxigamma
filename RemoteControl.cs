@@ -41,8 +41,12 @@ namespace ffxigamma {
             base.Dispose(disposing);
         }
 
-        public string Name { get; set; } = null;
+        [DefaultValue("")]
+        public string Name { get; set; } = "";
+
+        [DefaultValue(1000)]
         public int SendTimeout { get; set; } = 1000;
+
         public event RemoteControlEventHandler CommandReceived;
 
         public bool SendCommand(string command) {
