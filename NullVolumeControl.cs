@@ -2,8 +2,6 @@
  * Copyright (c) 2015 ffxiun0
  * https://opensource.org/licenses/MIT
  */
-using System;
-
 namespace ffxigamma {
     class NullVolumeControl : VolumeControl {
         public override bool Active {

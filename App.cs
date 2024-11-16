@@ -623,7 +623,7 @@ namespace ffxigamma {
         }
 
         private static bool IntersectsWithScreen(Rectangle rect) {
-            foreach(var screen in Screen.AllScreens) {
+            foreach (var screen in Screen.AllScreens) {
                 if (screen.Bounds.IntersectsWith(rect))
                     return true;
             }
