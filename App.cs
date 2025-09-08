@@ -717,7 +717,6 @@ namespace ffxigamma {
 
         private void App_FormClosing(object sender, FormClosingEventArgs e) {
             ResetScreenGamma();
-            SaveConfig(config);
         }
 
         private void uiContextExit_Click(object sender, EventArgs e) {
